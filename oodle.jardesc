@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+<jar path="oodle/oodle.jar"/>
+<options buildIfNeeded="true" compress="true" descriptionLocation="/oodle/oodle.jardesc" exportErrors="false" exportWarnings="true" overwrite="false" saveDescription="true" useSourceFolders="true"/>
+<manifest generateManifest="false" manifestLocation="/oodle/manifest.mf" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+<sealing sealJar="false">
+<packagesToSeal/>
+<packagesToUnSeal/>
+</sealing>
+</manifest>
+<selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
+<file path="/oodle/oodle.jardesc"/>
+<file path="/oodle/build.xml"/>
+<javaElement handleIdentifier="=oodle/gen-src"/>
+<file path="/oodle/manifest.mf"/>
+<file path="/oodle/.classpath"/>
+<file path="/oodle/.project"/>
+<javaElement handleIdentifier="=oodle/src"/>
+<file path="/oodle/prog.ood"/>
+</selectedElements>
+</jardesc>

@@ -1,20 +1,55 @@
+// oodle.scc
+// Specifies the scanning rules for SableCC
+// James Coleman, 2010
+
 Package cps450.oodle;
 
 Helpers
   letter = ['A'..'Z'] | ['a'..'z'];
+  word_char = letter | '_';
   digit = ['0'..'9'];
   cr = 13;
   lf = 10;
   not_cr_lf = [[0..127] - [cr + lf]];
+  newline = lf | cr lf;
+  octal_digit = ['0'..'7'];
+  non_string_char = ['"' + '\'];
+  string_char = [not_cr_lf - non_string_char];
+  escaped_sequence = '\t' | '\n' | '\f' | '\r' | '\"' | '\\' | '\' octal_digit octal_digit octal_digit;
+  string_contents = (string_char* escaped_sequence*)*;
   
 Tokens
-  if = 'IF';
-  while = 'WHILE';
+  if = 'if';
+  while = 'while';
+  boolean = 'boolean';
+  begin = 'begin';
+  klass = 'class';
+  else = 'else';
+  end = 'end';
+  false = 'false';
+  from = 'from';
+  inherits = 'inherits';
+  int = 'int';
+  is = 'is';
+  loop = 'loop';
+  me = 'me';
+  new = 'new';
+  not = 'not';
+  null = 'null';
+  string = 'string';
+  then = 'then';
+  true = 'true';
+  and = 'and';
+  or = 'or';
+  
   bang = '!';
 
   comma = ',';
+  semicolon = ';';
+  colon = ':';
+  period = '.';
 
-  lt_op = '<';
+  gte_op = '>=';
   gt_op = '>';
   eq_op = '=';
 
@@ -22,16 +57,32 @@ Tokens
   minus_op = '-';
   mult_op = '*';
   div_op = '/';
+  
+  concat_op = '&';
 
   l_par = '(';
   r_par = ')';
+  
+  assignment_op = ':=';
+  l_bracket = '[';
+  r_bracket = ']';
 
-  id = letter (letter | digit)*;
-  intlit = digit+;
-  strlit = '"' [not_cr_lf - '"']*  '"';
+  id = word_char (word_char | digit)*;
+  
+  intlit = digit+ | '-' digit+;
+  
+  strlit = '"' string_contents '"';
+  illegal_string = '"' (string_char | '\')* '"';
+  unterminated_string = '"' string_contents;
 
-  eol = cr | lf | cr lf;
+  continuation = '_' newline;
+  eol = newline;
 
-  blank = ' '+;
+  blank = (' ' | 9)+;
   comment = '~' not_cr_lf*;
-
+  
+  illegal_char = [0..127];
+	
+Ignored Tokens
+  
+  blank, continuation, comment;

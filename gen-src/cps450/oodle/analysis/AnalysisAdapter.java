@@ -74,6 +74,106 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseTBoolean(TBoolean node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTBegin(TBegin node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTKlass(TKlass node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTElse(TElse node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTEnd(TEnd node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTFalse(TFalse node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTFrom(TFrom node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTInherits(TInherits node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTInt(TInt node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTIs(TIs node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTLoop(TLoop node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTMe(TMe node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTNew(TNew node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTNot(TNot node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTNull(TNull node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTString(TString node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTThen(TThen node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTTrue(TTrue node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTAnd(TAnd node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTOr(TOr node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTBang(TBang node)
     {
         defaultCase(node);
@@ -84,7 +184,22 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseTLtOp(TLtOp node)
+    public void caseTSemicolon(TSemicolon node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTColon(TColon node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTPeriod(TPeriod node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTGteOp(TGteOp node)
     {
         defaultCase(node);
     }
@@ -119,12 +234,32 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseTConcatOp(TConcatOp node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTLPar(TLPar node)
     {
         defaultCase(node);
     }
 
     public void caseTRPar(TRPar node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTAssignmentOp(TAssignmentOp node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTLBracket(TLBracket node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTRBracket(TRBracket node)
     {
         defaultCase(node);
     }
@@ -144,6 +279,21 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseTIllegalString(TIllegalString node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTUnterminatedString(TUnterminatedString node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTContinuation(TContinuation node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTEol(TEol node)
     {
         defaultCase(node);
@@ -155,6 +305,11 @@ public class AnalysisAdapter implements Analysis
     }
 
     public void caseTComment(TComment node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTIllegalChar(TIllegalChar node)
     {
         defaultCase(node);
     }

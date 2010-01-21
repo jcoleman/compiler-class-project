@@ -1,4 +1,6 @@
 // Oodle.java
+// James Coleman, 2010
+// Primary file containing the main function for the Oodle compiler
 
 package cps450;
 import cps450.oodle.node.*;
@@ -8,31 +10,35 @@ import java.io.*;
 
 public class Oodle
 {
+	
     public static void main(String[] arguments) throws IOException {
-        if(arguments.length != 1)
-        {
+        if(!(arguments.length >= 1)) {
             System.out.println("usage:");
             System.out.println("  java Oodle filename");
             System.exit(1);
         }
+        
+        Options.instance().parseArgumentArray(arguments);
 
         System.out.println();
-
-        Lexer lexer = new Lexer(
+        
+        SourceHolder.instantiate(Options.instance().files);
+        File input = SourceHolder.instance().concatenateFiles();
+        
+        Lexer lexer = new MyLexer(
             new PushbackReader(
             new BufferedReader(
-            new FileReader(arguments[0])), 1024));
+            new FileReader(input)), 1024));
 
         Token t = getNextToken(lexer);
         while (! (t instanceof EOF)) {
-          System.out.println(arguments[0] + ":" + t.getLine() + ":" + t.getText());
           t = getNextToken(lexer);
-
         }
 
 
     }
-
+    
+    // Retrieve the next token from the lexer
     static Token getNextToken(Lexer l) throws IOException {
       Token t = null;
       try {

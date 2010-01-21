@@ -5,16 +5,16 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class TIf extends Token
+public final class TNull extends Token
 {
-    public TIf()
+    public TNull()
     {
-        super.setText("if");
+        super.setText("null");
     }
 
-    public TIf(int line, int pos)
+    public TNull(int line, int pos)
     {
-        super.setText("if");
+        super.setText("null");
         setLine(line);
         setPos(pos);
     }
@@ -22,17 +22,17 @@ public final class TIf extends Token
     @Override
     public Object clone()
     {
-      return new TIf(getLine(), getPos());
+      return new TNull(getLine(), getPos());
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseTIf(this);
+        ((Analysis) sw).caseTNull(this);
     }
 
     @Override
     public void setText(@SuppressWarnings("unused") String text)
     {
-        throw new RuntimeException("Cannot change TIf text.");
+        throw new RuntimeException("Cannot change TNull text.");
     }
 }

@@ -64,6 +64,211 @@ public class AnalysisAdapter implements Analysis
         }
     }
 
+    public void caseStart(Start node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAStart(AStart node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAClassTail(AClassTail node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAClassInheritance(AClassInheritance node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAClassDef(AClassDef node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAVarDeclaration(AVarDeclaration node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAVarTypeDeclaration(AVarTypeDeclaration node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAVarInstantiation(AVarInstantiation node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAMethodDeclaration(AMethodDeclaration node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAArgumentList(AArgumentList node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAArgumentDeclarationHead(AArgumentDeclarationHead node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAArgumentDeclaration(AArgumentDeclaration node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAIntVarType(AIntVarType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAStringVarType(AStringVarType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseABooleanVarType(ABooleanVarType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAIdVarType(AIdVarType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAArrayVarType(AArrayVarType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseATest2ArrayVarType(ATest2ArrayVarType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAStatementList(AStatementList node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAStatementHead(AStatementHead node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAAssignmentStatement(AAssignmentStatement node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAIfStatement(AIfStatement node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseALoopStatement(ALoopStatement node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseACallStatement(ACallStatement node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseATest3AssignmentStatement(ATest3AssignmentStatement node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAGetAtOperation(AGetAtOperation node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseATest4IfStatement(ATest4IfStatement node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAIfStatementElse(AIfStatementElse node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseATest5LoopStatement(ATest5LoopStatement node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseATest6CallStatement(ATest6CallStatement node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAObjectCall(AObjectCall node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAExpressionList(AExpressionList node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAExpressionHead(AExpressionHead node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAIdExpression(AIdExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAStringExpression(AStringExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAIntExpression(AIntExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseATrueExpression(ATrueExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFalseExpression(AFalseExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseANullExpression(ANullExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAMeExpression(AMeExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseANewExpression(ANewExpression node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTIf(TIf node)
     {
         defaultCase(node);

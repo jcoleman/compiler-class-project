@@ -8,7 +8,7 @@ import cps450.oodle.analysis.*;
 public final class AArgumentDeclaration extends PArgumentDeclaration
 {
     private TId _id_;
-    private PVarType _varType_;
+    private PVarTypeDeclaration _varTypeDeclaration_;
 
     public AArgumentDeclaration()
     {
@@ -17,12 +17,12 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
 
     public AArgumentDeclaration(
         @SuppressWarnings("hiding") TId _id_,
-        @SuppressWarnings("hiding") PVarType _varType_)
+        @SuppressWarnings("hiding") PVarTypeDeclaration _varTypeDeclaration_)
     {
         // Constructor
         setId(_id_);
 
-        setVarType(_varType_);
+        setVarTypeDeclaration(_varTypeDeclaration_);
 
     }
 
@@ -31,7 +31,7 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
     {
         return new AArgumentDeclaration(
             cloneNode(this._id_),
-            cloneNode(this._varType_));
+            cloneNode(this._varTypeDeclaration_));
     }
 
     public void apply(Switch sw)
@@ -64,16 +64,16 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
         this._id_ = node;
     }
 
-    public PVarType getVarType()
+    public PVarTypeDeclaration getVarTypeDeclaration()
     {
-        return this._varType_;
+        return this._varTypeDeclaration_;
     }
 
-    public void setVarType(PVarType node)
+    public void setVarTypeDeclaration(PVarTypeDeclaration node)
     {
-        if(this._varType_ != null)
+        if(this._varTypeDeclaration_ != null)
         {
-            this._varType_.parent(null);
+            this._varTypeDeclaration_.parent(null);
         }
 
         if(node != null)
@@ -86,7 +86,7 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
             node.parent(this);
         }
 
-        this._varType_ = node;
+        this._varTypeDeclaration_ = node;
     }
 
     @Override
@@ -94,7 +94,7 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
     {
         return ""
             + toString(this._id_)
-            + toString(this._varType_);
+            + toString(this._varTypeDeclaration_);
     }
 
     @Override
@@ -107,9 +107,9 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
             return;
         }
 
-        if(this._varType_ == child)
+        if(this._varTypeDeclaration_ == child)
         {
-            this._varType_ = null;
+            this._varTypeDeclaration_ = null;
             return;
         }
 
@@ -126,9 +126,9 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
             return;
         }
 
-        if(this._varType_ == oldChild)
+        if(this._varTypeDeclaration_ == oldChild)
         {
-            setVarType((PVarType) newChild);
+            setVarTypeDeclaration((PVarTypeDeclaration) newChild);
             return;
         }
 

@@ -3116,7 +3116,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode9 = new LinkedList();
@@ -3129,7 +3129,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -3148,7 +3148,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode11, pstatementlistNode12, tendNode13, tidNode14, listNode15);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode11, pstatementlistNode12, tendNode13, tidNode14, listNode15);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -3178,7 +3178,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode9 = new LinkedList();
@@ -3192,7 +3192,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -3211,7 +3211,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode11, pstatementlistNode12, tendNode13, tidNode14, listNode15);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode11, pstatementlistNode12, tendNode13, tidNode14, listNode15);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -3375,7 +3375,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -3388,7 +3388,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -3413,7 +3413,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -3444,7 +3444,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -3458,7 +3458,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -3483,7 +3483,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -3647,7 +3647,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -3660,7 +3660,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -3685,7 +3685,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -3716,7 +3716,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -3730,7 +3730,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -3755,7 +3755,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -3934,7 +3934,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode11 = new LinkedList();
@@ -3947,7 +3947,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -3978,7 +3978,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -4010,7 +4010,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode11 = new LinkedList();
@@ -4024,7 +4024,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -4055,7 +4055,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -4219,7 +4219,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode9 = new LinkedList();
@@ -4232,7 +4232,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -4257,7 +4257,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -4288,7 +4288,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode9 = new LinkedList();
@@ -4302,7 +4302,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -4327,7 +4327,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode16);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -4506,7 +4506,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -4519,7 +4519,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -4550,7 +4550,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -4582,7 +4582,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -4596,7 +4596,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -4627,7 +4627,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -4806,7 +4806,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -4819,7 +4819,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -4850,7 +4850,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -4882,7 +4882,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -4896,7 +4896,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -4927,7 +4927,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -5121,7 +5121,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode11 = new LinkedList();
@@ -5134,7 +5134,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -5171,7 +5171,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode14, pstatementlistNode15, tendNode16, tidNode17, listNode18);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode14, pstatementlistNode15, tendNode16, tidNode17, listNode18);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -5204,7 +5204,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode11 = new LinkedList();
@@ -5218,7 +5218,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -5255,7 +5255,7 @@ public class Parser
             // Block
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode14, pstatementlistNode15, tendNode16, tidNode17, listNode18);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode14, pstatementlistNode15, tendNode16, tidNode17, listNode18);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -5419,7 +5419,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode9 = new LinkedList();
@@ -5432,7 +5432,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -5457,7 +5457,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode11, pstatementlistNode12, tendNode13, tidNode14, listNode16);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode11, pstatementlistNode12, tendNode13, tidNode14, listNode16);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -5488,7 +5488,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode9 = new LinkedList();
@@ -5502,7 +5502,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -5527,7 +5527,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode11, pstatementlistNode12, tendNode13, tidNode14, listNode16);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode11, pstatementlistNode12, tendNode13, tidNode14, listNode16);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -5706,7 +5706,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -5719,7 +5719,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -5750,7 +5750,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -5782,7 +5782,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -5796,7 +5796,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -5827,7 +5827,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -6006,7 +6006,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -6019,7 +6019,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -6050,7 +6050,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -6082,7 +6082,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -6096,7 +6096,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -6127,7 +6127,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -6321,7 +6321,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode11 = new LinkedList();
@@ -6334,7 +6334,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -6371,7 +6371,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -6404,7 +6404,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode11 = new LinkedList();
@@ -6418,7 +6418,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -6455,7 +6455,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -6634,7 +6634,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode9 = new LinkedList();
@@ -6647,7 +6647,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -6678,7 +6678,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -6710,7 +6710,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode9 = new LinkedList();
@@ -6724,7 +6724,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -6755,7 +6755,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode9, tbeginNode10, listNode12, pstatementlistNode13, tendNode14, tidNode15, listNode17);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -6949,7 +6949,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -6962,7 +6962,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -6999,7 +6999,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -7032,7 +7032,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -7046,7 +7046,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -7083,7 +7083,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -7277,7 +7277,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -7290,7 +7290,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -7327,7 +7327,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -7360,7 +7360,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode8 = new LinkedList();
         LinkedList listNode10 = new LinkedList();
@@ -7374,7 +7374,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -7411,7 +7411,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode8, listNode10, tbeginNode11, listNode13, pstatementlistNode14, tendNode15, tidNode16, listNode18);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -7620,7 +7620,7 @@ public class Parser
         TLPar tlparNode3;
         @SuppressWarnings("unused") Object nullNode4 = null;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode11 = new LinkedList();
@@ -7633,7 +7633,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         trparNode5 = (TRPar)nodeArrayList3.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList4.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList4.get(0);
         tisNode7 = (TIs)nodeArrayList5.get(0);
         {
             // Block
@@ -7676,7 +7676,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode14, pstatementlistNode15, tendNode16, tidNode17, listNode19);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, null, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode14, pstatementlistNode15, tendNode16, tidNode17, listNode19);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -7710,7 +7710,7 @@ public class Parser
         TLPar tlparNode3;
         PArgumentList pargumentlistNode4;
         TRPar trparNode5;
-        PVarType pvartypeNode6;
+        PVarTypeDeclaration pvartypedeclarationNode6;
         TIs tisNode7;
         LinkedList listNode9 = new LinkedList();
         LinkedList listNode11 = new LinkedList();
@@ -7724,7 +7724,7 @@ public class Parser
         tlparNode3 = (TLPar)nodeArrayList2.get(0);
         pargumentlistNode4 = (PArgumentList)nodeArrayList3.get(0);
         trparNode5 = (TRPar)nodeArrayList4.get(0);
-        pvartypeNode6 = (PVarType)nodeArrayList5.get(0);
+        pvartypedeclarationNode6 = (PVarTypeDeclaration)nodeArrayList5.get(0);
         tisNode7 = (TIs)nodeArrayList6.get(0);
         {
             // Block
@@ -7767,7 +7767,7 @@ public class Parser
 	}
         }
 
-        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypeNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode14, pstatementlistNode15, tendNode16, tidNode17, listNode19);
+        pmethoddeclarationNode1 = new AMethodDeclaration(tidNode2, tlparNode3, pargumentlistNode4, trparNode5, pvartypedeclarationNode6, tisNode7, listNode9, listNode11, tbeginNode12, listNode14, pstatementlistNode15, tendNode16, tidNode17, listNode19);
         }
 	nodeList.add(pmethoddeclarationNode1);
         return nodeList;
@@ -7864,11 +7864,11 @@ public class Parser
         {
             // Block
         TId tidNode2;
-        PVarType pvartypeNode3;
+        PVarTypeDeclaration pvartypedeclarationNode3;
         tidNode2 = (TId)nodeArrayList1.get(0);
-        pvartypeNode3 = (PVarType)nodeArrayList2.get(0);
+        pvartypedeclarationNode3 = (PVarTypeDeclaration)nodeArrayList2.get(0);
 
-        pargumentdeclarationNode1 = new AArgumentDeclaration(tidNode2, pvartypeNode3);
+        pargumentdeclarationNode1 = new AArgumentDeclaration(tidNode2, pvartypedeclarationNode3);
         }
 	nodeList.add(pargumentdeclarationNode1);
         return nodeList;
@@ -10092,8 +10092,8 @@ public class Parser
 			{{-1, REDUCE, 108}, },
 			{{-1, REDUCE, 35}, {38, SHIFT, 108}, },
 			{{-1, REDUCE, 109}, },
-			{{-1, ERROR, 58}, {2, SHIFT, 52}, {10, SHIFT, 53}, {11, SHIFT, 109}, {17, SHIFT, 54}, {40, SHIFT, 55}, },
-			{{-1, ERROR, 59}, {2, SHIFT, 52}, {10, SHIFT, 53}, {17, SHIFT, 54}, {40, SHIFT, 55}, },
+			{{-1, ERROR, 58}, {11, SHIFT, 109}, {25, SHIFT, 33}, },
+			{{-1, ERROR, 59}, {25, SHIFT, 33}, },
 			{{-1, ERROR, 60}, {36, SHIFT, 112}, },
 			{{-1, REDUCE, 185}, },
 			{{-1, REDUCE, 101}, {24, SHIFT, 113}, },
@@ -10144,9 +10144,9 @@ public class Parser
 			{{-1, ERROR, 107}, {40, SHIFT, 147}, },
 			{{-1, ERROR, 108}, {7, SHIFT, 64}, {13, SHIFT, 65}, {14, SHIFT, 66}, {15, SHIFT, 67}, {16, SHIFT, 68}, {19, SHIFT, 69}, {31, SHIFT, 70}, {35, SHIFT, 71}, {40, SHIFT, 72}, {41, SHIFT, 73}, {42, SHIFT, 74}, },
 			{{-1, ERROR, 109}, {3, SHIFT, 149}, {40, SHIFT, 150}, {45, SHIFT, 2}, },
-			{{-1, ERROR, 110}, {11, SHIFT, 153}, {38, SHIFT, 108}, },
-			{{-1, REDUCE, 104}, {38, SHIFT, 108}, },
-			{{-1, ERROR, 112}, {2, SHIFT, 52}, {10, SHIFT, 53}, {11, SHIFT, 154}, {17, SHIFT, 54}, {40, SHIFT, 55}, },
+			{{-1, ERROR, 110}, {11, SHIFT, 153}, },
+			{{-1, REDUCE, 104}, },
+			{{-1, ERROR, 112}, {11, SHIFT, 154}, {25, SHIFT, 33}, },
 			{{-1, REDUCE, 103}, },
 			{{-1, REDUCE, 186}, },
 			{{-1, REDUCE, 102}, {24, SHIFT, 113}, },
@@ -10189,7 +10189,7 @@ public class Parser
 			{{-1, ERROR, 152}, {3, SHIFT, 194}, {40, SHIFT, 150}, },
 			{{-1, ERROR, 153}, {3, SHIFT, 195}, {40, SHIFT, 150}, {45, SHIFT, 2}, },
 			{{-1, ERROR, 154}, {3, SHIFT, 198}, {40, SHIFT, 150}, {45, SHIFT, 2}, },
-			{{-1, ERROR, 155}, {11, SHIFT, 201}, {38, SHIFT, 108}, },
+			{{-1, ERROR, 155}, {11, SHIFT, 201}, },
 			{{-1, REDUCE, 162}, },
 			{{-1, ERROR, 157}, {36, SHIFT, 202}, },
 			{{-1, REDUCE, 191}, },
@@ -10443,13 +10443,13 @@ public class Parser
 			{{-1, 15}, },
 			{{-1, 8}, {0, 4}, {5, 12}, {9, 16}, {18, 16}, {19, 16}, {30, 16}, },
 			{{-1, 24}, {27, 43}, {40, 43}, {50, 43}, {103, 43}, {152, 43}, {193, 43}, {197, 43}, {200, 43}, {225, 43}, {230, 43}, {234, 43}, {264, 43}, },
-			{{-1, 36}, },
+			{{-1, 36}, {58, 110}, {59, 111}, {112, 155}, },
 			{{-1, 37}, {36, 91}, {179, 210}, {212, 237}, },
 			{{-1, 25}, {28, 47}, {41, 47}, {44, 47}, {51, 47}, {96, 47}, {104, 47}, {106, 47}, {143, 47}, },
 			{{-1, 60}, },
 			{{-1, 61}, {63, 114}, },
 			{{-1, 62}, {63, 115}, },
-			{{-1, 56}, {58, 110}, {59, 111}, {66, 116}, {112, 155}, },
+			{{-1, 56}, {66, 116}, },
 			{{-1, 57}, },
 			{{-1, 180}, {190, 215}, {192, 217}, {194, 220}, {195, 222}, {198, 227}, {218, 242}, {219, 243}, {221, 246}, {223, 248}, {224, 249}, {226, 252}, {228, 255}, {229, 256}, {231, 259}, {232, 261}, {235, 266}, {236, 268}, {244, 275}, {250, 281}, {251, 282}, {253, 285}, {257, 289}, {258, 290}, {260, 293}, {262, 295}, {263, 296}, {265, 299}, {267, 304}, {269, 306}, {283, 319}, {291, 327}, {297, 333}, {298, 334}, {300, 337}, {301, 338}, {335, 369}, {339, 372}, },
 			{{-1, 181}, {191, 216}, },
@@ -10511,8 +10511,9 @@ public class Parser
 			"expecting: 'begin', 'end', id, eol",
 			"expecting: '('",
 			"expecting: 'if', 'begin', 'else', 'end', 'false', 'is', 'loop', 'me', 'new', 'null', 'then', 'true', 'and', 'or', ',', ';', '.', '>=', '>', '=', '+', '-', '*', '/', '&', ')', ':=', '[', ']', id, intlit, strlit, eol",
-			"expecting: 'begin', 'end', ':=', '[', id, eol",
-			"expecting: 'boolean', 'int', 'is', 'string', id",
+			"expecting: 'begin', 'end', 'is', ';', ')', ':=', '[', id, eol",
+			"expecting: 'is', ':'",
+			"expecting: ':'",
 			"expecting: ')'",
 			"expecting: ';', ')'",
 			"expecting: 'if', 'begin', 'else', 'end', 'false', 'loop', 'me', 'new', 'null', 'then', 'true', 'and', 'or', ',', '.', '>=', '>', '=', '+', '-', '*', '/', '&', ')', ']', id, intlit, strlit, eol",
@@ -10524,8 +10525,6 @@ public class Parser
 			"expecting: 'if', 'begin', 'else', 'end', 'false', 'loop', 'me', 'new', 'null', 'then', 'true', 'and', 'or', ',', '>=', '>', '=', '+', '-', '&', ')', ']', id, intlit, strlit, eol",
 			"expecting: 'if', 'begin', 'else', 'end', 'false', 'loop', 'me', 'new', 'null', 'then', 'true', 'and', 'or', ',', '>=', '>', '=', '+', '-', '*', '/', '&', ')', ']', id, intlit, strlit, eol",
 			"expecting: 'begin', id, eol",
-			"expecting: 'is', '['",
-			"expecting: ';', ')', '['",
 			"expecting: 'if', 'begin', 'else', 'end', 'false', 'loop', 'me', 'new', 'null', 'then', 'true', 'and', 'or', ',', '.', '>=', '>', '=', '+', '-', '*', '/', '&', ')', '[', ']', id, intlit, strlit, eol",
 			"expecting: 'false', 'me', 'new', 'null', 'true', id, intlit, strlit",
 			"expecting: ']'",
@@ -10552,7 +10551,7 @@ public class Parser
         };*/
     private static int[] errors;
 /*      {
-			0, 1, 2, 3, 4, 0, 5, 4, 4, 4, 4, 2, 4, 6, 7, 8, 4, 4, 4, 4, 4, 1, 1, 9, 10, 11, 7, 11, 11, 7, 4, 8, 4, 12, 13, 14, 15, 16, 16, 1, 11, 11, 1, 10, 11, 1, 17, 11, 1, 7, 11, 11, 18, 18, 18, 18, 19, 18, 20, 12, 21, 1, 22, 1, 23, 23, 12, 14, 23, 23, 14, 14, 24, 23, 23, 14, 23, 23, 23, 25, 26, 27, 27, 28, 29, 30, 30, 30, 23, 23, 23, 16, 16, 16, 4, 1, 11, 1, 4, 1, 4, 4, 1, 11, 11, 1, 11, 1, 14, 31, 32, 33, 20, 1, 1, 22, 34, 21, 14, 14, 23, 30, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 35, 35, 35, 1, 16, 4, 1, 4, 4, 4, 1, 11, 1, 4, 1, 4, 36, 37, 38, 31, 39, 31, 31, 32, 30, 21, 14, 40, 14, 36, 27, 27, 29, 41, 30, 42, 30, 17, 23, 4, 4, 1, 4, 4, 18, 14, 43, 44, 45, 46, 47, 47, 47, 47, 47, 48, 48, 49, 37, 46, 37, 39, 37, 37, 31, 39, 37, 31, 39, 31, 23, 14, 14, 40, 50, 4, 51, 14, 47, 52, 53, 1, 47, 45, 46, 45, 37, 37, 45, 37, 45, 37, 37, 39, 37, 45, 37, 37, 39, 37, 37, 31, 39, 47, 37, 47, 53, 7, 1, 1, 45, 45, 37, 1, 45, 1, 45, 45, 37, 37, 45, 37, 1, 45, 45, 37, 37, 45, 37, 45, 37, 37, 39, 37, 54, 47, 45, 37, 7, 7, 7, 1, 1, 45, 7, 1, 7, 1, 1, 45, 45, 37, 1, 45, 7, 1, 1, 45, 45, 37, 1, 45, 1, 45, 45, 37, 37, 45, 37, 37, 55, 45, 54, 56, 45, 7, 7, 7, 7, 1, 7, 7, 7, 7, 7, 1, 1, 45, 7, 1, 7, 7, 7, 1, 1, 45, 7, 1, 7, 1, 1, 45, 45, 37, 1, 45, 45, 37, 47, 55, 55, 45, 47, 56, 7, 7, 7, 7, 7, 7, 7, 7, 1, 7, 7, 7, 7, 7, 7, 1, 7, 7, 7, 7, 7, 1, 1, 45, 7, 1, 45, 47, 47, 55, 47, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 7, 7, 47, 7, 7, 7, 7, 7, 7, 7, 
+			0, 1, 2, 3, 4, 0, 5, 4, 4, 4, 4, 2, 4, 6, 7, 8, 4, 4, 4, 4, 4, 1, 1, 9, 10, 11, 7, 11, 11, 7, 4, 8, 4, 12, 13, 14, 15, 16, 16, 1, 11, 11, 1, 10, 11, 1, 17, 11, 1, 7, 11, 11, 18, 18, 18, 18, 19, 18, 20, 21, 22, 1, 23, 1, 24, 24, 12, 14, 24, 24, 14, 14, 25, 24, 24, 14, 24, 24, 24, 26, 27, 28, 28, 29, 30, 31, 31, 31, 24, 24, 24, 16, 16, 16, 4, 1, 11, 1, 4, 1, 4, 4, 1, 11, 11, 1, 11, 1, 14, 32, 8, 23, 20, 1, 1, 23, 33, 22, 14, 14, 24, 31, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 34, 34, 34, 1, 16, 4, 1, 4, 4, 4, 1, 11, 1, 4, 1, 4, 35, 36, 37, 32, 38, 32, 32, 8, 31, 22, 14, 39, 14, 35, 28, 28, 30, 40, 31, 41, 31, 17, 24, 4, 4, 1, 4, 4, 18, 14, 42, 43, 44, 45, 46, 46, 46, 46, 46, 47, 47, 48, 36, 45, 36, 38, 36, 36, 32, 38, 36, 32, 38, 32, 24, 14, 14, 39, 49, 4, 50, 14, 46, 51, 52, 1, 46, 44, 45, 44, 36, 36, 44, 36, 44, 36, 36, 38, 36, 44, 36, 36, 38, 36, 36, 32, 38, 46, 36, 46, 52, 7, 1, 1, 44, 44, 36, 1, 44, 1, 44, 44, 36, 36, 44, 36, 1, 44, 44, 36, 36, 44, 36, 44, 36, 36, 38, 36, 53, 46, 44, 36, 7, 7, 7, 1, 1, 44, 7, 1, 7, 1, 1, 44, 44, 36, 1, 44, 7, 1, 1, 44, 44, 36, 1, 44, 1, 44, 44, 36, 36, 44, 36, 36, 54, 44, 53, 55, 44, 7, 7, 7, 7, 1, 7, 7, 7, 7, 7, 1, 1, 44, 7, 1, 7, 7, 7, 1, 1, 44, 7, 1, 7, 1, 1, 44, 44, 36, 1, 44, 44, 36, 46, 54, 54, 44, 46, 55, 7, 7, 7, 7, 7, 7, 7, 7, 1, 7, 7, 7, 7, 7, 7, 1, 7, 7, 7, 7, 7, 1, 1, 44, 7, 1, 44, 46, 46, 54, 46, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 7, 7, 46, 7, 7, 7, 7, 7, 7, 7, 
         };*/
 
     static 

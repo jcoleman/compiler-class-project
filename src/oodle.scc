@@ -102,7 +102,7 @@ Productions
   var_type_declaration = T.colon var_type;
   var_instantiation = T.assignment_op expression;
   
-  method_declaration = [method_dec_begin]:id T.l_par argument_list? T.r_par var_type? T.is [method_begin]:T.eol*
+  method_declaration = [method_dec_begin]:id T.l_par argument_list? T.r_par var_type_declaration? T.is [method_begin]:T.eol*
                        var_declaration*
                        T.begin [method_middle]:T.eol*
                        statement_list
@@ -110,7 +110,7 @@ Productions
   
   argument_list = argument_declaration_head* argument_declaration;
   argument_declaration_head = argument_declaration T.semicolon;
-  argument_declaration = T.id var_type;
+  argument_declaration = T.id var_type_declaration;
   
   var_type = {int} T.int | {string} T.string | {boolean} T.boolean | {id} T.id | {array} array_var_type;
   array_var_type = {test2} var_type T.l_bracket expression T.r_bracket;

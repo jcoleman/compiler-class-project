@@ -12,7 +12,7 @@ public final class AMethodDeclaration extends PMethodDeclaration
     private TLPar _lPar_;
     private PArgumentList _argumentList_;
     private TRPar _rPar_;
-    private PVarType _varType_;
+    private PVarTypeDeclaration _varTypeDeclaration_;
     private TIs _is_;
     private final LinkedList<TEol> _methodBegin_ = new LinkedList<TEol>();
     private final LinkedList<PVarDeclaration> _varDeclaration_ = new LinkedList<PVarDeclaration>();
@@ -33,7 +33,7 @@ public final class AMethodDeclaration extends PMethodDeclaration
         @SuppressWarnings("hiding") TLPar _lPar_,
         @SuppressWarnings("hiding") PArgumentList _argumentList_,
         @SuppressWarnings("hiding") TRPar _rPar_,
-        @SuppressWarnings("hiding") PVarType _varType_,
+        @SuppressWarnings("hiding") PVarTypeDeclaration _varTypeDeclaration_,
         @SuppressWarnings("hiding") TIs _is_,
         @SuppressWarnings("hiding") List<TEol> _methodBegin_,
         @SuppressWarnings("hiding") List<PVarDeclaration> _varDeclaration_,
@@ -53,7 +53,7 @@ public final class AMethodDeclaration extends PMethodDeclaration
 
         setRPar(_rPar_);
 
-        setVarType(_varType_);
+        setVarTypeDeclaration(_varTypeDeclaration_);
 
         setIs(_is_);
 
@@ -83,7 +83,7 @@ public final class AMethodDeclaration extends PMethodDeclaration
             cloneNode(this._lPar_),
             cloneNode(this._argumentList_),
             cloneNode(this._rPar_),
-            cloneNode(this._varType_),
+            cloneNode(this._varTypeDeclaration_),
             cloneNode(this._is_),
             cloneList(this._methodBegin_),
             cloneList(this._varDeclaration_),
@@ -200,16 +200,16 @@ public final class AMethodDeclaration extends PMethodDeclaration
         this._rPar_ = node;
     }
 
-    public PVarType getVarType()
+    public PVarTypeDeclaration getVarTypeDeclaration()
     {
-        return this._varType_;
+        return this._varTypeDeclaration_;
     }
 
-    public void setVarType(PVarType node)
+    public void setVarTypeDeclaration(PVarTypeDeclaration node)
     {
-        if(this._varType_ != null)
+        if(this._varTypeDeclaration_ != null)
         {
-            this._varType_.parent(null);
+            this._varTypeDeclaration_.parent(null);
         }
 
         if(node != null)
@@ -222,7 +222,7 @@ public final class AMethodDeclaration extends PMethodDeclaration
             node.parent(this);
         }
 
-        this._varType_ = node;
+        this._varTypeDeclaration_ = node;
     }
 
     public TIs getIs()
@@ -438,7 +438,7 @@ public final class AMethodDeclaration extends PMethodDeclaration
             + toString(this._lPar_)
             + toString(this._argumentList_)
             + toString(this._rPar_)
-            + toString(this._varType_)
+            + toString(this._varTypeDeclaration_)
             + toString(this._is_)
             + toString(this._methodBegin_)
             + toString(this._varDeclaration_)
@@ -478,9 +478,9 @@ public final class AMethodDeclaration extends PMethodDeclaration
             return;
         }
 
-        if(this._varType_ == child)
+        if(this._varTypeDeclaration_ == child)
         {
-            this._varType_ = null;
+            this._varTypeDeclaration_ = null;
             return;
         }
 
@@ -565,9 +565,9 @@ public final class AMethodDeclaration extends PMethodDeclaration
             return;
         }
 
-        if(this._varType_ == oldChild)
+        if(this._varTypeDeclaration_ == oldChild)
         {
-            setVarType((PVarType) newChild);
+            setVarTypeDeclaration((PVarTypeDeclaration) newChild);
             return;
         }
 

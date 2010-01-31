@@ -313,9 +313,9 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getRPar().apply(this);
         }
-        if(node.getVarType() != null)
+        if(node.getVarTypeDeclaration() != null)
         {
-            node.getVarType().apply(this);
+            node.getVarTypeDeclaration().apply(this);
         }
         if(node.getIs() != null)
         {
@@ -439,9 +439,9 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getId().apply(this);
         }
-        if(node.getVarType() != null)
+        if(node.getVarTypeDeclaration() != null)
         {
-            node.getVarType().apply(this);
+            node.getVarTypeDeclaration().apply(this);
         }
         outAArgumentDeclaration(node);
     }

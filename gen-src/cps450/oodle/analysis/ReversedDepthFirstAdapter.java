@@ -357,9 +357,9 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getIs().apply(this);
         }
-        if(node.getVarType() != null)
+        if(node.getVarTypeDeclaration() != null)
         {
-            node.getVarType().apply(this);
+            node.getVarTypeDeclaration().apply(this);
         }
         if(node.getRPar() != null)
         {
@@ -448,9 +448,9 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAArgumentDeclaration(AArgumentDeclaration node)
     {
         inAArgumentDeclaration(node);
-        if(node.getVarType() != null)
+        if(node.getVarTypeDeclaration() != null)
         {
-            node.getVarType().apply(this);
+            node.getVarTypeDeclaration().apply(this);
         }
         if(node.getId() != null)
         {

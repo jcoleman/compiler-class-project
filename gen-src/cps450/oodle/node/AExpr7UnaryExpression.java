@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AExpr7ObjectCallExpression extends PObjectCallExpression
+public final class AExpr7UnaryExpression extends PUnaryExpression
 {
-    private PCallExpression _callExpression_;
+    private PObjectCallExpression _objectCallExpression_;
 
-    public AExpr7ObjectCallExpression()
+    public AExpr7UnaryExpression()
     {
         // Constructor
     }
 
-    public AExpr7ObjectCallExpression(
-        @SuppressWarnings("hiding") PCallExpression _callExpression_)
+    public AExpr7UnaryExpression(
+        @SuppressWarnings("hiding") PObjectCallExpression _objectCallExpression_)
     {
         // Constructor
-        setCallExpression(_callExpression_);
+        setObjectCallExpression(_objectCallExpression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AExpr7ObjectCallExpression(
-            cloneNode(this._callExpression_));
+        return new AExpr7UnaryExpression(
+            cloneNode(this._objectCallExpression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAExpr7ObjectCallExpression(this);
+        ((Analysis) sw).caseAExpr7UnaryExpression(this);
     }
 
-    public PCallExpression getCallExpression()
+    public PObjectCallExpression getObjectCallExpression()
     {
-        return this._callExpression_;
+        return this._objectCallExpression_;
     }
 
-    public void setCallExpression(PCallExpression node)
+    public void setObjectCallExpression(PObjectCallExpression node)
     {
-        if(this._callExpression_ != null)
+        if(this._objectCallExpression_ != null)
         {
-            this._callExpression_.parent(null);
+            this._objectCallExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AExpr7ObjectCallExpression extends PObjectCallExpression
             node.parent(this);
         }
 
-        this._callExpression_ = node;
+        this._objectCallExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._callExpression_);
+            + toString(this._objectCallExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._callExpression_ == child)
+        if(this._objectCallExpression_ == child)
         {
-            this._callExpression_ = null;
+            this._objectCallExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AExpr7ObjectCallExpression extends PObjectCallExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._callExpression_ == oldChild)
+        if(this._objectCallExpression_ == oldChild)
         {
-            setCallExpression((PCallExpression) newChild);
+            setObjectCallExpression((PObjectCallExpression) newChild);
             return;
         }
 

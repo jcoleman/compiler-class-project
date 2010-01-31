@@ -9,7 +9,7 @@ import cps450.oodle.analysis.*;
 public final class ATest3AssignmentStatement extends PAssignmentStatement
 {
     private TId _id_;
-    private final LinkedList<PGetAtOperation> _getAtOperation_ = new LinkedList<PGetAtOperation>();
+    private final LinkedList<PBracketOperation> _bracketOperation_ = new LinkedList<PBracketOperation>();
     private PVarInstantiation _varInstantiation_;
 
     public ATest3AssignmentStatement()
@@ -19,13 +19,13 @@ public final class ATest3AssignmentStatement extends PAssignmentStatement
 
     public ATest3AssignmentStatement(
         @SuppressWarnings("hiding") TId _id_,
-        @SuppressWarnings("hiding") List<PGetAtOperation> _getAtOperation_,
+        @SuppressWarnings("hiding") List<PBracketOperation> _bracketOperation_,
         @SuppressWarnings("hiding") PVarInstantiation _varInstantiation_)
     {
         // Constructor
         setId(_id_);
 
-        setGetAtOperation(_getAtOperation_);
+        setBracketOperation(_bracketOperation_);
 
         setVarInstantiation(_varInstantiation_);
 
@@ -36,7 +36,7 @@ public final class ATest3AssignmentStatement extends PAssignmentStatement
     {
         return new ATest3AssignmentStatement(
             cloneNode(this._id_),
-            cloneList(this._getAtOperation_),
+            cloneList(this._bracketOperation_),
             cloneNode(this._varInstantiation_));
     }
 
@@ -70,16 +70,16 @@ public final class ATest3AssignmentStatement extends PAssignmentStatement
         this._id_ = node;
     }
 
-    public LinkedList<PGetAtOperation> getGetAtOperation()
+    public LinkedList<PBracketOperation> getBracketOperation()
     {
-        return this._getAtOperation_;
+        return this._bracketOperation_;
     }
 
-    public void setGetAtOperation(List<PGetAtOperation> list)
+    public void setBracketOperation(List<PBracketOperation> list)
     {
-        this._getAtOperation_.clear();
-        this._getAtOperation_.addAll(list);
-        for(PGetAtOperation e : list)
+        this._bracketOperation_.clear();
+        this._bracketOperation_.addAll(list);
+        for(PBracketOperation e : list)
         {
             if(e.parent() != null)
             {
@@ -120,7 +120,7 @@ public final class ATest3AssignmentStatement extends PAssignmentStatement
     {
         return ""
             + toString(this._id_)
-            + toString(this._getAtOperation_)
+            + toString(this._bracketOperation_)
             + toString(this._varInstantiation_);
     }
 
@@ -134,7 +134,7 @@ public final class ATest3AssignmentStatement extends PAssignmentStatement
             return;
         }
 
-        if(this._getAtOperation_.remove(child))
+        if(this._bracketOperation_.remove(child))
         {
             return;
         }
@@ -158,13 +158,13 @@ public final class ATest3AssignmentStatement extends PAssignmentStatement
             return;
         }
 
-        for(ListIterator<PGetAtOperation> i = this._getAtOperation_.listIterator(); i.hasNext();)
+        for(ListIterator<PBracketOperation> i = this._bracketOperation_.listIterator(); i.hasNext();)
         {
             if(i.next() == oldChild)
             {
                 if(newChild != null)
                 {
-                    i.set((PGetAtOperation) newChild);
+                    i.set((PBracketOperation) newChild);
                     newChild.parent(this);
                     oldChild.parent(null);
                     return;

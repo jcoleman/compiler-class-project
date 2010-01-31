@@ -5,23 +5,19 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ATest6CallStatement extends PCallStatement
+public final class ANormalCallStatement extends PCallStatement
 {
-    private PObjectCall _objectCall_;
     private PMethodCall _methodCall_;
 
-    public ATest6CallStatement()
+    public ANormalCallStatement()
     {
         // Constructor
     }
 
-    public ATest6CallStatement(
-        @SuppressWarnings("hiding") PObjectCall _objectCall_,
+    public ANormalCallStatement(
         @SuppressWarnings("hiding") PMethodCall _methodCall_)
     {
         // Constructor
-        setObjectCall(_objectCall_);
-
         setMethodCall(_methodCall_);
 
     }
@@ -29,39 +25,13 @@ public final class ATest6CallStatement extends PCallStatement
     @Override
     public Object clone()
     {
-        return new ATest6CallStatement(
-            cloneNode(this._objectCall_),
+        return new ANormalCallStatement(
             cloneNode(this._methodCall_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseATest6CallStatement(this);
-    }
-
-    public PObjectCall getObjectCall()
-    {
-        return this._objectCall_;
-    }
-
-    public void setObjectCall(PObjectCall node)
-    {
-        if(this._objectCall_ != null)
-        {
-            this._objectCall_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._objectCall_ = node;
+        ((Analysis) sw).caseANormalCallStatement(this);
     }
 
     public PMethodCall getMethodCall()
@@ -93,7 +63,6 @@ public final class ATest6CallStatement extends PCallStatement
     public String toString()
     {
         return ""
-            + toString(this._objectCall_)
             + toString(this._methodCall_);
     }
 
@@ -101,12 +70,6 @@ public final class ATest6CallStatement extends PCallStatement
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._objectCall_ == child)
-        {
-            this._objectCall_ = null;
-            return;
-        }
-
         if(this._methodCall_ == child)
         {
             this._methodCall_ = null;
@@ -120,12 +83,6 @@ public final class ATest6CallStatement extends PCallStatement
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._objectCall_ == oldChild)
-        {
-            setObjectCall((PObjectCall) newChild);
-            return;
-        }
-
         if(this._methodCall_ == oldChild)
         {
             setMethodCall((PMethodCall) newChild);

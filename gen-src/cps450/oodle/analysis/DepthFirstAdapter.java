@@ -743,8 +743,8 @@ public class DepthFirstAdapter extends AnalysisAdapter
             node.getId().apply(this);
         }
         {
-            List<PGetAtOperation> copy = new ArrayList<PGetAtOperation>(node.getGetAtOperation());
-            for(PGetAtOperation e : copy)
+            List<PBracketOperation> copy = new ArrayList<PBracketOperation>(node.getBracketOperation());
+            for(PBracketOperation e : copy)
             {
                 e.apply(this);
             }
@@ -888,29 +888,46 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outATest5LoopStatement(node);
     }
 
-    public void inATest6CallStatement(ATest6CallStatement node)
+    public void inAObjectCallStatement(AObjectCallStatement node)
     {
         defaultIn(node);
     }
 
-    public void outATest6CallStatement(ATest6CallStatement node)
+    public void outAObjectCallStatement(AObjectCallStatement node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseATest6CallStatement(ATest6CallStatement node)
+    public void caseAObjectCallStatement(AObjectCallStatement node)
     {
-        inATest6CallStatement(node);
+        inAObjectCallStatement(node);
         if(node.getObjectCall() != null)
         {
             node.getObjectCall().apply(this);
         }
+        outAObjectCallStatement(node);
+    }
+
+    public void inANormalCallStatement(ANormalCallStatement node)
+    {
+        defaultIn(node);
+    }
+
+    public void outANormalCallStatement(ANormalCallStatement node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseANormalCallStatement(ANormalCallStatement node)
+    {
+        inANormalCallStatement(node);
         if(node.getMethodCall() != null)
         {
             node.getMethodCall().apply(this);
         }
-        outATest6CallStatement(node);
+        outANormalCallStatement(node);
     }
 
     public void inAExpressionList(AExpressionList node)
@@ -1177,6 +1194,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getPeriod().apply(this);
         }
+        if(node.getMethodCall() != null)
+        {
+            node.getMethodCall().apply(this);
+        }
         outAObjectCall(node);
     }
 
@@ -1213,20 +1234,20 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outAMethodCall(node);
     }
 
-    public void inAGetAtOperation(AGetAtOperation node)
+    public void inABracketOperation(ABracketOperation node)
     {
         defaultIn(node);
     }
 
-    public void outAGetAtOperation(AGetAtOperation node)
+    public void outABracketOperation(ABracketOperation node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAGetAtOperation(AGetAtOperation node)
+    public void caseABracketOperation(ABracketOperation node)
     {
-        inAGetAtOperation(node);
+        inABracketOperation(node);
         if(node.getLBracket() != null)
         {
             node.getLBracket().apply(this);
@@ -1239,7 +1260,32 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getRBracket().apply(this);
         }
-        outAGetAtOperation(node);
+        outABracketOperation(node);
+    }
+
+    public void inAGetAtReference(AGetAtReference node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAGetAtReference(AGetAtReference node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAGetAtReference(AGetAtReference node)
+    {
+        inAGetAtReference(node);
+        if(node.getId() != null)
+        {
+            node.getId().apply(this);
+        }
+        if(node.getBracketOperation() != null)
+        {
+            node.getBracketOperation().apply(this);
+        }
+        outAGetAtReference(node);
     }
 
     public void inAExpression(AExpression node)
@@ -1556,11 +1602,57 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAExpr6MultExpression(AExpr6MultExpression node)
     {
         inAExpr6MultExpression(node);
+        if(node.getUnaryExpression() != null)
+        {
+            node.getUnaryExpression().apply(this);
+        }
+        outAExpr6MultExpression(node);
+    }
+
+    public void inAUnaryUnaryExpression(AUnaryUnaryExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAUnaryUnaryExpression(AUnaryUnaryExpression node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAUnaryUnaryExpression(AUnaryUnaryExpression node)
+    {
+        inAUnaryUnaryExpression(node);
+        if(node.getUnaryOperator() != null)
+        {
+            node.getUnaryOperator().apply(this);
+        }
+        if(node.getUnaryExpression() != null)
+        {
+            node.getUnaryExpression().apply(this);
+        }
+        outAUnaryUnaryExpression(node);
+    }
+
+    public void inAExpr7UnaryExpression(AExpr7UnaryExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAExpr7UnaryExpression(AExpr7UnaryExpression node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAExpr7UnaryExpression(AExpr7UnaryExpression node)
+    {
+        inAExpr7UnaryExpression(node);
         if(node.getObjectCallExpression() != null)
         {
             node.getObjectCallExpression().apply(this);
         }
-        outAExpr6MultExpression(node);
+        outAExpr7UnaryExpression(node);
     }
 
     public void inAGetAtObjectCallExpression(AGetAtObjectCallExpression node)
@@ -1577,16 +1669,9 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAGetAtObjectCallExpression(AGetAtObjectCallExpression node)
     {
         inAGetAtObjectCallExpression(node);
-        if(node.getId() != null)
+        if(node.getGetAtReference() != null)
         {
-            node.getId().apply(this);
-        }
-        {
-            List<PGetAtOperation> copy = new ArrayList<PGetAtOperation>(node.getGetAtOperation());
-            for(PGetAtOperation e : copy)
-            {
-                e.apply(this);
-            }
+            node.getGetAtReference().apply(this);
         }
         outAGetAtObjectCallExpression(node);
     }
@@ -1609,53 +1694,49 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getObjectCall().apply(this);
         }
-        if(node.getMethodCall() != null)
-        {
-            node.getMethodCall().apply(this);
-        }
         outACallObjectCallExpression(node);
     }
 
-    public void inAExpr7ObjectCallExpression(AExpr7ObjectCallExpression node)
+    public void inAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAExpr7ObjectCallExpression(AExpr7ObjectCallExpression node)
+    public void outAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAExpr7ObjectCallExpression(AExpr7ObjectCallExpression node)
+    public void caseAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
     {
-        inAExpr7ObjectCallExpression(node);
+        inAExpr8ObjectCallExpression(node);
         if(node.getCallExpression() != null)
         {
             node.getCallExpression().apply(this);
         }
-        outAExpr7ObjectCallExpression(node);
+        outAExpr8ObjectCallExpression(node);
     }
 
-    public void inACallExpression(ACallExpression node)
+    public void inACallCallExpression(ACallCallExpression node)
     {
         defaultIn(node);
     }
 
-    public void outACallExpression(ACallExpression node)
+    public void outACallCallExpression(ACallCallExpression node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseACallExpression(ACallExpression node)
+    public void caseACallCallExpression(ACallCallExpression node)
     {
-        inACallExpression(node);
+        inACallCallExpression(node);
         if(node.getMethodCall() != null)
         {
             node.getMethodCall().apply(this);
         }
-        outACallExpression(node);
+        outACallCallExpression(node);
     }
 
     public void inAExpr8CallExpression(AExpr8CallExpression node)

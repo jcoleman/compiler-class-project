@@ -39,7 +39,8 @@ public interface Analysis extends Switch
     void caseATest4IfStatement(ATest4IfStatement node);
     void caseAIfStatementElse(AIfStatementElse node);
     void caseATest5LoopStatement(ATest5LoopStatement node);
-    void caseATest6CallStatement(ATest6CallStatement node);
+    void caseAObjectCallStatement(AObjectCallStatement node);
+    void caseANormalCallStatement(ANormalCallStatement node);
     void caseAExpressionList(AExpressionList node);
     void caseAExpressionHead(AExpressionHead node);
     void caseANegateUnaryOperator(ANegateUnaryOperator node);
@@ -53,7 +54,8 @@ public interface Analysis extends Switch
     void caseAGreaterEqualRelationalOperator(AGreaterEqualRelationalOperator node);
     void caseAObjectCall(AObjectCall node);
     void caseAMethodCall(AMethodCall node);
-    void caseAGetAtOperation(AGetAtOperation node);
+    void caseABracketOperation(ABracketOperation node);
+    void caseAGetAtReference(AGetAtReference node);
     void caseAExpression(AExpression node);
     void caseAOrOrExpression(AOrOrExpression node);
     void caseAExpr1OrExpression(AExpr1OrExpression node);
@@ -67,10 +69,12 @@ public interface Analysis extends Switch
     void caseAExpr5AddExpression(AExpr5AddExpression node);
     void caseAMultExpression(AMultExpression node);
     void caseAExpr6MultExpression(AExpr6MultExpression node);
+    void caseAUnaryUnaryExpression(AUnaryUnaryExpression node);
+    void caseAExpr7UnaryExpression(AExpr7UnaryExpression node);
     void caseAGetAtObjectCallExpression(AGetAtObjectCallExpression node);
     void caseACallObjectCallExpression(ACallObjectCallExpression node);
-    void caseAExpr7ObjectCallExpression(AExpr7ObjectCallExpression node);
-    void caseACallExpression(ACallExpression node);
+    void caseAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node);
+    void caseACallCallExpression(ACallCallExpression node);
     void caseAExpr8CallExpression(AExpr8CallExpression node);
     void caseAIdRealExpression(AIdRealExpression node);
     void caseAStringRealExpression(AStringRealExpression node);

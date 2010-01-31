@@ -758,9 +758,9 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             node.getVarInstantiation().apply(this);
         }
         {
-            List<PGetAtOperation> copy = new ArrayList<PGetAtOperation>(node.getGetAtOperation());
+            List<PBracketOperation> copy = new ArrayList<PBracketOperation>(node.getBracketOperation());
             Collections.reverse(copy);
-            for(PGetAtOperation e : copy)
+            for(PBracketOperation e : copy)
             {
                 e.apply(this);
             }
@@ -907,29 +907,46 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outATest5LoopStatement(node);
     }
 
-    public void inATest6CallStatement(ATest6CallStatement node)
+    public void inAObjectCallStatement(AObjectCallStatement node)
     {
         defaultIn(node);
     }
 
-    public void outATest6CallStatement(ATest6CallStatement node)
+    public void outAObjectCallStatement(AObjectCallStatement node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseATest6CallStatement(ATest6CallStatement node)
+    public void caseAObjectCallStatement(AObjectCallStatement node)
     {
-        inATest6CallStatement(node);
-        if(node.getMethodCall() != null)
-        {
-            node.getMethodCall().apply(this);
-        }
+        inAObjectCallStatement(node);
         if(node.getObjectCall() != null)
         {
             node.getObjectCall().apply(this);
         }
-        outATest6CallStatement(node);
+        outAObjectCallStatement(node);
+    }
+
+    public void inANormalCallStatement(ANormalCallStatement node)
+    {
+        defaultIn(node);
+    }
+
+    public void outANormalCallStatement(ANormalCallStatement node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseANormalCallStatement(ANormalCallStatement node)
+    {
+        inANormalCallStatement(node);
+        if(node.getMethodCall() != null)
+        {
+            node.getMethodCall().apply(this);
+        }
+        outANormalCallStatement(node);
     }
 
     public void inAExpressionList(AExpressionList node)
@@ -1189,6 +1206,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAObjectCall(AObjectCall node)
     {
         inAObjectCall(node);
+        if(node.getMethodCall() != null)
+        {
+            node.getMethodCall().apply(this);
+        }
         if(node.getPeriod() != null)
         {
             node.getPeriod().apply(this);
@@ -1233,20 +1254,20 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAMethodCall(node);
     }
 
-    public void inAGetAtOperation(AGetAtOperation node)
+    public void inABracketOperation(ABracketOperation node)
     {
         defaultIn(node);
     }
 
-    public void outAGetAtOperation(AGetAtOperation node)
+    public void outABracketOperation(ABracketOperation node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAGetAtOperation(AGetAtOperation node)
+    public void caseABracketOperation(ABracketOperation node)
     {
-        inAGetAtOperation(node);
+        inABracketOperation(node);
         if(node.getRBracket() != null)
         {
             node.getRBracket().apply(this);
@@ -1259,7 +1280,32 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getLBracket().apply(this);
         }
-        outAGetAtOperation(node);
+        outABracketOperation(node);
+    }
+
+    public void inAGetAtReference(AGetAtReference node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAGetAtReference(AGetAtReference node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAGetAtReference(AGetAtReference node)
+    {
+        inAGetAtReference(node);
+        if(node.getBracketOperation() != null)
+        {
+            node.getBracketOperation().apply(this);
+        }
+        if(node.getId() != null)
+        {
+            node.getId().apply(this);
+        }
+        outAGetAtReference(node);
     }
 
     public void inAExpression(AExpression node)
@@ -1576,11 +1622,57 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAExpr6MultExpression(AExpr6MultExpression node)
     {
         inAExpr6MultExpression(node);
+        if(node.getUnaryExpression() != null)
+        {
+            node.getUnaryExpression().apply(this);
+        }
+        outAExpr6MultExpression(node);
+    }
+
+    public void inAUnaryUnaryExpression(AUnaryUnaryExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAUnaryUnaryExpression(AUnaryUnaryExpression node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAUnaryUnaryExpression(AUnaryUnaryExpression node)
+    {
+        inAUnaryUnaryExpression(node);
+        if(node.getUnaryExpression() != null)
+        {
+            node.getUnaryExpression().apply(this);
+        }
+        if(node.getUnaryOperator() != null)
+        {
+            node.getUnaryOperator().apply(this);
+        }
+        outAUnaryUnaryExpression(node);
+    }
+
+    public void inAExpr7UnaryExpression(AExpr7UnaryExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAExpr7UnaryExpression(AExpr7UnaryExpression node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAExpr7UnaryExpression(AExpr7UnaryExpression node)
+    {
+        inAExpr7UnaryExpression(node);
         if(node.getObjectCallExpression() != null)
         {
             node.getObjectCallExpression().apply(this);
         }
-        outAExpr6MultExpression(node);
+        outAExpr7UnaryExpression(node);
     }
 
     public void inAGetAtObjectCallExpression(AGetAtObjectCallExpression node)
@@ -1597,17 +1689,9 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAGetAtObjectCallExpression(AGetAtObjectCallExpression node)
     {
         inAGetAtObjectCallExpression(node);
+        if(node.getGetAtReference() != null)
         {
-            List<PGetAtOperation> copy = new ArrayList<PGetAtOperation>(node.getGetAtOperation());
-            Collections.reverse(copy);
-            for(PGetAtOperation e : copy)
-            {
-                e.apply(this);
-            }
-        }
-        if(node.getId() != null)
-        {
-            node.getId().apply(this);
+            node.getGetAtReference().apply(this);
         }
         outAGetAtObjectCallExpression(node);
     }
@@ -1626,10 +1710,6 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseACallObjectCallExpression(ACallObjectCallExpression node)
     {
         inACallObjectCallExpression(node);
-        if(node.getMethodCall() != null)
-        {
-            node.getMethodCall().apply(this);
-        }
         if(node.getObjectCall() != null)
         {
             node.getObjectCall().apply(this);
@@ -1637,46 +1717,46 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outACallObjectCallExpression(node);
     }
 
-    public void inAExpr7ObjectCallExpression(AExpr7ObjectCallExpression node)
+    public void inAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAExpr7ObjectCallExpression(AExpr7ObjectCallExpression node)
+    public void outAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAExpr7ObjectCallExpression(AExpr7ObjectCallExpression node)
+    public void caseAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
     {
-        inAExpr7ObjectCallExpression(node);
+        inAExpr8ObjectCallExpression(node);
         if(node.getCallExpression() != null)
         {
             node.getCallExpression().apply(this);
         }
-        outAExpr7ObjectCallExpression(node);
+        outAExpr8ObjectCallExpression(node);
     }
 
-    public void inACallExpression(ACallExpression node)
+    public void inACallCallExpression(ACallCallExpression node)
     {
         defaultIn(node);
     }
 
-    public void outACallExpression(ACallExpression node)
+    public void outACallCallExpression(ACallCallExpression node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseACallExpression(ACallExpression node)
+    public void caseACallCallExpression(ACallCallExpression node)
     {
-        inACallExpression(node);
+        inACallCallExpression(node);
         if(node.getMethodCall() != null)
         {
             node.getMethodCall().apply(this);
         }
-        outACallExpression(node);
+        outACallCallExpression(node);
     }
 
     public void inAExpr8CallExpression(AExpr8CallExpression node)

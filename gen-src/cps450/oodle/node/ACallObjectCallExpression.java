@@ -8,7 +8,6 @@ import cps450.oodle.analysis.*;
 public final class ACallObjectCallExpression extends PObjectCallExpression
 {
     private PObjectCall _objectCall_;
-    private PMethodCall _methodCall_;
 
     public ACallObjectCallExpression()
     {
@@ -16,13 +15,10 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     }
 
     public ACallObjectCallExpression(
-        @SuppressWarnings("hiding") PObjectCall _objectCall_,
-        @SuppressWarnings("hiding") PMethodCall _methodCall_)
+        @SuppressWarnings("hiding") PObjectCall _objectCall_)
     {
         // Constructor
         setObjectCall(_objectCall_);
-
-        setMethodCall(_methodCall_);
 
     }
 
@@ -30,8 +26,7 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     public Object clone()
     {
         return new ACallObjectCallExpression(
-            cloneNode(this._objectCall_),
-            cloneNode(this._methodCall_));
+            cloneNode(this._objectCall_));
     }
 
     public void apply(Switch sw)
@@ -64,37 +59,11 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
         this._objectCall_ = node;
     }
 
-    public PMethodCall getMethodCall()
-    {
-        return this._methodCall_;
-    }
-
-    public void setMethodCall(PMethodCall node)
-    {
-        if(this._methodCall_ != null)
-        {
-            this._methodCall_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._methodCall_ = node;
-    }
-
     @Override
     public String toString()
     {
         return ""
-            + toString(this._objectCall_)
-            + toString(this._methodCall_);
+            + toString(this._objectCall_);
     }
 
     @Override
@@ -104,12 +73,6 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
         if(this._objectCall_ == child)
         {
             this._objectCall_ = null;
-            return;
-        }
-
-        if(this._methodCall_ == child)
-        {
-            this._methodCall_ = null;
             return;
         }
 
@@ -123,12 +86,6 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
         if(this._objectCall_ == oldChild)
         {
             setObjectCall((PObjectCall) newChild);
-            return;
-        }
-
-        if(this._methodCall_ == oldChild)
-        {
-            setMethodCall((PMethodCall) newChild);
             return;
         }
 

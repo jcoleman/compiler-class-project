@@ -9,6 +9,7 @@ public final class AObjectCall extends PObjectCall
 {
     private PObjectCallExpression _objectCallExpression_;
     private TPeriod _period_;
+    private PMethodCall _methodCall_;
 
     public AObjectCall()
     {
@@ -17,12 +18,15 @@ public final class AObjectCall extends PObjectCall
 
     public AObjectCall(
         @SuppressWarnings("hiding") PObjectCallExpression _objectCallExpression_,
-        @SuppressWarnings("hiding") TPeriod _period_)
+        @SuppressWarnings("hiding") TPeriod _period_,
+        @SuppressWarnings("hiding") PMethodCall _methodCall_)
     {
         // Constructor
         setObjectCallExpression(_objectCallExpression_);
 
         setPeriod(_period_);
+
+        setMethodCall(_methodCall_);
 
     }
 
@@ -31,7 +35,8 @@ public final class AObjectCall extends PObjectCall
     {
         return new AObjectCall(
             cloneNode(this._objectCallExpression_),
-            cloneNode(this._period_));
+            cloneNode(this._period_),
+            cloneNode(this._methodCall_));
     }
 
     public void apply(Switch sw)
@@ -89,12 +94,38 @@ public final class AObjectCall extends PObjectCall
         this._period_ = node;
     }
 
+    public PMethodCall getMethodCall()
+    {
+        return this._methodCall_;
+    }
+
+    public void setMethodCall(PMethodCall node)
+    {
+        if(this._methodCall_ != null)
+        {
+            this._methodCall_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._methodCall_ = node;
+    }
+
     @Override
     public String toString()
     {
         return ""
             + toString(this._objectCallExpression_)
-            + toString(this._period_);
+            + toString(this._period_)
+            + toString(this._methodCall_);
     }
 
     @Override
@@ -110,6 +141,12 @@ public final class AObjectCall extends PObjectCall
         if(this._period_ == child)
         {
             this._period_ = null;
+            return;
+        }
+
+        if(this._methodCall_ == child)
+        {
+            this._methodCall_ = null;
             return;
         }
 
@@ -129,6 +166,12 @@ public final class AObjectCall extends PObjectCall
         if(this._period_ == oldChild)
         {
             setPeriod((TPeriod) newChild);
+            return;
+        }
+
+        if(this._methodCall_ == oldChild)
+        {
+            setMethodCall((PMethodCall) newChild);
             return;
         }
 

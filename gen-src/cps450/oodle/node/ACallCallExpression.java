@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AExpr6MultExpression extends PMultExpression
+public final class ACallCallExpression extends PCallExpression
 {
-    private PUnaryExpression _unaryExpression_;
+    private PMethodCall _methodCall_;
 
-    public AExpr6MultExpression()
+    public ACallCallExpression()
     {
         // Constructor
     }
 
-    public AExpr6MultExpression(
-        @SuppressWarnings("hiding") PUnaryExpression _unaryExpression_)
+    public ACallCallExpression(
+        @SuppressWarnings("hiding") PMethodCall _methodCall_)
     {
         // Constructor
-        setUnaryExpression(_unaryExpression_);
+        setMethodCall(_methodCall_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AExpr6MultExpression(
-            cloneNode(this._unaryExpression_));
+        return new ACallCallExpression(
+            cloneNode(this._methodCall_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAExpr6MultExpression(this);
+        ((Analysis) sw).caseACallCallExpression(this);
     }
 
-    public PUnaryExpression getUnaryExpression()
+    public PMethodCall getMethodCall()
     {
-        return this._unaryExpression_;
+        return this._methodCall_;
     }
 
-    public void setUnaryExpression(PUnaryExpression node)
+    public void setMethodCall(PMethodCall node)
     {
-        if(this._unaryExpression_ != null)
+        if(this._methodCall_ != null)
         {
-            this._unaryExpression_.parent(null);
+            this._methodCall_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AExpr6MultExpression extends PMultExpression
             node.parent(this);
         }
 
-        this._unaryExpression_ = node;
+        this._methodCall_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._unaryExpression_);
+            + toString(this._methodCall_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._unaryExpression_ == child)
+        if(this._methodCall_ == child)
         {
-            this._unaryExpression_ = null;
+            this._methodCall_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AExpr6MultExpression extends PMultExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._unaryExpression_ == oldChild)
+        if(this._methodCall_ == oldChild)
         {
-            setUnaryExpression((PUnaryExpression) newChild);
+            setMethodCall((PMethodCall) newChild);
             return;
         }
 

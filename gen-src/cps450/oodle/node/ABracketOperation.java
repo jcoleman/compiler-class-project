@@ -5,18 +5,18 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AGetAtOperation extends PGetAtOperation
+public final class ABracketOperation extends PBracketOperation
 {
     private TLBracket _lBracket_;
     private PExpression _expression_;
     private TRBracket _rBracket_;
 
-    public AGetAtOperation()
+    public ABracketOperation()
     {
         // Constructor
     }
 
-    public AGetAtOperation(
+    public ABracketOperation(
         @SuppressWarnings("hiding") TLBracket _lBracket_,
         @SuppressWarnings("hiding") PExpression _expression_,
         @SuppressWarnings("hiding") TRBracket _rBracket_)
@@ -33,7 +33,7 @@ public final class AGetAtOperation extends PGetAtOperation
     @Override
     public Object clone()
     {
-        return new AGetAtOperation(
+        return new ABracketOperation(
             cloneNode(this._lBracket_),
             cloneNode(this._expression_),
             cloneNode(this._rBracket_));
@@ -41,7 +41,7 @@ public final class AGetAtOperation extends PGetAtOperation
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAGetAtOperation(this);
+        ((Analysis) sw).caseABracketOperation(this);
     }
 
     public TLBracket getLBracket()

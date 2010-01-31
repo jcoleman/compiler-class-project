@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ACallExpression extends PCallExpression
+public final class AExpr8ObjectCallExpression extends PObjectCallExpression
 {
-    private PMethodCall _methodCall_;
+    private PCallExpression _callExpression_;
 
-    public ACallExpression()
+    public AExpr8ObjectCallExpression()
     {
         // Constructor
     }
 
-    public ACallExpression(
-        @SuppressWarnings("hiding") PMethodCall _methodCall_)
+    public AExpr8ObjectCallExpression(
+        @SuppressWarnings("hiding") PCallExpression _callExpression_)
     {
         // Constructor
-        setMethodCall(_methodCall_);
+        setCallExpression(_callExpression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new ACallExpression(
-            cloneNode(this._methodCall_));
+        return new AExpr8ObjectCallExpression(
+            cloneNode(this._callExpression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseACallExpression(this);
+        ((Analysis) sw).caseAExpr8ObjectCallExpression(this);
     }
 
-    public PMethodCall getMethodCall()
+    public PCallExpression getCallExpression()
     {
-        return this._methodCall_;
+        return this._callExpression_;
     }
 
-    public void setMethodCall(PMethodCall node)
+    public void setCallExpression(PCallExpression node)
     {
-        if(this._methodCall_ != null)
+        if(this._callExpression_ != null)
         {
-            this._methodCall_.parent(null);
+            this._callExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class ACallExpression extends PCallExpression
             node.parent(this);
         }
 
-        this._methodCall_ = node;
+        this._callExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._methodCall_);
+            + toString(this._callExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._methodCall_ == child)
+        if(this._callExpression_ == child)
         {
-            this._methodCall_ = null;
+            this._callExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class ACallExpression extends PCallExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._methodCall_ == oldChild)
+        if(this._callExpression_ == oldChild)
         {
-            setMethodCall((PMethodCall) newChild);
+            setCallExpression((PCallExpression) newChild);
             return;
         }
 

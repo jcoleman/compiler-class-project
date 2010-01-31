@@ -204,7 +204,12 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseATest6CallStatement(ATest6CallStatement node)
+    public void caseAObjectCallStatement(AObjectCallStatement node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseANormalCallStatement(ANormalCallStatement node)
     {
         defaultCase(node);
     }
@@ -274,7 +279,12 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAGetAtOperation(AGetAtOperation node)
+    public void caseABracketOperation(ABracketOperation node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAGetAtReference(AGetAtReference node)
     {
         defaultCase(node);
     }
@@ -344,6 +354,16 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseAUnaryUnaryExpression(AUnaryUnaryExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAExpr7UnaryExpression(AExpr7UnaryExpression node)
+    {
+        defaultCase(node);
+    }
+
     public void caseAGetAtObjectCallExpression(AGetAtObjectCallExpression node)
     {
         defaultCase(node);
@@ -354,12 +374,12 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAExpr7ObjectCallExpression(AExpr7ObjectCallExpression node)
+    public void caseAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseACallExpression(ACallExpression node)
+    public void caseACallCallExpression(ACallCallExpression node)
     {
         defaultCase(node);
     }

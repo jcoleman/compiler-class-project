@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AExpr6MultExpression extends PMultExpression
+public final class AObjectCallStatement extends PCallStatement
 {
-    private PUnaryExpression _unaryExpression_;
+    private PObjectCall _objectCall_;
 
-    public AExpr6MultExpression()
+    public AObjectCallStatement()
     {
         // Constructor
     }
 
-    public AExpr6MultExpression(
-        @SuppressWarnings("hiding") PUnaryExpression _unaryExpression_)
+    public AObjectCallStatement(
+        @SuppressWarnings("hiding") PObjectCall _objectCall_)
     {
         // Constructor
-        setUnaryExpression(_unaryExpression_);
+        setObjectCall(_objectCall_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AExpr6MultExpression(
-            cloneNode(this._unaryExpression_));
+        return new AObjectCallStatement(
+            cloneNode(this._objectCall_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAExpr6MultExpression(this);
+        ((Analysis) sw).caseAObjectCallStatement(this);
     }
 
-    public PUnaryExpression getUnaryExpression()
+    public PObjectCall getObjectCall()
     {
-        return this._unaryExpression_;
+        return this._objectCall_;
     }
 
-    public void setUnaryExpression(PUnaryExpression node)
+    public void setObjectCall(PObjectCall node)
     {
-        if(this._unaryExpression_ != null)
+        if(this._objectCall_ != null)
         {
-            this._unaryExpression_.parent(null);
+            this._objectCall_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AExpr6MultExpression extends PMultExpression
             node.parent(this);
         }
 
-        this._unaryExpression_ = node;
+        this._objectCall_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._unaryExpression_);
+            + toString(this._objectCall_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._unaryExpression_ == child)
+        if(this._objectCall_ == child)
         {
-            this._unaryExpression_ = null;
+            this._objectCall_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AExpr6MultExpression extends PMultExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._unaryExpression_ == oldChild)
+        if(this._objectCall_ == oldChild)
         {
-            setUnaryExpression((PUnaryExpression) newChild);
+            setObjectCall((PObjectCall) newChild);
             return;
         }
 

@@ -7,7 +7,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AObjectCall extends PObjectCall
 {
-    private TId _id_;
+    private PObjectCallExpression _objectCallExpression_;
     private TPeriod _period_;
 
     public AObjectCall()
@@ -16,11 +16,11 @@ public final class AObjectCall extends PObjectCall
     }
 
     public AObjectCall(
-        @SuppressWarnings("hiding") TId _id_,
+        @SuppressWarnings("hiding") PObjectCallExpression _objectCallExpression_,
         @SuppressWarnings("hiding") TPeriod _period_)
     {
         // Constructor
-        setId(_id_);
+        setObjectCallExpression(_objectCallExpression_);
 
         setPeriod(_period_);
 
@@ -30,7 +30,7 @@ public final class AObjectCall extends PObjectCall
     public Object clone()
     {
         return new AObjectCall(
-            cloneNode(this._id_),
+            cloneNode(this._objectCallExpression_),
             cloneNode(this._period_));
     }
 
@@ -39,16 +39,16 @@ public final class AObjectCall extends PObjectCall
         ((Analysis) sw).caseAObjectCall(this);
     }
 
-    public TId getId()
+    public PObjectCallExpression getObjectCallExpression()
     {
-        return this._id_;
+        return this._objectCallExpression_;
     }
 
-    public void setId(TId node)
+    public void setObjectCallExpression(PObjectCallExpression node)
     {
-        if(this._id_ != null)
+        if(this._objectCallExpression_ != null)
         {
-            this._id_.parent(null);
+            this._objectCallExpression_.parent(null);
         }
 
         if(node != null)
@@ -61,7 +61,7 @@ public final class AObjectCall extends PObjectCall
             node.parent(this);
         }
 
-        this._id_ = node;
+        this._objectCallExpression_ = node;
     }
 
     public TPeriod getPeriod()
@@ -93,7 +93,7 @@ public final class AObjectCall extends PObjectCall
     public String toString()
     {
         return ""
-            + toString(this._id_)
+            + toString(this._objectCallExpression_)
             + toString(this._period_);
     }
 
@@ -101,9 +101,9 @@ public final class AObjectCall extends PObjectCall
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._id_ == child)
+        if(this._objectCallExpression_ == child)
         {
-            this._id_ = null;
+            this._objectCallExpression_ = null;
             return;
         }
 
@@ -120,9 +120,9 @@ public final class AObjectCall extends PObjectCall
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._id_ == oldChild)
+        if(this._objectCallExpression_ == oldChild)
         {
-            setId((TId) newChild);
+            setObjectCallExpression((PObjectCallExpression) newChild);
             return;
         }
 

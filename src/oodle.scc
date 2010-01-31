@@ -142,7 +142,7 @@ Productions
   mult_operator = {multiply} T.mult_op | {divide} T.div_op;
   add_operator = {add} T.plus_op | {subtract} T.minus_op;
   relational_operator = {equal} T.eq_op | {greater} T.gt_op | {greater_equal} T.gte_op;
-  object_call = T.id T.period;
+  object_call = object_call_expression T.period;
   method_call = T.id T.l_par expression_list T.r_par;
   get_at_operation = T.l_bracket expression T.r_bracket;
   

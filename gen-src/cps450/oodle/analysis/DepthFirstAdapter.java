@@ -1169,9 +1169,9 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAObjectCall(AObjectCall node)
     {
         inAObjectCall(node);
-        if(node.getId() != null)
+        if(node.getObjectCallExpression() != null)
         {
-            node.getId().apply(this);
+            node.getObjectCallExpression().apply(this);
         }
         if(node.getPeriod() != null)
         {

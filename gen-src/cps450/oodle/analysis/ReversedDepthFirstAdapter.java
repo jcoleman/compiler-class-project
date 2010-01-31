@@ -1193,9 +1193,9 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getPeriod().apply(this);
         }
-        if(node.getId() != null)
+        if(node.getObjectCallExpression() != null)
         {
-            node.getId().apply(this);
+            node.getObjectCallExpression().apply(this);
         }
         outAObjectCall(node);
     }

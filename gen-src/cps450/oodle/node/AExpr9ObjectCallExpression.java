@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AExpr7UnaryExpression extends PUnaryExpression
+public final class AExpr9ObjectCallExpression extends PObjectCallExpression
 {
-    private PGroupExpression _groupExpression_;
+    private PCallExpression _callExpression_;
 
-    public AExpr7UnaryExpression()
+    public AExpr9ObjectCallExpression()
     {
         // Constructor
     }
 
-    public AExpr7UnaryExpression(
-        @SuppressWarnings("hiding") PGroupExpression _groupExpression_)
+    public AExpr9ObjectCallExpression(
+        @SuppressWarnings("hiding") PCallExpression _callExpression_)
     {
         // Constructor
-        setGroupExpression(_groupExpression_);
+        setCallExpression(_callExpression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AExpr7UnaryExpression(
-            cloneNode(this._groupExpression_));
+        return new AExpr9ObjectCallExpression(
+            cloneNode(this._callExpression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAExpr7UnaryExpression(this);
+        ((Analysis) sw).caseAExpr9ObjectCallExpression(this);
     }
 
-    public PGroupExpression getGroupExpression()
+    public PCallExpression getCallExpression()
     {
-        return this._groupExpression_;
+        return this._callExpression_;
     }
 
-    public void setGroupExpression(PGroupExpression node)
+    public void setCallExpression(PCallExpression node)
     {
-        if(this._groupExpression_ != null)
+        if(this._callExpression_ != null)
         {
-            this._groupExpression_.parent(null);
+            this._callExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AExpr7UnaryExpression extends PUnaryExpression
             node.parent(this);
         }
 
-        this._groupExpression_ = node;
+        this._callExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._groupExpression_);
+            + toString(this._callExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._groupExpression_ == child)
+        if(this._callExpression_ == child)
         {
-            this._groupExpression_ = null;
+            this._callExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AExpr7UnaryExpression extends PUnaryExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._groupExpression_ == oldChild)
+        if(this._callExpression_ == oldChild)
         {
-            setGroupExpression((PGroupExpression) newChild);
+            setCallExpression((PCallExpression) newChild);
             return;
         }
 

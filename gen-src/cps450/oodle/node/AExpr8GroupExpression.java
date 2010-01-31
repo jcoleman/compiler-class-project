@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AExpr8CallExpression extends PCallExpression
+public final class AExpr8GroupExpression extends PGroupExpression
 {
-    private PRealExpression _realExpression_;
+    private PObjectCallExpression _objectCallExpression_;
 
-    public AExpr8CallExpression()
+    public AExpr8GroupExpression()
     {
         // Constructor
     }
 
-    public AExpr8CallExpression(
-        @SuppressWarnings("hiding") PRealExpression _realExpression_)
+    public AExpr8GroupExpression(
+        @SuppressWarnings("hiding") PObjectCallExpression _objectCallExpression_)
     {
         // Constructor
-        setRealExpression(_realExpression_);
+        setObjectCallExpression(_objectCallExpression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AExpr8CallExpression(
-            cloneNode(this._realExpression_));
+        return new AExpr8GroupExpression(
+            cloneNode(this._objectCallExpression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAExpr8CallExpression(this);
+        ((Analysis) sw).caseAExpr8GroupExpression(this);
     }
 
-    public PRealExpression getRealExpression()
+    public PObjectCallExpression getObjectCallExpression()
     {
-        return this._realExpression_;
+        return this._objectCallExpression_;
     }
 
-    public void setRealExpression(PRealExpression node)
+    public void setObjectCallExpression(PObjectCallExpression node)
     {
-        if(this._realExpression_ != null)
+        if(this._objectCallExpression_ != null)
         {
-            this._realExpression_.parent(null);
+            this._objectCallExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AExpr8CallExpression extends PCallExpression
             node.parent(this);
         }
 
-        this._realExpression_ = node;
+        this._objectCallExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._realExpression_);
+            + toString(this._objectCallExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._realExpression_ == child)
+        if(this._objectCallExpression_ == child)
         {
-            this._realExpression_ = null;
+            this._objectCallExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AExpr8CallExpression extends PCallExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._realExpression_ == oldChild)
+        if(this._objectCallExpression_ == oldChild)
         {
-            setRealExpression((PRealExpression) newChild);
+            setObjectCallExpression((PObjectCallExpression) newChild);
             return;
         }
 

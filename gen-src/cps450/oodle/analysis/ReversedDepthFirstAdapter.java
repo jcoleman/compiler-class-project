@@ -1579,20 +1579,20 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAExpr5AddExpression(node);
     }
 
-    public void inAMultExpression(AMultExpression node)
+    public void inAMultMultExpression(AMultMultExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAMultExpression(AMultExpression node)
+    public void outAMultMultExpression(AMultMultExpression node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAMultExpression(AMultExpression node)
+    public void caseAMultMultExpression(AMultMultExpression node)
     {
-        inAMultExpression(node);
+        inAMultMultExpression(node);
         if(node.getCallExpression() != null)
         {
             node.getCallExpression().apply(this);
@@ -1605,7 +1605,7 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getMultExpression().apply(this);
         }
-        outAMultExpression(node);
+        outAMultMultExpression(node);
     }
 
     public void inAExpr6MultExpression(AExpr6MultExpression node)
@@ -1668,11 +1668,61 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAExpr7UnaryExpression(AExpr7UnaryExpression node)
     {
         inAExpr7UnaryExpression(node);
+        if(node.getGroupExpression() != null)
+        {
+            node.getGroupExpression().apply(this);
+        }
+        outAExpr7UnaryExpression(node);
+    }
+
+    public void inAGroupGroupExpression(AGroupGroupExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAGroupGroupExpression(AGroupGroupExpression node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAGroupGroupExpression(AGroupGroupExpression node)
+    {
+        inAGroupGroupExpression(node);
+        if(node.getRPar() != null)
+        {
+            node.getRPar().apply(this);
+        }
+        if(node.getExpression() != null)
+        {
+            node.getExpression().apply(this);
+        }
+        if(node.getLPar() != null)
+        {
+            node.getLPar().apply(this);
+        }
+        outAGroupGroupExpression(node);
+    }
+
+    public void inAExpr8GroupExpression(AExpr8GroupExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAExpr8GroupExpression(AExpr8GroupExpression node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAExpr8GroupExpression(AExpr8GroupExpression node)
+    {
+        inAExpr8GroupExpression(node);
         if(node.getObjectCallExpression() != null)
         {
             node.getObjectCallExpression().apply(this);
         }
-        outAExpr7UnaryExpression(node);
+        outAExpr8GroupExpression(node);
     }
 
     public void inAGetAtObjectCallExpression(AGetAtObjectCallExpression node)
@@ -1717,25 +1767,25 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outACallObjectCallExpression(node);
     }
 
-    public void inAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
+    public void inAExpr9ObjectCallExpression(AExpr9ObjectCallExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
+    public void outAExpr9ObjectCallExpression(AExpr9ObjectCallExpression node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
+    public void caseAExpr9ObjectCallExpression(AExpr9ObjectCallExpression node)
     {
-        inAExpr8ObjectCallExpression(node);
+        inAExpr9ObjectCallExpression(node);
         if(node.getCallExpression() != null)
         {
             node.getCallExpression().apply(this);
         }
-        outAExpr8ObjectCallExpression(node);
+        outAExpr9ObjectCallExpression(node);
     }
 
     public void inACallCallExpression(ACallCallExpression node)
@@ -1759,25 +1809,25 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outACallCallExpression(node);
     }
 
-    public void inAExpr8CallExpression(AExpr8CallExpression node)
+    public void inAExpr10CallExpression(AExpr10CallExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAExpr8CallExpression(AExpr8CallExpression node)
+    public void outAExpr10CallExpression(AExpr10CallExpression node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAExpr8CallExpression(AExpr8CallExpression node)
+    public void caseAExpr10CallExpression(AExpr10CallExpression node)
     {
-        inAExpr8CallExpression(node);
+        inAExpr10CallExpression(node);
         if(node.getRealExpression() != null)
         {
             node.getRealExpression().apply(this);
         }
-        outAExpr8CallExpression(node);
+        outAExpr10CallExpression(node);
     }
 
     public void inAIdRealExpression(AIdRealExpression node)

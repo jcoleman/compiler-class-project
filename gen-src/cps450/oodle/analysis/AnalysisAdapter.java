@@ -344,7 +344,7 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAMultExpression(AMultExpression node)
+    public void caseAMultMultExpression(AMultMultExpression node)
     {
         defaultCase(node);
     }
@@ -364,6 +364,16 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseAGroupGroupExpression(AGroupGroupExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAExpr8GroupExpression(AExpr8GroupExpression node)
+    {
+        defaultCase(node);
+    }
+
     public void caseAGetAtObjectCallExpression(AGetAtObjectCallExpression node)
     {
         defaultCase(node);
@@ -374,7 +384,7 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAExpr8ObjectCallExpression(AExpr8ObjectCallExpression node)
+    public void caseAExpr9ObjectCallExpression(AExpr9ObjectCallExpression node)
     {
         defaultCase(node);
     }
@@ -384,7 +394,7 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAExpr8CallExpression(AExpr8CallExpression node)
+    public void caseAExpr10CallExpression(AExpr10CallExpression node)
     {
         defaultCase(node);
     }

@@ -5,18 +5,18 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AMultExpression extends PMultExpression
+public final class AMultMultExpression extends PMultExpression
 {
     private PMultExpression _multExpression_;
     private PMultOperator _multOperator_;
     private PCallExpression _callExpression_;
 
-    public AMultExpression()
+    public AMultMultExpression()
     {
         // Constructor
     }
 
-    public AMultExpression(
+    public AMultMultExpression(
         @SuppressWarnings("hiding") PMultExpression _multExpression_,
         @SuppressWarnings("hiding") PMultOperator _multOperator_,
         @SuppressWarnings("hiding") PCallExpression _callExpression_)
@@ -33,7 +33,7 @@ public final class AMultExpression extends PMultExpression
     @Override
     public Object clone()
     {
-        return new AMultExpression(
+        return new AMultMultExpression(
             cloneNode(this._multExpression_),
             cloneNode(this._multOperator_),
             cloneNode(this._callExpression_));
@@ -41,7 +41,7 @@ public final class AMultExpression extends PMultExpression
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAMultExpression(this);
+        ((Analysis) sw).caseAMultMultExpression(this);
     }
 
     public PMultExpression getMultExpression()

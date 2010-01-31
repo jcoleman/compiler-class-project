@@ -272,13 +272,9 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAVarInstantiation(AVarInstantiation node)
     {
         inAVarInstantiation(node);
-        if(node.getColon() != null)
+        if(node.getAssignmentOp() != null)
         {
-            node.getColon().apply(this);
-        }
-        if(node.getEqOp() != null)
-        {
-            node.getEqOp().apply(this);
+            node.getAssignmentOp().apply(this);
         }
         if(node.getExpression() != null)
         {

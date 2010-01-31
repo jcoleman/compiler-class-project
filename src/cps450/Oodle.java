@@ -4,14 +4,17 @@
 
 package cps450;
 import cps450.oodle.node.*;
+import cps450.oodle.parser.Parser;
+import cps450.oodle.parser.ParserException;
 
 import cps450.oodle.lexer.*;
+
 import java.io.*;
 
 public class Oodle
 {
 	
-    public static void main(String[] arguments) throws IOException {
+    public static void main(String[] arguments) throws IOException, ParserException, LexerException {
         if(!(arguments.length >= 1)) {
             System.out.println("usage:");
             System.out.println("  java Oodle filename");
@@ -29,11 +32,15 @@ public class Oodle
             new PushbackReader(
             new BufferedReader(
             new FileReader(input)), 1024));
-
-        Token t = getNextToken(lexer);
-        while (! (t instanceof EOF)) {
-          t = getNextToken(lexer);
-        }
+        
+        Parser parser = new Parser(lexer);
+        
+        parser.parse();
+        
+        //Token t = getNextToken(lexer);
+        //while (! (t instanceof EOF)) {
+        //  t = getNextToken(lexer);
+        //}
 
 
     }

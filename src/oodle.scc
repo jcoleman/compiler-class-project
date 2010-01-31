@@ -100,7 +100,7 @@ Productions
   
   var_declaration = T.id var_type_declaration? var_instantiation? T.eol*;
   var_type_declaration = T.colon var_type;
-  var_instantiation = T.colon T.eq_op expression;
+  var_instantiation = T.assignment_op expression;
   
   method_declaration = [method_dec_begin]:id T.l_par argument_list? T.r_par var_type? T.is [method_begin]:T.eol*
                        var_declaration*

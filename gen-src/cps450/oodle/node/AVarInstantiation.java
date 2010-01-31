@@ -7,8 +7,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AVarInstantiation extends PVarInstantiation
 {
-    private TColon _colon_;
-    private TEqOp _eqOp_;
+    private TAssignmentOp _assignmentOp_;
     private PExpression _expression_;
 
     public AVarInstantiation()
@@ -17,14 +16,11 @@ public final class AVarInstantiation extends PVarInstantiation
     }
 
     public AVarInstantiation(
-        @SuppressWarnings("hiding") TColon _colon_,
-        @SuppressWarnings("hiding") TEqOp _eqOp_,
+        @SuppressWarnings("hiding") TAssignmentOp _assignmentOp_,
         @SuppressWarnings("hiding") PExpression _expression_)
     {
         // Constructor
-        setColon(_colon_);
-
-        setEqOp(_eqOp_);
+        setAssignmentOp(_assignmentOp_);
 
         setExpression(_expression_);
 
@@ -34,8 +30,7 @@ public final class AVarInstantiation extends PVarInstantiation
     public Object clone()
     {
         return new AVarInstantiation(
-            cloneNode(this._colon_),
-            cloneNode(this._eqOp_),
+            cloneNode(this._assignmentOp_),
             cloneNode(this._expression_));
     }
 
@@ -44,16 +39,16 @@ public final class AVarInstantiation extends PVarInstantiation
         ((Analysis) sw).caseAVarInstantiation(this);
     }
 
-    public TColon getColon()
+    public TAssignmentOp getAssignmentOp()
     {
-        return this._colon_;
+        return this._assignmentOp_;
     }
 
-    public void setColon(TColon node)
+    public void setAssignmentOp(TAssignmentOp node)
     {
-        if(this._colon_ != null)
+        if(this._assignmentOp_ != null)
         {
-            this._colon_.parent(null);
+            this._assignmentOp_.parent(null);
         }
 
         if(node != null)
@@ -66,32 +61,7 @@ public final class AVarInstantiation extends PVarInstantiation
             node.parent(this);
         }
 
-        this._colon_ = node;
-    }
-
-    public TEqOp getEqOp()
-    {
-        return this._eqOp_;
-    }
-
-    public void setEqOp(TEqOp node)
-    {
-        if(this._eqOp_ != null)
-        {
-            this._eqOp_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._eqOp_ = node;
+        this._assignmentOp_ = node;
     }
 
     public PExpression getExpression()
@@ -123,8 +93,7 @@ public final class AVarInstantiation extends PVarInstantiation
     public String toString()
     {
         return ""
-            + toString(this._colon_)
-            + toString(this._eqOp_)
+            + toString(this._assignmentOp_)
             + toString(this._expression_);
     }
 
@@ -132,15 +101,9 @@ public final class AVarInstantiation extends PVarInstantiation
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._colon_ == child)
+        if(this._assignmentOp_ == child)
         {
-            this._colon_ = null;
-            return;
-        }
-
-        if(this._eqOp_ == child)
-        {
-            this._eqOp_ = null;
+            this._assignmentOp_ = null;
             return;
         }
 
@@ -157,15 +120,9 @@ public final class AVarInstantiation extends PVarInstantiation
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._colon_ == oldChild)
+        if(this._assignmentOp_ == oldChild)
         {
-            setColon((TColon) newChild);
-            return;
-        }
-
-        if(this._eqOp_ == oldChild)
-        {
-            setEqOp((TEqOp) newChild);
+            setAssignmentOp((TAssignmentOp) newChild);
             return;
         }
 

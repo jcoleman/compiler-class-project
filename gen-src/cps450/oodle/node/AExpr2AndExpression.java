@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AIdExpression extends PExpression
+public final class AExpr2AndExpression extends PAndExpression
 {
-    private TId _id_;
+    private PRelationalExpression _relationalExpression_;
 
-    public AIdExpression()
+    public AExpr2AndExpression()
     {
         // Constructor
     }
 
-    public AIdExpression(
-        @SuppressWarnings("hiding") TId _id_)
+    public AExpr2AndExpression(
+        @SuppressWarnings("hiding") PRelationalExpression _relationalExpression_)
     {
         // Constructor
-        setId(_id_);
+        setRelationalExpression(_relationalExpression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AIdExpression(
-            cloneNode(this._id_));
+        return new AExpr2AndExpression(
+            cloneNode(this._relationalExpression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAIdExpression(this);
+        ((Analysis) sw).caseAExpr2AndExpression(this);
     }
 
-    public TId getId()
+    public PRelationalExpression getRelationalExpression()
     {
-        return this._id_;
+        return this._relationalExpression_;
     }
 
-    public void setId(TId node)
+    public void setRelationalExpression(PRelationalExpression node)
     {
-        if(this._id_ != null)
+        if(this._relationalExpression_ != null)
         {
-            this._id_.parent(null);
+            this._relationalExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AIdExpression extends PExpression
             node.parent(this);
         }
 
-        this._id_ = node;
+        this._relationalExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._id_);
+            + toString(this._relationalExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._id_ == child)
+        if(this._relationalExpression_ == child)
         {
-            this._id_ = null;
+            this._relationalExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AIdExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._id_ == oldChild)
+        if(this._relationalExpression_ == oldChild)
         {
-            setId((TId) newChild);
+            setRelationalExpression((PRelationalExpression) newChild);
             return;
         }
 

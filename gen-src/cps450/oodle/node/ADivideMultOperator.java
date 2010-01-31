@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AIntExpression extends PExpression
+public final class ADivideMultOperator extends PMultOperator
 {
-    private TIntlit _intlit_;
+    private TDivOp _divOp_;
 
-    public AIntExpression()
+    public ADivideMultOperator()
     {
         // Constructor
     }
 
-    public AIntExpression(
-        @SuppressWarnings("hiding") TIntlit _intlit_)
+    public ADivideMultOperator(
+        @SuppressWarnings("hiding") TDivOp _divOp_)
     {
         // Constructor
-        setIntlit(_intlit_);
+        setDivOp(_divOp_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AIntExpression(
-            cloneNode(this._intlit_));
+        return new ADivideMultOperator(
+            cloneNode(this._divOp_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAIntExpression(this);
+        ((Analysis) sw).caseADivideMultOperator(this);
     }
 
-    public TIntlit getIntlit()
+    public TDivOp getDivOp()
     {
-        return this._intlit_;
+        return this._divOp_;
     }
 
-    public void setIntlit(TIntlit node)
+    public void setDivOp(TDivOp node)
     {
-        if(this._intlit_ != null)
+        if(this._divOp_ != null)
         {
-            this._intlit_.parent(null);
+            this._divOp_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AIntExpression extends PExpression
             node.parent(this);
         }
 
-        this._intlit_ = node;
+        this._divOp_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._intlit_);
+            + toString(this._divOp_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._intlit_ == child)
+        if(this._divOp_ == child)
         {
-            this._intlit_ = null;
+            this._divOp_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AIntExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._intlit_ == oldChild)
+        if(this._divOp_ == oldChild)
         {
-            setIntlit((TIntlit) newChild);
+            setDivOp((TDivOp) newChild);
             return;
         }
 

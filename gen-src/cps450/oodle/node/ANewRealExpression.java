@@ -5,17 +5,17 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ANewExpression extends PExpression
+public final class ANewRealExpression extends PRealExpression
 {
     private TNew _new_;
     private PVarType _varType_;
 
-    public ANewExpression()
+    public ANewRealExpression()
     {
         // Constructor
     }
 
-    public ANewExpression(
+    public ANewRealExpression(
         @SuppressWarnings("hiding") TNew _new_,
         @SuppressWarnings("hiding") PVarType _varType_)
     {
@@ -29,14 +29,14 @@ public final class ANewExpression extends PExpression
     @Override
     public Object clone()
     {
-        return new ANewExpression(
+        return new ANewRealExpression(
             cloneNode(this._new_),
             cloneNode(this._varType_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseANewExpression(this);
+        ((Analysis) sw).caseANewRealExpression(this);
     }
 
     public TNew getNew()

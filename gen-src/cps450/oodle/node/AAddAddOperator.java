@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AMeExpression extends PExpression
+public final class AAddAddOperator extends PAddOperator
 {
-    private TMe _me_;
+    private TPlusOp _plusOp_;
 
-    public AMeExpression()
+    public AAddAddOperator()
     {
         // Constructor
     }
 
-    public AMeExpression(
-        @SuppressWarnings("hiding") TMe _me_)
+    public AAddAddOperator(
+        @SuppressWarnings("hiding") TPlusOp _plusOp_)
     {
         // Constructor
-        setMe(_me_);
+        setPlusOp(_plusOp_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AMeExpression(
-            cloneNode(this._me_));
+        return new AAddAddOperator(
+            cloneNode(this._plusOp_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAMeExpression(this);
+        ((Analysis) sw).caseAAddAddOperator(this);
     }
 
-    public TMe getMe()
+    public TPlusOp getPlusOp()
     {
-        return this._me_;
+        return this._plusOp_;
     }
 
-    public void setMe(TMe node)
+    public void setPlusOp(TPlusOp node)
     {
-        if(this._me_ != null)
+        if(this._plusOp_ != null)
         {
-            this._me_.parent(null);
+            this._plusOp_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AMeExpression extends PExpression
             node.parent(this);
         }
 
-        this._me_ = node;
+        this._plusOp_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._me_);
+            + toString(this._plusOp_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._me_ == child)
+        if(this._plusOp_ == child)
         {
-            this._me_ = null;
+            this._plusOp_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AMeExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._me_ == oldChild)
+        if(this._plusOp_ == oldChild)
         {
-            setMe((TMe) newChild);
+            setPlusOp((TPlusOp) newChild);
             return;
         }
 

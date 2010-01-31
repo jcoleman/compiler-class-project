@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ATrueExpression extends PExpression
+public final class AExpression extends PExpression
 {
-    private TTrue _true_;
+    private POrExpression _orExpression_;
 
-    public ATrueExpression()
+    public AExpression()
     {
         // Constructor
     }
 
-    public ATrueExpression(
-        @SuppressWarnings("hiding") TTrue _true_)
+    public AExpression(
+        @SuppressWarnings("hiding") POrExpression _orExpression_)
     {
         // Constructor
-        setTrue(_true_);
+        setOrExpression(_orExpression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new ATrueExpression(
-            cloneNode(this._true_));
+        return new AExpression(
+            cloneNode(this._orExpression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseATrueExpression(this);
+        ((Analysis) sw).caseAExpression(this);
     }
 
-    public TTrue getTrue()
+    public POrExpression getOrExpression()
     {
-        return this._true_;
+        return this._orExpression_;
     }
 
-    public void setTrue(TTrue node)
+    public void setOrExpression(POrExpression node)
     {
-        if(this._true_ != null)
+        if(this._orExpression_ != null)
         {
-            this._true_.parent(null);
+            this._orExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class ATrueExpression extends PExpression
             node.parent(this);
         }
 
-        this._true_ = node;
+        this._orExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._true_);
+            + toString(this._orExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._true_ == child)
+        if(this._orExpression_ == child)
         {
-            this._true_ = null;
+            this._orExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class ATrueExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._true_ == oldChild)
+        if(this._orExpression_ == oldChild)
         {
-            setTrue((TTrue) newChild);
+            setOrExpression((POrExpression) newChild);
             return;
         }
 

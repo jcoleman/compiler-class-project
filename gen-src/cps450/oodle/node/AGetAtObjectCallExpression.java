@@ -6,43 +6,38 @@ import java.util.*;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ATest3AssignmentStatement extends PAssignmentStatement
+public final class AGetAtObjectCallExpression extends PObjectCallExpression
 {
     private TId _id_;
     private final LinkedList<PGetAtOperation> _getAtOperation_ = new LinkedList<PGetAtOperation>();
-    private PVarInstantiation _varInstantiation_;
 
-    public ATest3AssignmentStatement()
+    public AGetAtObjectCallExpression()
     {
         // Constructor
     }
 
-    public ATest3AssignmentStatement(
+    public AGetAtObjectCallExpression(
         @SuppressWarnings("hiding") TId _id_,
-        @SuppressWarnings("hiding") List<PGetAtOperation> _getAtOperation_,
-        @SuppressWarnings("hiding") PVarInstantiation _varInstantiation_)
+        @SuppressWarnings("hiding") List<PGetAtOperation> _getAtOperation_)
     {
         // Constructor
         setId(_id_);
 
         setGetAtOperation(_getAtOperation_);
 
-        setVarInstantiation(_varInstantiation_);
-
     }
 
     @Override
     public Object clone()
     {
-        return new ATest3AssignmentStatement(
+        return new AGetAtObjectCallExpression(
             cloneNode(this._id_),
-            cloneList(this._getAtOperation_),
-            cloneNode(this._varInstantiation_));
+            cloneList(this._getAtOperation_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseATest3AssignmentStatement(this);
+        ((Analysis) sw).caseAGetAtObjectCallExpression(this);
     }
 
     public TId getId()
@@ -90,38 +85,12 @@ public final class ATest3AssignmentStatement extends PAssignmentStatement
         }
     }
 
-    public PVarInstantiation getVarInstantiation()
-    {
-        return this._varInstantiation_;
-    }
-
-    public void setVarInstantiation(PVarInstantiation node)
-    {
-        if(this._varInstantiation_ != null)
-        {
-            this._varInstantiation_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._varInstantiation_ = node;
-    }
-
     @Override
     public String toString()
     {
         return ""
             + toString(this._id_)
-            + toString(this._getAtOperation_)
-            + toString(this._varInstantiation_);
+            + toString(this._getAtOperation_);
     }
 
     @Override
@@ -136,12 +105,6 @@ public final class ATest3AssignmentStatement extends PAssignmentStatement
 
         if(this._getAtOperation_.remove(child))
         {
-            return;
-        }
-
-        if(this._varInstantiation_ == child)
-        {
-            this._varInstantiation_ = null;
             return;
         }
 
@@ -174,12 +137,6 @@ public final class ATest3AssignmentStatement extends PAssignmentStatement
                 oldChild.parent(null);
                 return;
             }
-        }
-
-        if(this._varInstantiation_ == oldChild)
-        {
-            setVarInstantiation((PVarInstantiation) newChild);
-            return;
         }
 
         throw new RuntimeException("Not a child.");

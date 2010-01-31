@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AStringExpression extends PExpression
+public final class ATrueRealExpression extends PRealExpression
 {
-    private TStrlit _strlit_;
+    private TTrue _true_;
 
-    public AStringExpression()
+    public ATrueRealExpression()
     {
         // Constructor
     }
 
-    public AStringExpression(
-        @SuppressWarnings("hiding") TStrlit _strlit_)
+    public ATrueRealExpression(
+        @SuppressWarnings("hiding") TTrue _true_)
     {
         // Constructor
-        setStrlit(_strlit_);
+        setTrue(_true_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AStringExpression(
-            cloneNode(this._strlit_));
+        return new ATrueRealExpression(
+            cloneNode(this._true_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAStringExpression(this);
+        ((Analysis) sw).caseATrueRealExpression(this);
     }
 
-    public TStrlit getStrlit()
+    public TTrue getTrue()
     {
-        return this._strlit_;
+        return this._true_;
     }
 
-    public void setStrlit(TStrlit node)
+    public void setTrue(TTrue node)
     {
-        if(this._strlit_ != null)
+        if(this._true_ != null)
         {
-            this._strlit_.parent(null);
+            this._true_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AStringExpression extends PExpression
             node.parent(this);
         }
 
-        this._strlit_ = node;
+        this._true_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._strlit_);
+            + toString(this._true_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._strlit_ == child)
+        if(this._true_ == child)
         {
-            this._strlit_ = null;
+            this._true_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AStringExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._strlit_ == oldChild)
+        if(this._true_ == oldChild)
         {
-            setStrlit((TStrlit) newChild);
+            setTrue((TTrue) newChild);
             return;
         }
 

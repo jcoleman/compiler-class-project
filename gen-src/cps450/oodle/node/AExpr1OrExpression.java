@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AFalseExpression extends PExpression
+public final class AExpr1OrExpression extends POrExpression
 {
-    private TFalse _false_;
+    private PAndExpression _andExpression_;
 
-    public AFalseExpression()
+    public AExpr1OrExpression()
     {
         // Constructor
     }
 
-    public AFalseExpression(
-        @SuppressWarnings("hiding") TFalse _false_)
+    public AExpr1OrExpression(
+        @SuppressWarnings("hiding") PAndExpression _andExpression_)
     {
         // Constructor
-        setFalse(_false_);
+        setAndExpression(_andExpression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AFalseExpression(
-            cloneNode(this._false_));
+        return new AExpr1OrExpression(
+            cloneNode(this._andExpression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAFalseExpression(this);
+        ((Analysis) sw).caseAExpr1OrExpression(this);
     }
 
-    public TFalse getFalse()
+    public PAndExpression getAndExpression()
     {
-        return this._false_;
+        return this._andExpression_;
     }
 
-    public void setFalse(TFalse node)
+    public void setAndExpression(PAndExpression node)
     {
-        if(this._false_ != null)
+        if(this._andExpression_ != null)
         {
-            this._false_.parent(null);
+            this._andExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AFalseExpression extends PExpression
             node.parent(this);
         }
 
-        this._false_ = node;
+        this._andExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._false_);
+            + toString(this._andExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._false_ == child)
+        if(this._andExpression_ == child)
         {
-            this._false_ = null;
+            this._andExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AFalseExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._false_ == oldChild)
+        if(this._andExpression_ == oldChild)
         {
-            setFalse((TFalse) newChild);
+            setAndExpression((PAndExpression) newChild);
             return;
         }
 

@@ -5,38 +5,33 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AObjectCall extends PObjectCall
+public final class AIdRealExpression extends PRealExpression
 {
     private TId _id_;
-    private TPeriod _period_;
 
-    public AObjectCall()
+    public AIdRealExpression()
     {
         // Constructor
     }
 
-    public AObjectCall(
-        @SuppressWarnings("hiding") TId _id_,
-        @SuppressWarnings("hiding") TPeriod _period_)
+    public AIdRealExpression(
+        @SuppressWarnings("hiding") TId _id_)
     {
         // Constructor
         setId(_id_);
-
-        setPeriod(_period_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AObjectCall(
-            cloneNode(this._id_),
-            cloneNode(this._period_));
+        return new AIdRealExpression(
+            cloneNode(this._id_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAObjectCall(this);
+        ((Analysis) sw).caseAIdRealExpression(this);
     }
 
     public TId getId()
@@ -64,37 +59,11 @@ public final class AObjectCall extends PObjectCall
         this._id_ = node;
     }
 
-    public TPeriod getPeriod()
-    {
-        return this._period_;
-    }
-
-    public void setPeriod(TPeriod node)
-    {
-        if(this._period_ != null)
-        {
-            this._period_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._period_ = node;
-    }
-
     @Override
     public String toString()
     {
         return ""
-            + toString(this._id_)
-            + toString(this._period_);
+            + toString(this._id_);
     }
 
     @Override
@@ -104,12 +73,6 @@ public final class AObjectCall extends PObjectCall
         if(this._id_ == child)
         {
             this._id_ = null;
-            return;
-        }
-
-        if(this._period_ == child)
-        {
-            this._period_ = null;
             return;
         }
 
@@ -123,12 +86,6 @@ public final class AObjectCall extends PObjectCall
         if(this._id_ == oldChild)
         {
             setId((TId) newChild);
-            return;
-        }
-
-        if(this._period_ == oldChild)
-        {
-            setPeriod((TPeriod) newChild);
             return;
         }
 

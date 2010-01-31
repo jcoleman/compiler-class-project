@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ANullExpression extends PExpression
+public final class AExpr3RelationalExpression extends PRelationalExpression
 {
-    private TNull _null_;
+    private PConcatExpression _concatExpression_;
 
-    public ANullExpression()
+    public AExpr3RelationalExpression()
     {
         // Constructor
     }
 
-    public ANullExpression(
-        @SuppressWarnings("hiding") TNull _null_)
+    public AExpr3RelationalExpression(
+        @SuppressWarnings("hiding") PConcatExpression _concatExpression_)
     {
         // Constructor
-        setNull(_null_);
+        setConcatExpression(_concatExpression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new ANullExpression(
-            cloneNode(this._null_));
+        return new AExpr3RelationalExpression(
+            cloneNode(this._concatExpression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseANullExpression(this);
+        ((Analysis) sw).caseAExpr3RelationalExpression(this);
     }
 
-    public TNull getNull()
+    public PConcatExpression getConcatExpression()
     {
-        return this._null_;
+        return this._concatExpression_;
     }
 
-    public void setNull(TNull node)
+    public void setConcatExpression(PConcatExpression node)
     {
-        if(this._null_ != null)
+        if(this._concatExpression_ != null)
         {
-            this._null_.parent(null);
+            this._concatExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class ANullExpression extends PExpression
             node.parent(this);
         }
 
-        this._null_ = node;
+        this._concatExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._null_);
+            + toString(this._concatExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._null_ == child)
+        if(this._concatExpression_ == child)
         {
-            this._null_ = null;
+            this._concatExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class ANullExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._null_ == oldChild)
+        if(this._concatExpression_ == oldChild)
         {
-            setNull((TNull) newChild);
+            setConcatExpression((PConcatExpression) newChild);
             return;
         }
 

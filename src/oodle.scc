@@ -119,8 +119,7 @@ Productions
   statement_head = statement T.eol*;
   statement = {assignment} assignment_statement | {if} if_statement | {loop} loop_statement | {call} call_statement;
   
-  assignment_statement = {test3} T.id get_at_operation? var_instantiation;
-  get_at_operation = T.l_bracket expression T.r_bracket;
+  assignment_statement = {test3} T.id get_at_operation* var_instantiation;
   
   if_statement = {test4} [begin_if]:T.if expression T.then T.eol*
                  statement_list
@@ -133,20 +132,33 @@ Productions
                    statement_list
                    T.end [loop_end]:T.loop;
   
-  call_statement = {test6} object_call? T.id T.l_par expression_list T.r_par;
-  object_call = expression T.period;
+  call_statement = {test6} object_call? method_call;
+  
   
   expression_list = expression_head* expression;
   expression_head = expression T.comma;
-  expression = {id} T.id | {string} T.strlit | {int} T.intlit | {true} T.true | {false} T.false | {null} T.null | {me} T.me
-               | {new} T.new var_type;
   
+  unary_operator = {negate} T.minus_op | {not} T.not;
+  mult_operator = {multiply} T.mult_op | {divide} T.div_op;
+  add_operator = {add} T.plus_op | {subtract} T.minus_op;
+  relational_operator = {equal} T.eq_op | {greater} T.gt_op | {greater_equal} T.gte_op;
+  object_call = T.id T.period;
+  method_call = T.id T.l_par expression_list T.r_par;
+  get_at_operation = T.l_bracket expression T.r_bracket;
   
-  
-  
-  
-  
-  
+  expression = or_expression;
+  or_expression = {or} or_expression T.or and_expression | {expr1} and_expression;
+  and_expression = {and} and_expression T.and relational_expression | {expr2} relational_expression;
+  relational_expression = {relational} [first]:concat_expression relational_operator [second]:concat_expression | {expr3} concat_expression;
+  concat_expression = {concat} concat_expression T.concat_op add_expression | {expr4} add_expression;
+  add_expression = {add} add_expression add_operator mult_expression | {expr5} mult_expression;
+  mult_expression = mult_expression mult_operator call_expression | {expr6} object_call_expression;
+  object_call_expression = {get_at} T.id get_at_operation+ | {call} object_call method_call | {expr7} call_expression;
+  call_expression = method_call | {expr8} real_expression;
+  real_expression = {id} T.id
+                    | {string} T.strlit | {int} T.intlit
+                    | {true} T.true | {false} T.false | {null} T.null | {me} T.me
+                    | {new} T.new var_type;
   
   
   

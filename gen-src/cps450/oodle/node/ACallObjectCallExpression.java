@@ -5,17 +5,17 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ATest6CallStatement extends PCallStatement
+public final class ACallObjectCallExpression extends PObjectCallExpression
 {
     private PObjectCall _objectCall_;
     private PMethodCall _methodCall_;
 
-    public ATest6CallStatement()
+    public ACallObjectCallExpression()
     {
         // Constructor
     }
 
-    public ATest6CallStatement(
+    public ACallObjectCallExpression(
         @SuppressWarnings("hiding") PObjectCall _objectCall_,
         @SuppressWarnings("hiding") PMethodCall _methodCall_)
     {
@@ -29,14 +29,14 @@ public final class ATest6CallStatement extends PCallStatement
     @Override
     public Object clone()
     {
-        return new ATest6CallStatement(
+        return new ACallObjectCallExpression(
             cloneNode(this._objectCall_),
             cloneNode(this._methodCall_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseATest6CallStatement(this);
+        ((Analysis) sw).caseACallObjectCallExpression(this);
     }
 
     public PObjectCall getObjectCall()

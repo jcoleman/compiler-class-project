@@ -44,6 +44,7 @@ public interface Analysis extends Switch
     void caseAExpressionList(AExpressionList node);
     void caseAExpressionHead(AExpressionHead node);
     void caseANegateUnaryOperator(ANegateUnaryOperator node);
+    void caseAPositiveUnaryOperator(APositiveUnaryOperator node);
     void caseANotUnaryOperator(ANotUnaryOperator node);
     void caseAMultiplyMultOperator(AMultiplyMultOperator node);
     void caseADivideMultOperator(ADivideMultOperator node);

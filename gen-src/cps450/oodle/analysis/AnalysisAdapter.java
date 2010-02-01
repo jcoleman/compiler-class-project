@@ -229,6 +229,11 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseAPositiveUnaryOperator(APositiveUnaryOperator node)
+    {
+        defaultCase(node);
+    }
+
     public void caseANotUnaryOperator(ANotUnaryOperator node)
     {
         defaultCase(node);

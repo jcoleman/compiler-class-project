@@ -138,7 +138,7 @@ Productions
   expression_list = expression_head* expression;
   expression_head = expression T.comma;
   
-  unary_operator = {negate} T.minus_op | {not} T.not;
+  unary_operator = {negate} T.minus_op | {positive} T.plus_op | {not} T.not;
   mult_operator = {multiply} T.mult_op | {divide} T.div_op;
   add_operator = {add} T.plus_op | {subtract} T.minus_op;
   relational_operator = {equal} T.eq_op | {greater} T.gt_op | {greater_equal} T.gte_op;

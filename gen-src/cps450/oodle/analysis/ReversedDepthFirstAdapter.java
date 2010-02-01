@@ -1020,6 +1020,27 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outANegateUnaryOperator(node);
     }
 
+    public void inAPositiveUnaryOperator(APositiveUnaryOperator node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAPositiveUnaryOperator(APositiveUnaryOperator node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAPositiveUnaryOperator(APositiveUnaryOperator node)
+    {
+        inAPositiveUnaryOperator(node);
+        if(node.getPlusOp() != null)
+        {
+            node.getPlusOp().apply(this);
+        }
+        outAPositiveUnaryOperator(node);
+    }
+
     public void inANotUnaryOperator(ANotUnaryOperator node)
     {
         defaultIn(node);

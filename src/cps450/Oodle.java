@@ -14,6 +14,8 @@ import java.io.*;
 public class Oodle
 {
 	
+	public static int errorCount = 0;
+	
     public static void main(String[] arguments) throws IOException, ParserException, LexerException {
         if(!(arguments.length >= 1)) {
             System.out.println("usage:");
@@ -28,7 +30,7 @@ public class Oodle
         SourceHolder.instantiate(Options.instance().files);
         File input = SourceHolder.instance().concatenateFiles();
         
-        Lexer lexer = new MyLexer(
+        MyLexer lexer = new MyLexer(
             new PushbackReader(
             new BufferedReader(
             new FileReader(input)), 1024));
@@ -38,12 +40,14 @@ public class Oodle
         try {
         	parser.parse();
         } catch (ParserException e) {
+        	errorCount++;
         	String errorText = e.getMessage();
         	errorText = errorText.substring(errorText.indexOf(']') + 2);
         	Token t = e.getToken();
 			System.out.println(SourceHolder.instance().getFilenameFor(t) + ":" + SourceHolder.instance().getLineNumberFor(t) + "," + t.getPos() + ":" + errorText);
         }
         
+        System.out.println("" + (lexer.errorCount + errorCount) +  " errors found");
     }
 
 }

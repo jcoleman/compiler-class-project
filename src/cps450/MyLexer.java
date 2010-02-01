@@ -13,6 +13,8 @@ import cps450.oodle.node.*;
 
 public class MyLexer extends Lexer {
 	
+	public int errorCount = 0;
+	
 	public MyLexer(PushbackReader in) {
 		super(in);
 	}
@@ -27,6 +29,7 @@ public class MyLexer extends Lexer {
 		
 		String errMsg = checkForLexicalErrors(this.token);
 	    if (errMsg != null) {
+	    	this.errorCount++;
 	        printToken(this.token, errMsg);
 	        this.token = null; // prevent Lexer from returning this token
 	    }

@@ -399,7 +399,7 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAIdRealExpression(AIdRealExpression node)
+    public void caseAIdentifierRealExpression(AIdentifierRealExpression node)
     {
         defaultCase(node);
     }

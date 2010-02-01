@@ -35,26 +35,15 @@ public class Oodle
         
         Parser parser = new Parser(lexer);
         
-        parser.parse();
+        try {
+        	parser.parse();
+        } catch (ParserException e) {
+        	String errorText = e.getMessage();
+        	errorText = errorText.substring(errorText.indexOf(']') + 2);
+        	Token t = e.getToken();
+			System.out.println(SourceHolder.instance().getFilenameFor(t) + ":" + SourceHolder.instance().getLineNumberFor(t) + "," + t.getPos() + ":" + errorText);
+        }
         
-        //Token t = getNextToken(lexer);
-        //while (! (t instanceof EOF)) {
-        //  t = getNextToken(lexer);
-        //}
-
-
-    }
-    
-    // Retrieve the next token from the lexer
-    static Token getNextToken(Lexer l) throws IOException {
-      Token t = null;
-      try {
-        t = l.next();
-      } catch (LexerException e) {
-            System.out.println(e);
-
-      }
-      return t;
     }
 
 }

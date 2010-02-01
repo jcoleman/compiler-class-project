@@ -1806,25 +1806,25 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outAExpr10CallExpression(node);
     }
 
-    public void inAIdRealExpression(AIdRealExpression node)
+    public void inAIdentifierRealExpression(AIdentifierRealExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAIdRealExpression(AIdRealExpression node)
+    public void outAIdentifierRealExpression(AIdentifierRealExpression node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAIdRealExpression(AIdRealExpression node)
+    public void caseAIdentifierRealExpression(AIdentifierRealExpression node)
     {
-        inAIdRealExpression(node);
+        inAIdentifierRealExpression(node);
         if(node.getId() != null)
         {
             node.getId().apply(this);
         }
-        outAIdRealExpression(node);
+        outAIdentifierRealExpression(node);
     }
 
     public void inAStringRealExpression(AStringRealExpression node)

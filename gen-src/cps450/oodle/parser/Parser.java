@@ -1189,7 +1189,7 @@ public class Parser
 			push(goTo(41), list, false);
 		    }
 		    break;
-                    case 169: /* reduce AIdRealExpression */
+                    case 169: /* reduce AIdentifierRealExpression */
 		    {
 			ArrayList list = new169();
 			push(goTo(42), list, false);
@@ -9462,7 +9462,7 @@ public class Parser
 
 
     @SuppressWarnings("unchecked")
-    ArrayList new169() /* reduce AIdRealExpression */
+    ArrayList new169() /* reduce AIdentifierRealExpression */
     {
         @SuppressWarnings("hiding") ArrayList nodeList = new ArrayList();
 
@@ -9473,7 +9473,7 @@ public class Parser
         TId tidNode2;
         tidNode2 = (TId)nodeArrayList1.get(0);
 
-        prealexpressionNode1 = new AIdRealExpression(tidNode2);
+        prealexpressionNode1 = new AIdentifierRealExpression(tidNode2);
         }
 	nodeList.add(prealexpressionNode1);
         return nodeList;

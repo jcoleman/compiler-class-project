@@ -78,7 +78,7 @@ public interface Analysis extends Switch
     void caseAExpr9ObjectCallExpression(AExpr9ObjectCallExpression node);
     void caseACallCallExpression(ACallCallExpression node);
     void caseAExpr10CallExpression(AExpr10CallExpression node);
-    void caseAIdRealExpression(AIdRealExpression node);
+    void caseAIdentifierRealExpression(AIdentifierRealExpression node);
     void caseAStringRealExpression(AStringRealExpression node);
     void caseAIntRealExpression(AIntRealExpression node);
     void caseATrueRealExpression(ATrueRealExpression node);

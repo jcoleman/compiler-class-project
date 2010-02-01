@@ -5,16 +5,16 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AIdRealExpression extends PRealExpression
+public final class AIdentifierRealExpression extends PRealExpression
 {
     private TId _id_;
 
-    public AIdRealExpression()
+    public AIdentifierRealExpression()
     {
         // Constructor
     }
 
-    public AIdRealExpression(
+    public AIdentifierRealExpression(
         @SuppressWarnings("hiding") TId _id_)
     {
         // Constructor
@@ -25,13 +25,13 @@ public final class AIdRealExpression extends PRealExpression
     @Override
     public Object clone()
     {
-        return new AIdRealExpression(
+        return new AIdentifierRealExpression(
             cloneNode(this._id_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAIdRealExpression(this);
+        ((Analysis) sw).caseAIdentifierRealExpression(this);
     }
 
     public TId getId()

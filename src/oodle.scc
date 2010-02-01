@@ -158,7 +158,7 @@ Productions
   group_expression = {group} T.l_par expression T.r_par | {expr8} object_call_expression;
   object_call_expression = {get_at} get_at_reference | {call} object_call | {expr9} call_expression;
   call_expression = {call} method_call | {expr10} real_expression;
-  real_expression = {id} T.id
+  real_expression = {identifier} T.id
                     | {string} T.strlit | {int} T.intlit
                     | {true} T.true | {false} T.false | {null} T.null | {me} T.me
                     | {new} T.new var_type;

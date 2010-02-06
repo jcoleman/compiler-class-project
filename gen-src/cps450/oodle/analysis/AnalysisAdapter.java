@@ -379,17 +379,7 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAGroupGroupObjectCallExpression(AGroupGroupObjectCallExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAGroupGroupExpression(AGroupGroupExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr8GroupExpression(AExpr8GroupExpression node)
+    public void caseAExpr8GroupObjectCallExpression(AExpr8GroupObjectCallExpression node)
     {
         defaultCase(node);
     }
@@ -410,6 +400,16 @@ public class AnalysisAdapter implements Analysis
     }
 
     public void caseAExpr10CallExpression(AExpr10CallExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAGroupGroupExpression(AGroupGroupExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAExpr11GroupExpression(AExpr11GroupExpression node)
     {
         defaultCase(node);
     }

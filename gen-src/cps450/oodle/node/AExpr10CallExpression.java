@@ -7,7 +7,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AExpr10CallExpression extends PCallExpression
 {
-    private PRealExpression _realExpression_;
+    private PGroupExpression _groupExpression_;
 
     public AExpr10CallExpression()
     {
@@ -15,10 +15,10 @@ public final class AExpr10CallExpression extends PCallExpression
     }
 
     public AExpr10CallExpression(
-        @SuppressWarnings("hiding") PRealExpression _realExpression_)
+        @SuppressWarnings("hiding") PGroupExpression _groupExpression_)
     {
         // Constructor
-        setRealExpression(_realExpression_);
+        setGroupExpression(_groupExpression_);
 
     }
 
@@ -26,7 +26,7 @@ public final class AExpr10CallExpression extends PCallExpression
     public Object clone()
     {
         return new AExpr10CallExpression(
-            cloneNode(this._realExpression_));
+            cloneNode(this._groupExpression_));
     }
 
     public void apply(Switch sw)
@@ -34,16 +34,16 @@ public final class AExpr10CallExpression extends PCallExpression
         ((Analysis) sw).caseAExpr10CallExpression(this);
     }
 
-    public PRealExpression getRealExpression()
+    public PGroupExpression getGroupExpression()
     {
-        return this._realExpression_;
+        return this._groupExpression_;
     }
 
-    public void setRealExpression(PRealExpression node)
+    public void setGroupExpression(PGroupExpression node)
     {
-        if(this._realExpression_ != null)
+        if(this._groupExpression_ != null)
         {
-            this._realExpression_.parent(null);
+            this._groupExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AExpr10CallExpression extends PCallExpression
             node.parent(this);
         }
 
-        this._realExpression_ = node;
+        this._groupExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._realExpression_);
+            + toString(this._groupExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._realExpression_ == child)
+        if(this._groupExpression_ == child)
         {
-            this._realExpression_ = null;
+            this._groupExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AExpr10CallExpression extends PCallExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._realExpression_ == oldChild)
+        if(this._groupExpression_ == oldChild)
         {
-            setRealExpression((PRealExpression) newChild);
+            setGroupExpression((PGroupExpression) newChild);
             return;
         }
 

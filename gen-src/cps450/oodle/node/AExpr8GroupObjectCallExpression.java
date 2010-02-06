@@ -5,16 +5,16 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AExpr8GroupExpression extends PGroupExpression
+public final class AExpr8GroupObjectCallExpression extends PGroupObjectCallExpression
 {
     private PObjectCallExpression _objectCallExpression_;
 
-    public AExpr8GroupExpression()
+    public AExpr8GroupObjectCallExpression()
     {
         // Constructor
     }
 
-    public AExpr8GroupExpression(
+    public AExpr8GroupObjectCallExpression(
         @SuppressWarnings("hiding") PObjectCallExpression _objectCallExpression_)
     {
         // Constructor
@@ -25,13 +25,13 @@ public final class AExpr8GroupExpression extends PGroupExpression
     @Override
     public Object clone()
     {
-        return new AExpr8GroupExpression(
+        return new AExpr8GroupObjectCallExpression(
             cloneNode(this._objectCallExpression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAExpr8GroupExpression(this);
+        ((Analysis) sw).caseAExpr8GroupObjectCallExpression(this);
     }
 
     public PObjectCallExpression getObjectCallExpression()

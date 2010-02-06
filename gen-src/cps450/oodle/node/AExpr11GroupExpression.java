@@ -5,45 +5,45 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AGroupGroupObjectCallExpression extends PGroupObjectCallExpression
+public final class AExpr11GroupExpression extends PGroupExpression
 {
-    private PGroupExpression _groupExpression_;
+    private PRealExpression _realExpression_;
 
-    public AGroupGroupObjectCallExpression()
+    public AExpr11GroupExpression()
     {
         // Constructor
     }
 
-    public AGroupGroupObjectCallExpression(
-        @SuppressWarnings("hiding") PGroupExpression _groupExpression_)
+    public AExpr11GroupExpression(
+        @SuppressWarnings("hiding") PRealExpression _realExpression_)
     {
         // Constructor
-        setGroupExpression(_groupExpression_);
+        setRealExpression(_realExpression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AGroupGroupObjectCallExpression(
-            cloneNode(this._groupExpression_));
+        return new AExpr11GroupExpression(
+            cloneNode(this._realExpression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAGroupGroupObjectCallExpression(this);
+        ((Analysis) sw).caseAExpr11GroupExpression(this);
     }
 
-    public PGroupExpression getGroupExpression()
+    public PRealExpression getRealExpression()
     {
-        return this._groupExpression_;
+        return this._realExpression_;
     }
 
-    public void setGroupExpression(PGroupExpression node)
+    public void setRealExpression(PRealExpression node)
     {
-        if(this._groupExpression_ != null)
+        if(this._realExpression_ != null)
         {
-            this._groupExpression_.parent(null);
+            this._realExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AGroupGroupObjectCallExpression extends PGroupObjectCallExpre
             node.parent(this);
         }
 
-        this._groupExpression_ = node;
+        this._realExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._groupExpression_);
+            + toString(this._realExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._groupExpression_ == child)
+        if(this._realExpression_ == child)
         {
-            this._groupExpression_ = null;
+            this._realExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AGroupGroupObjectCallExpression extends PGroupObjectCallExpre
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._groupExpression_ == oldChild)
+        if(this._realExpression_ == oldChild)
         {
-            setGroupExpression((PGroupExpression) newChild);
+            setRealExpression((PRealExpression) newChild);
             return;
         }
 

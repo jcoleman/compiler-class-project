@@ -1714,75 +1714,25 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outAImplicitObjectCallGroupObjectCallExpression(node);
     }
 
-    public void inAGroupGroupObjectCallExpression(AGroupGroupObjectCallExpression node)
+    public void inAExpr8GroupObjectCallExpression(AExpr8GroupObjectCallExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAGroupGroupObjectCallExpression(AGroupGroupObjectCallExpression node)
+    public void outAExpr8GroupObjectCallExpression(AExpr8GroupObjectCallExpression node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAGroupGroupObjectCallExpression(AGroupGroupObjectCallExpression node)
+    public void caseAExpr8GroupObjectCallExpression(AExpr8GroupObjectCallExpression node)
     {
-        inAGroupGroupObjectCallExpression(node);
-        if(node.getGroupExpression() != null)
-        {
-            node.getGroupExpression().apply(this);
-        }
-        outAGroupGroupObjectCallExpression(node);
-    }
-
-    public void inAGroupGroupExpression(AGroupGroupExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAGroupGroupExpression(AGroupGroupExpression node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAGroupGroupExpression(AGroupGroupExpression node)
-    {
-        inAGroupGroupExpression(node);
-        if(node.getLPar() != null)
-        {
-            node.getLPar().apply(this);
-        }
-        if(node.getExpression() != null)
-        {
-            node.getExpression().apply(this);
-        }
-        if(node.getRPar() != null)
-        {
-            node.getRPar().apply(this);
-        }
-        outAGroupGroupExpression(node);
-    }
-
-    public void inAExpr8GroupExpression(AExpr8GroupExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAExpr8GroupExpression(AExpr8GroupExpression node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAExpr8GroupExpression(AExpr8GroupExpression node)
-    {
-        inAExpr8GroupExpression(node);
+        inAExpr8GroupObjectCallExpression(node);
         if(node.getObjectCallExpression() != null)
         {
             node.getObjectCallExpression().apply(this);
         }
-        outAExpr8GroupExpression(node);
+        outAExpr8GroupObjectCallExpression(node);
     }
 
     public void inAGetAtObjectCallExpression(AGetAtObjectCallExpression node)
@@ -1862,11 +1812,61 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAExpr10CallExpression(AExpr10CallExpression node)
     {
         inAExpr10CallExpression(node);
+        if(node.getGroupExpression() != null)
+        {
+            node.getGroupExpression().apply(this);
+        }
+        outAExpr10CallExpression(node);
+    }
+
+    public void inAGroupGroupExpression(AGroupGroupExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAGroupGroupExpression(AGroupGroupExpression node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAGroupGroupExpression(AGroupGroupExpression node)
+    {
+        inAGroupGroupExpression(node);
+        if(node.getLPar() != null)
+        {
+            node.getLPar().apply(this);
+        }
+        if(node.getExpression() != null)
+        {
+            node.getExpression().apply(this);
+        }
+        if(node.getRPar() != null)
+        {
+            node.getRPar().apply(this);
+        }
+        outAGroupGroupExpression(node);
+    }
+
+    public void inAExpr11GroupExpression(AExpr11GroupExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAExpr11GroupExpression(AExpr11GroupExpression node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAExpr11GroupExpression(AExpr11GroupExpression node)
+    {
+        inAExpr11GroupExpression(node);
         if(node.getRealExpression() != null)
         {
             node.getRealExpression().apply(this);
         }
-        outAExpr10CallExpression(node);
+        outAExpr11GroupExpression(node);
     }
 
     public void inAIdentifierRealExpression(AIdentifierRealExpression node)

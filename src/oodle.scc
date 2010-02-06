@@ -155,10 +155,10 @@ Productions
   add_expression = {add} add_expression add_operator mult_expression | {expr5} mult_expression;
   mult_expression = {mult} mult_expression mult_operator call_expression | {expr6} unary_expression;
   unary_expression = {unary} unary_operator unary_expression | {expr7} group_object_call_expression;
-  group_object_call_expression = {implicit_object_call} group_object_call_expression object_call | {group} group_expression;
-  group_expression = {group} T.l_par expression T.r_par | {expr8} object_call_expression;
+  group_object_call_expression = {implicit_object_call} group_object_call_expression object_call | {expr8} object_call_expression;
   object_call_expression = {get_at} get_at_reference | {expr9} call_expression;
-  call_expression = {call} method_call | {expr10} real_expression;
+  call_expression = {call} method_call | {expr10} group_expression;
+  group_expression = {group} T.l_par expression T.r_par | {expr11} real_expression;
   real_expression = {identifier} T.id
                     | {string} T.strlit | {int} T.intlit
                     | {true} T.true | {false} T.false | {null} T.null | {me} T.me

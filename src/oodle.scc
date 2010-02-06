@@ -93,20 +93,20 @@ Productions
   
   class_tail = T.eol* class_def;
   class_inheritance = T.inherits T.from id;
-  class_def = T.klass [begin]:T.id class_inheritance? T.is T.eol*
+  class_def = T.klass [begin]:T.id class_inheritance? T.is T.eol+
               var_declaration*
               method_declaration*
               T.end [class_end]:T.id;
   
-  var_declaration = T.id var_type_declaration? var_instantiation? T.eol*;
+  var_declaration = T.id var_type_declaration? var_instantiation? T.eol+;
   var_type_declaration = T.colon var_type;
   var_instantiation = T.assignment_op expression;
   
-  method_declaration = [method_dec_begin]:id T.l_par argument_list? T.r_par var_type_declaration? T.is [method_begin]:T.eol*
+  method_declaration = [method_dec_begin]:id T.l_par argument_list? T.r_par var_type_declaration? T.is [method_begin]:T.eol+
                        var_declaration*
-                       T.begin [method_middle]:T.eol*
+                       T.begin [method_middle]:T.eol+
                        statement_list
-                       T.end [method_dec_end]:T.id [method_end]:T.eol*;
+                       T.end [method_dec_end]:T.id [method_end]:T.eol+;
   
   argument_list = argument_declaration_head* argument_declaration;
   argument_declaration_head = argument_declaration T.semicolon;
@@ -116,19 +116,19 @@ Productions
   array_var_type = {test2} var_type T.l_bracket expression T.r_bracket;
   
   statement_list = statement_head*;
-  statement_head = statement T.eol*;
+  statement_head = statement T.eol+;
   statement = {assignment} assignment_statement | {if} if_statement | {loop} loop_statement | {call} call_statement;
   
   assignment_statement = {test3} T.id bracket_operation* var_instantiation;
   
-  if_statement = {test4} [begin_if]:T.if expression T.then T.eol*
+  if_statement = {test4} [begin_if]:T.if expression T.then T.eol+
                  statement_list
                  if_statement_else?
                  T.end [if_end]:T.if;
-  if_statement_else = T.else T.eol*
+  if_statement_else = T.else T.eol+
                       statement_list;
   
-  loop_statement = {test5} [loop_begin]:T.loop T.while expression T.eol*
+  loop_statement = {test5} [loop_begin]:T.loop T.while expression T.eol+
                    statement_list
                    T.end [loop_end]:T.loop;
   

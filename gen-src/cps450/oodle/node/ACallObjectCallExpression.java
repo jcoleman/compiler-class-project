@@ -7,6 +7,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class ACallObjectCallExpression extends PObjectCallExpression
 {
+    private PObjectCallExpression _objectCallExpression_;
     private PObjectCall _objectCall_;
 
     public ACallObjectCallExpression()
@@ -15,9 +16,12 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     }
 
     public ACallObjectCallExpression(
+        @SuppressWarnings("hiding") PObjectCallExpression _objectCallExpression_,
         @SuppressWarnings("hiding") PObjectCall _objectCall_)
     {
         // Constructor
+        setObjectCallExpression(_objectCallExpression_);
+
         setObjectCall(_objectCall_);
 
     }
@@ -26,12 +30,38 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     public Object clone()
     {
         return new ACallObjectCallExpression(
+            cloneNode(this._objectCallExpression_),
             cloneNode(this._objectCall_));
     }
 
     public void apply(Switch sw)
     {
         ((Analysis) sw).caseACallObjectCallExpression(this);
+    }
+
+    public PObjectCallExpression getObjectCallExpression()
+    {
+        return this._objectCallExpression_;
+    }
+
+    public void setObjectCallExpression(PObjectCallExpression node)
+    {
+        if(this._objectCallExpression_ != null)
+        {
+            this._objectCallExpression_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._objectCallExpression_ = node;
     }
 
     public PObjectCall getObjectCall()
@@ -63,6 +93,7 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     public String toString()
     {
         return ""
+            + toString(this._objectCallExpression_)
             + toString(this._objectCall_);
     }
 
@@ -70,6 +101,12 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
+        if(this._objectCallExpression_ == child)
+        {
+            this._objectCallExpression_ = null;
+            return;
+        }
+
         if(this._objectCall_ == child)
         {
             this._objectCall_ = null;
@@ -83,6 +120,12 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
+        if(this._objectCallExpression_ == oldChild)
+        {
+            setObjectCallExpression((PObjectCallExpression) newChild);
+            return;
+        }
+
         if(this._objectCall_ == oldChild)
         {
             setObjectCall((PObjectCall) newChild);

@@ -921,6 +921,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getObjectCall().apply(this);
         }
+        if(node.getObjectCallExpression() != null)
+        {
+            node.getObjectCallExpression().apply(this);
+        }
         outAObjectCallStatement(node);
     }
 
@@ -1247,10 +1251,6 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         if(node.getPeriod() != null)
         {
             node.getPeriod().apply(this);
-        }
-        if(node.getObjectCallExpression() != null)
-        {
-            node.getObjectCallExpression().apply(this);
         }
         outAObjectCall(node);
     }
@@ -1797,6 +1797,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         if(node.getObjectCall() != null)
         {
             node.getObjectCall().apply(this);
+        }
+        if(node.getObjectCallExpression() != null)
+        {
+            node.getObjectCallExpression().apply(this);
         }
         outACallObjectCallExpression(node);
     }

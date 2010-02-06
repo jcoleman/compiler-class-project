@@ -898,6 +898,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAObjectCallStatement(AObjectCallStatement node)
     {
         inAObjectCallStatement(node);
+        if(node.getObjectCallExpression() != null)
+        {
+            node.getObjectCallExpression().apply(this);
+        }
         if(node.getObjectCall() != null)
         {
             node.getObjectCall().apply(this);
@@ -1220,10 +1224,6 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAObjectCall(AObjectCall node)
     {
         inAObjectCall(node);
-        if(node.getObjectCallExpression() != null)
-        {
-            node.getObjectCallExpression().apply(this);
-        }
         if(node.getPeriod() != null)
         {
             node.getPeriod().apply(this);
@@ -1774,6 +1774,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseACallObjectCallExpression(ACallObjectCallExpression node)
     {
         inACallObjectCallExpression(node);
+        if(node.getObjectCallExpression() != null)
+        {
+            node.getObjectCallExpression().apply(this);
+        }
         if(node.getObjectCall() != null)
         {
             node.getObjectCall().apply(this);

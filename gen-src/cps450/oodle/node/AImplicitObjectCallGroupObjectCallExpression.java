@@ -5,22 +5,22 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ACallObjectCallExpression extends PObjectCallExpression
+public final class AImplicitObjectCallGroupObjectCallExpression extends PGroupObjectCallExpression
 {
-    private PObjectCallExpression _objectCallExpression_;
+    private PGroupObjectCallExpression _groupObjectCallExpression_;
     private PObjectCall _objectCall_;
 
-    public ACallObjectCallExpression()
+    public AImplicitObjectCallGroupObjectCallExpression()
     {
         // Constructor
     }
 
-    public ACallObjectCallExpression(
-        @SuppressWarnings("hiding") PObjectCallExpression _objectCallExpression_,
+    public AImplicitObjectCallGroupObjectCallExpression(
+        @SuppressWarnings("hiding") PGroupObjectCallExpression _groupObjectCallExpression_,
         @SuppressWarnings("hiding") PObjectCall _objectCall_)
     {
         // Constructor
-        setObjectCallExpression(_objectCallExpression_);
+        setGroupObjectCallExpression(_groupObjectCallExpression_);
 
         setObjectCall(_objectCall_);
 
@@ -29,26 +29,26 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     @Override
     public Object clone()
     {
-        return new ACallObjectCallExpression(
-            cloneNode(this._objectCallExpression_),
+        return new AImplicitObjectCallGroupObjectCallExpression(
+            cloneNode(this._groupObjectCallExpression_),
             cloneNode(this._objectCall_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseACallObjectCallExpression(this);
+        ((Analysis) sw).caseAImplicitObjectCallGroupObjectCallExpression(this);
     }
 
-    public PObjectCallExpression getObjectCallExpression()
+    public PGroupObjectCallExpression getGroupObjectCallExpression()
     {
-        return this._objectCallExpression_;
+        return this._groupObjectCallExpression_;
     }
 
-    public void setObjectCallExpression(PObjectCallExpression node)
+    public void setGroupObjectCallExpression(PGroupObjectCallExpression node)
     {
-        if(this._objectCallExpression_ != null)
+        if(this._groupObjectCallExpression_ != null)
         {
-            this._objectCallExpression_.parent(null);
+            this._groupObjectCallExpression_.parent(null);
         }
 
         if(node != null)
@@ -61,7 +61,7 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
             node.parent(this);
         }
 
-        this._objectCallExpression_ = node;
+        this._groupObjectCallExpression_ = node;
     }
 
     public PObjectCall getObjectCall()
@@ -93,7 +93,7 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     public String toString()
     {
         return ""
-            + toString(this._objectCallExpression_)
+            + toString(this._groupObjectCallExpression_)
             + toString(this._objectCall_);
     }
 
@@ -101,9 +101,9 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._objectCallExpression_ == child)
+        if(this._groupObjectCallExpression_ == child)
         {
-            this._objectCallExpression_ = null;
+            this._groupObjectCallExpression_ = null;
             return;
         }
 
@@ -120,9 +120,9 @@ public final class ACallObjectCallExpression extends PObjectCallExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._objectCallExpression_ == oldChild)
+        if(this._groupObjectCallExpression_ == oldChild)
         {
-            setObjectCallExpression((PObjectCallExpression) newChild);
+            setGroupObjectCallExpression((PGroupObjectCallExpression) newChild);
             return;
         }
 

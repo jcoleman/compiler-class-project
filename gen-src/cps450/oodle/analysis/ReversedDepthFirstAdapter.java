@@ -1702,11 +1702,57 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAExpr7UnaryExpression(AExpr7UnaryExpression node)
     {
         inAExpr7UnaryExpression(node);
+        if(node.getGroupObjectCallExpression() != null)
+        {
+            node.getGroupObjectCallExpression().apply(this);
+        }
+        outAExpr7UnaryExpression(node);
+    }
+
+    public void inAImplicitObjectCallGroupObjectCallExpression(AImplicitObjectCallGroupObjectCallExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAImplicitObjectCallGroupObjectCallExpression(AImplicitObjectCallGroupObjectCallExpression node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAImplicitObjectCallGroupObjectCallExpression(AImplicitObjectCallGroupObjectCallExpression node)
+    {
+        inAImplicitObjectCallGroupObjectCallExpression(node);
+        if(node.getObjectCall() != null)
+        {
+            node.getObjectCall().apply(this);
+        }
+        if(node.getGroupObjectCallExpression() != null)
+        {
+            node.getGroupObjectCallExpression().apply(this);
+        }
+        outAImplicitObjectCallGroupObjectCallExpression(node);
+    }
+
+    public void inAGroupGroupObjectCallExpression(AGroupGroupObjectCallExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAGroupGroupObjectCallExpression(AGroupGroupObjectCallExpression node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAGroupGroupObjectCallExpression(AGroupGroupObjectCallExpression node)
+    {
+        inAGroupGroupObjectCallExpression(node);
         if(node.getGroupExpression() != null)
         {
             node.getGroupExpression().apply(this);
         }
-        outAExpr7UnaryExpression(node);
+        outAGroupGroupObjectCallExpression(node);
     }
 
     public void inAGroupGroupExpression(AGroupGroupExpression node)
@@ -1778,31 +1824,6 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             node.getGetAtReference().apply(this);
         }
         outAGetAtObjectCallExpression(node);
-    }
-
-    public void inACallObjectCallExpression(ACallObjectCallExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outACallObjectCallExpression(ACallObjectCallExpression node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseACallObjectCallExpression(ACallObjectCallExpression node)
-    {
-        inACallObjectCallExpression(node);
-        if(node.getObjectCall() != null)
-        {
-            node.getObjectCall().apply(this);
-        }
-        if(node.getObjectCallExpression() != null)
-        {
-            node.getObjectCallExpression().apply(this);
-        }
-        outACallObjectCallExpression(node);
     }
 
     public void inAExpr9ObjectCallExpression(AExpr9ObjectCallExpression node)

@@ -73,10 +73,11 @@ public interface Analysis extends Switch
     void caseAExpr6MultExpression(AExpr6MultExpression node);
     void caseAUnaryUnaryExpression(AUnaryUnaryExpression node);
     void caseAExpr7UnaryExpression(AExpr7UnaryExpression node);
+    void caseAImplicitObjectCallGroupObjectCallExpression(AImplicitObjectCallGroupObjectCallExpression node);
+    void caseAGroupGroupObjectCallExpression(AGroupGroupObjectCallExpression node);
     void caseAGroupGroupExpression(AGroupGroupExpression node);
     void caseAExpr8GroupExpression(AExpr8GroupExpression node);
     void caseAGetAtObjectCallExpression(AGetAtObjectCallExpression node);
-    void caseACallObjectCallExpression(ACallObjectCallExpression node);
     void caseAExpr9ObjectCallExpression(AExpr9ObjectCallExpression node);
     void caseACallCallExpression(ACallCallExpression node);
     void caseAExpr10CallExpression(AExpr10CallExpression node);

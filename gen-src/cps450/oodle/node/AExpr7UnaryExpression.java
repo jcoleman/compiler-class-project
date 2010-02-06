@@ -7,7 +7,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AExpr7UnaryExpression extends PUnaryExpression
 {
-    private PGroupExpression _groupExpression_;
+    private PGroupObjectCallExpression _groupObjectCallExpression_;
 
     public AExpr7UnaryExpression()
     {
@@ -15,10 +15,10 @@ public final class AExpr7UnaryExpression extends PUnaryExpression
     }
 
     public AExpr7UnaryExpression(
-        @SuppressWarnings("hiding") PGroupExpression _groupExpression_)
+        @SuppressWarnings("hiding") PGroupObjectCallExpression _groupObjectCallExpression_)
     {
         // Constructor
-        setGroupExpression(_groupExpression_);
+        setGroupObjectCallExpression(_groupObjectCallExpression_);
 
     }
 
@@ -26,7 +26,7 @@ public final class AExpr7UnaryExpression extends PUnaryExpression
     public Object clone()
     {
         return new AExpr7UnaryExpression(
-            cloneNode(this._groupExpression_));
+            cloneNode(this._groupObjectCallExpression_));
     }
 
     public void apply(Switch sw)
@@ -34,16 +34,16 @@ public final class AExpr7UnaryExpression extends PUnaryExpression
         ((Analysis) sw).caseAExpr7UnaryExpression(this);
     }
 
-    public PGroupExpression getGroupExpression()
+    public PGroupObjectCallExpression getGroupObjectCallExpression()
     {
-        return this._groupExpression_;
+        return this._groupObjectCallExpression_;
     }
 
-    public void setGroupExpression(PGroupExpression node)
+    public void setGroupObjectCallExpression(PGroupObjectCallExpression node)
     {
-        if(this._groupExpression_ != null)
+        if(this._groupObjectCallExpression_ != null)
         {
-            this._groupExpression_.parent(null);
+            this._groupObjectCallExpression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +56,23 @@ public final class AExpr7UnaryExpression extends PUnaryExpression
             node.parent(this);
         }
 
-        this._groupExpression_ = node;
+        this._groupObjectCallExpression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._groupExpression_);
+            + toString(this._groupObjectCallExpression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._groupExpression_ == child)
+        if(this._groupObjectCallExpression_ == child)
         {
-            this._groupExpression_ = null;
+            this._groupObjectCallExpression_ = null;
             return;
         }
 
@@ -83,9 +83,9 @@ public final class AExpr7UnaryExpression extends PUnaryExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._groupExpression_ == oldChild)
+        if(this._groupObjectCallExpression_ == oldChild)
         {
-            setGroupExpression((PGroupExpression) newChild);
+            setGroupObjectCallExpression((PGroupObjectCallExpression) newChild);
             return;
         }
 

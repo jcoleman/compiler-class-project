@@ -374,6 +374,16 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseAImplicitObjectCallGroupObjectCallExpression(AImplicitObjectCallGroupObjectCallExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAGroupGroupObjectCallExpression(AGroupGroupObjectCallExpression node)
+    {
+        defaultCase(node);
+    }
+
     public void caseAGroupGroupExpression(AGroupGroupExpression node)
     {
         defaultCase(node);
@@ -385,11 +395,6 @@ public class AnalysisAdapter implements Analysis
     }
 
     public void caseAGetAtObjectCallExpression(AGetAtObjectCallExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseACallObjectCallExpression(ACallObjectCallExpression node)
     {
         defaultCase(node);
     }

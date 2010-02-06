@@ -135,7 +135,7 @@ Productions
   call_statement = {object} object_call | {normal} method_call;
   
   
-  expression_list = expression_head* expression;
+  expression_list = {expressions} expression_head* expression | {empty_expression_list} ;
   expression_head = expression T.comma;
   
   unary_operator = {negate} T.minus_op | {positive} T.plus_op | {not} T.not;

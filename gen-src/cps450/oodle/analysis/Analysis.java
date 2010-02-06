@@ -41,7 +41,8 @@ public interface Analysis extends Switch
     void caseATest5LoopStatement(ATest5LoopStatement node);
     void caseAObjectCallStatement(AObjectCallStatement node);
     void caseANormalCallStatement(ANormalCallStatement node);
-    void caseAExpressionList(AExpressionList node);
+    void caseAExpressionsExpressionList(AExpressionsExpressionList node);
+    void caseAEmptyExpressionListExpressionList(AEmptyExpressionListExpressionList node);
     void caseAExpressionHead(AExpressionHead node);
     void caseANegateUnaryOperator(ANegateUnaryOperator node);
     void caseAPositiveUnaryOperator(APositiveUnaryOperator node);

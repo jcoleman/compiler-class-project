@@ -6,17 +6,17 @@ import java.util.*;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AExpressionList extends PExpressionList
+public final class AExpressionsExpressionList extends PExpressionList
 {
     private final LinkedList<PExpressionHead> _expressionHead_ = new LinkedList<PExpressionHead>();
     private PExpression _expression_;
 
-    public AExpressionList()
+    public AExpressionsExpressionList()
     {
         // Constructor
     }
 
-    public AExpressionList(
+    public AExpressionsExpressionList(
         @SuppressWarnings("hiding") List<PExpressionHead> _expressionHead_,
         @SuppressWarnings("hiding") PExpression _expression_)
     {
@@ -30,14 +30,14 @@ public final class AExpressionList extends PExpressionList
     @Override
     public Object clone()
     {
-        return new AExpressionList(
+        return new AExpressionsExpressionList(
             cloneList(this._expressionHead_),
             cloneNode(this._expression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAExpressionList(this);
+        ((Analysis) sw).caseAExpressionsExpressionList(this);
     }
 
     public LinkedList<PExpressionHead> getExpressionHead()

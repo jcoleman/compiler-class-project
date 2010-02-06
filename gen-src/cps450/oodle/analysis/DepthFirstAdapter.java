@@ -926,20 +926,20 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outANormalCallStatement(node);
     }
 
-    public void inAExpressionList(AExpressionList node)
+    public void inAExpressionsExpressionList(AExpressionsExpressionList node)
     {
         defaultIn(node);
     }
 
-    public void outAExpressionList(AExpressionList node)
+    public void outAExpressionsExpressionList(AExpressionsExpressionList node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAExpressionList(AExpressionList node)
+    public void caseAExpressionsExpressionList(AExpressionsExpressionList node)
     {
-        inAExpressionList(node);
+        inAExpressionsExpressionList(node);
         {
             List<PExpressionHead> copy = new ArrayList<PExpressionHead>(node.getExpressionHead());
             for(PExpressionHead e : copy)
@@ -951,7 +951,24 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getExpression().apply(this);
         }
-        outAExpressionList(node);
+        outAExpressionsExpressionList(node);
+    }
+
+    public void inAEmptyExpressionListExpressionList(AEmptyExpressionListExpressionList node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAEmptyExpressionListExpressionList(AEmptyExpressionListExpressionList node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAEmptyExpressionListExpressionList(AEmptyExpressionListExpressionList node)
+    {
+        inAEmptyExpressionListExpressionList(node);
+        outAEmptyExpressionListExpressionList(node);
     }
 
     public void inAExpressionHead(AExpressionHead node)

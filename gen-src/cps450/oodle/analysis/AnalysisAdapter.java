@@ -214,7 +214,12 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAExpressionList(AExpressionList node)
+    public void caseAExpressionsExpressionList(AExpressionsExpressionList node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAEmptyExpressionListExpressionList(AEmptyExpressionListExpressionList node)
     {
         defaultCase(node);
     }

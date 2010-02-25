@@ -8,20 +8,12 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AMethodDeclaration extends PMethodDeclaration
 {
-    private TId _methodDecBegin_;
-    private TLPar _lPar_;
-    private PArgumentList _argumentList_;
-    private TRPar _rPar_;
-    private PVarTypeDeclaration _varTypeDeclaration_;
-    private TIs _is_;
-    private final LinkedList<TEol> _methodBegin_ = new LinkedList<TEol>();
+    private TId _beginName_;
+    private final LinkedList<PArgumentDeclaration> _argumentDeclaration_ = new LinkedList<PArgumentDeclaration>();
+    private PType _type_;
     private final LinkedList<PVarDeclaration> _varDeclaration_ = new LinkedList<PVarDeclaration>();
-    private TBegin _begin_;
-    private final LinkedList<TEol> _methodMiddle_ = new LinkedList<TEol>();
-    private PStatementList _statementList_;
-    private TEnd _end_;
-    private TId _methodDecEnd_;
-    private final LinkedList<TEol> _methodEnd_ = new LinkedList<TEol>();
+    private final LinkedList<PStatement> _statement_ = new LinkedList<PStatement>();
+    private TId _endName_;
 
     public AMethodDeclaration()
     {
@@ -29,49 +21,25 @@ public final class AMethodDeclaration extends PMethodDeclaration
     }
 
     public AMethodDeclaration(
-        @SuppressWarnings("hiding") TId _methodDecBegin_,
-        @SuppressWarnings("hiding") TLPar _lPar_,
-        @SuppressWarnings("hiding") PArgumentList _argumentList_,
-        @SuppressWarnings("hiding") TRPar _rPar_,
-        @SuppressWarnings("hiding") PVarTypeDeclaration _varTypeDeclaration_,
-        @SuppressWarnings("hiding") TIs _is_,
-        @SuppressWarnings("hiding") List<TEol> _methodBegin_,
+        @SuppressWarnings("hiding") TId _beginName_,
+        @SuppressWarnings("hiding") List<PArgumentDeclaration> _argumentDeclaration_,
+        @SuppressWarnings("hiding") PType _type_,
         @SuppressWarnings("hiding") List<PVarDeclaration> _varDeclaration_,
-        @SuppressWarnings("hiding") TBegin _begin_,
-        @SuppressWarnings("hiding") List<TEol> _methodMiddle_,
-        @SuppressWarnings("hiding") PStatementList _statementList_,
-        @SuppressWarnings("hiding") TEnd _end_,
-        @SuppressWarnings("hiding") TId _methodDecEnd_,
-        @SuppressWarnings("hiding") List<TEol> _methodEnd_)
+        @SuppressWarnings("hiding") List<PStatement> _statement_,
+        @SuppressWarnings("hiding") TId _endName_)
     {
         // Constructor
-        setMethodDecBegin(_methodDecBegin_);
+        setBeginName(_beginName_);
 
-        setLPar(_lPar_);
+        setArgumentDeclaration(_argumentDeclaration_);
 
-        setArgumentList(_argumentList_);
-
-        setRPar(_rPar_);
-
-        setVarTypeDeclaration(_varTypeDeclaration_);
-
-        setIs(_is_);
-
-        setMethodBegin(_methodBegin_);
+        setType(_type_);
 
         setVarDeclaration(_varDeclaration_);
 
-        setBegin(_begin_);
+        setStatement(_statement_);
 
-        setMethodMiddle(_methodMiddle_);
-
-        setStatementList(_statementList_);
-
-        setEnd(_end_);
-
-        setMethodDecEnd(_methodDecEnd_);
-
-        setMethodEnd(_methodEnd_);
+        setEndName(_endName_);
 
     }
 
@@ -79,20 +47,12 @@ public final class AMethodDeclaration extends PMethodDeclaration
     public Object clone()
     {
         return new AMethodDeclaration(
-            cloneNode(this._methodDecBegin_),
-            cloneNode(this._lPar_),
-            cloneNode(this._argumentList_),
-            cloneNode(this._rPar_),
-            cloneNode(this._varTypeDeclaration_),
-            cloneNode(this._is_),
-            cloneList(this._methodBegin_),
+            cloneNode(this._beginName_),
+            cloneList(this._argumentDeclaration_),
+            cloneNode(this._type_),
             cloneList(this._varDeclaration_),
-            cloneNode(this._begin_),
-            cloneList(this._methodMiddle_),
-            cloneNode(this._statementList_),
-            cloneNode(this._end_),
-            cloneNode(this._methodDecEnd_),
-            cloneList(this._methodEnd_));
+            cloneList(this._statement_),
+            cloneNode(this._endName_));
     }
 
     public void apply(Switch sw)
@@ -100,16 +60,16 @@ public final class AMethodDeclaration extends PMethodDeclaration
         ((Analysis) sw).caseAMethodDeclaration(this);
     }
 
-    public TId getMethodDecBegin()
+    public TId getBeginName()
     {
-        return this._methodDecBegin_;
+        return this._beginName_;
     }
 
-    public void setMethodDecBegin(TId node)
+    public void setBeginName(TId node)
     {
-        if(this._methodDecBegin_ != null)
+        if(this._beginName_ != null)
         {
-            this._methodDecBegin_.parent(null);
+            this._beginName_.parent(null);
         }
 
         if(node != null)
@@ -122,144 +82,19 @@ public final class AMethodDeclaration extends PMethodDeclaration
             node.parent(this);
         }
 
-        this._methodDecBegin_ = node;
+        this._beginName_ = node;
     }
 
-    public TLPar getLPar()
+    public LinkedList<PArgumentDeclaration> getArgumentDeclaration()
     {
-        return this._lPar_;
+        return this._argumentDeclaration_;
     }
 
-    public void setLPar(TLPar node)
+    public void setArgumentDeclaration(List<PArgumentDeclaration> list)
     {
-        if(this._lPar_ != null)
-        {
-            this._lPar_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._lPar_ = node;
-    }
-
-    public PArgumentList getArgumentList()
-    {
-        return this._argumentList_;
-    }
-
-    public void setArgumentList(PArgumentList node)
-    {
-        if(this._argumentList_ != null)
-        {
-            this._argumentList_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._argumentList_ = node;
-    }
-
-    public TRPar getRPar()
-    {
-        return this._rPar_;
-    }
-
-    public void setRPar(TRPar node)
-    {
-        if(this._rPar_ != null)
-        {
-            this._rPar_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._rPar_ = node;
-    }
-
-    public PVarTypeDeclaration getVarTypeDeclaration()
-    {
-        return this._varTypeDeclaration_;
-    }
-
-    public void setVarTypeDeclaration(PVarTypeDeclaration node)
-    {
-        if(this._varTypeDeclaration_ != null)
-        {
-            this._varTypeDeclaration_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._varTypeDeclaration_ = node;
-    }
-
-    public TIs getIs()
-    {
-        return this._is_;
-    }
-
-    public void setIs(TIs node)
-    {
-        if(this._is_ != null)
-        {
-            this._is_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._is_ = node;
-    }
-
-    public LinkedList<TEol> getMethodBegin()
-    {
-        return this._methodBegin_;
-    }
-
-    public void setMethodBegin(List<TEol> list)
-    {
-        this._methodBegin_.clear();
-        this._methodBegin_.addAll(list);
-        for(TEol e : list)
+        this._argumentDeclaration_.clear();
+        this._argumentDeclaration_.addAll(list);
+        for(PArgumentDeclaration e : list)
         {
             if(e.parent() != null)
             {
@@ -268,6 +103,31 @@ public final class AMethodDeclaration extends PMethodDeclaration
 
             e.parent(this);
         }
+    }
+
+    public PType getType()
+    {
+        return this._type_;
+    }
+
+    public void setType(PType node)
+    {
+        if(this._type_ != null)
+        {
+            this._type_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._type_ = node;
     }
 
     public LinkedList<PVarDeclaration> getVarDeclaration()
@@ -290,41 +150,16 @@ public final class AMethodDeclaration extends PMethodDeclaration
         }
     }
 
-    public TBegin getBegin()
+    public LinkedList<PStatement> getStatement()
     {
-        return this._begin_;
+        return this._statement_;
     }
 
-    public void setBegin(TBegin node)
+    public void setStatement(List<PStatement> list)
     {
-        if(this._begin_ != null)
-        {
-            this._begin_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._begin_ = node;
-    }
-
-    public LinkedList<TEol> getMethodMiddle()
-    {
-        return this._methodMiddle_;
-    }
-
-    public void setMethodMiddle(List<TEol> list)
-    {
-        this._methodMiddle_.clear();
-        this._methodMiddle_.addAll(list);
-        for(TEol e : list)
+        this._statement_.clear();
+        this._statement_.addAll(list);
+        for(PStatement e : list)
         {
             if(e.parent() != null)
             {
@@ -335,16 +170,16 @@ public final class AMethodDeclaration extends PMethodDeclaration
         }
     }
 
-    public PStatementList getStatementList()
+    public TId getEndName()
     {
-        return this._statementList_;
+        return this._endName_;
     }
 
-    public void setStatementList(PStatementList node)
+    public void setEndName(TId node)
     {
-        if(this._statementList_ != null)
+        if(this._endName_ != null)
         {
-            this._statementList_.parent(null);
+            this._endName_.parent(null);
         }
 
         if(node != null)
@@ -357,141 +192,39 @@ public final class AMethodDeclaration extends PMethodDeclaration
             node.parent(this);
         }
 
-        this._statementList_ = node;
-    }
-
-    public TEnd getEnd()
-    {
-        return this._end_;
-    }
-
-    public void setEnd(TEnd node)
-    {
-        if(this._end_ != null)
-        {
-            this._end_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._end_ = node;
-    }
-
-    public TId getMethodDecEnd()
-    {
-        return this._methodDecEnd_;
-    }
-
-    public void setMethodDecEnd(TId node)
-    {
-        if(this._methodDecEnd_ != null)
-        {
-            this._methodDecEnd_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._methodDecEnd_ = node;
-    }
-
-    public LinkedList<TEol> getMethodEnd()
-    {
-        return this._methodEnd_;
-    }
-
-    public void setMethodEnd(List<TEol> list)
-    {
-        this._methodEnd_.clear();
-        this._methodEnd_.addAll(list);
-        for(TEol e : list)
-        {
-            if(e.parent() != null)
-            {
-                e.parent().removeChild(e);
-            }
-
-            e.parent(this);
-        }
+        this._endName_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._methodDecBegin_)
-            + toString(this._lPar_)
-            + toString(this._argumentList_)
-            + toString(this._rPar_)
-            + toString(this._varTypeDeclaration_)
-            + toString(this._is_)
-            + toString(this._methodBegin_)
+            + toString(this._beginName_)
+            + toString(this._argumentDeclaration_)
+            + toString(this._type_)
             + toString(this._varDeclaration_)
-            + toString(this._begin_)
-            + toString(this._methodMiddle_)
-            + toString(this._statementList_)
-            + toString(this._end_)
-            + toString(this._methodDecEnd_)
-            + toString(this._methodEnd_);
+            + toString(this._statement_)
+            + toString(this._endName_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._methodDecBegin_ == child)
+        if(this._beginName_ == child)
         {
-            this._methodDecBegin_ = null;
+            this._beginName_ = null;
             return;
         }
 
-        if(this._lPar_ == child)
+        if(this._argumentDeclaration_.remove(child))
         {
-            this._lPar_ = null;
             return;
         }
 
-        if(this._argumentList_ == child)
+        if(this._type_ == child)
         {
-            this._argumentList_ = null;
-            return;
-        }
-
-        if(this._rPar_ == child)
-        {
-            this._rPar_ = null;
-            return;
-        }
-
-        if(this._varTypeDeclaration_ == child)
-        {
-            this._varTypeDeclaration_ = null;
-            return;
-        }
-
-        if(this._is_ == child)
-        {
-            this._is_ = null;
-            return;
-        }
-
-        if(this._methodBegin_.remove(child))
-        {
+            this._type_ = null;
             return;
         }
 
@@ -500,37 +233,14 @@ public final class AMethodDeclaration extends PMethodDeclaration
             return;
         }
 
-        if(this._begin_ == child)
-        {
-            this._begin_ = null;
-            return;
-        }
-
-        if(this._methodMiddle_.remove(child))
+        if(this._statement_.remove(child))
         {
             return;
         }
 
-        if(this._statementList_ == child)
+        if(this._endName_ == child)
         {
-            this._statementList_ = null;
-            return;
-        }
-
-        if(this._end_ == child)
-        {
-            this._end_ = null;
-            return;
-        }
-
-        if(this._methodDecEnd_ == child)
-        {
-            this._methodDecEnd_ = null;
-            return;
-        }
-
-        if(this._methodEnd_.remove(child))
-        {
+            this._endName_ = null;
             return;
         }
 
@@ -541,49 +251,19 @@ public final class AMethodDeclaration extends PMethodDeclaration
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._methodDecBegin_ == oldChild)
+        if(this._beginName_ == oldChild)
         {
-            setMethodDecBegin((TId) newChild);
+            setBeginName((TId) newChild);
             return;
         }
 
-        if(this._lPar_ == oldChild)
-        {
-            setLPar((TLPar) newChild);
-            return;
-        }
-
-        if(this._argumentList_ == oldChild)
-        {
-            setArgumentList((PArgumentList) newChild);
-            return;
-        }
-
-        if(this._rPar_ == oldChild)
-        {
-            setRPar((TRPar) newChild);
-            return;
-        }
-
-        if(this._varTypeDeclaration_ == oldChild)
-        {
-            setVarTypeDeclaration((PVarTypeDeclaration) newChild);
-            return;
-        }
-
-        if(this._is_ == oldChild)
-        {
-            setIs((TIs) newChild);
-            return;
-        }
-
-        for(ListIterator<TEol> i = this._methodBegin_.listIterator(); i.hasNext();)
+        for(ListIterator<PArgumentDeclaration> i = this._argumentDeclaration_.listIterator(); i.hasNext();)
         {
             if(i.next() == oldChild)
             {
                 if(newChild != null)
                 {
-                    i.set((TEol) newChild);
+                    i.set((PArgumentDeclaration) newChild);
                     newChild.parent(this);
                     oldChild.parent(null);
                     return;
@@ -593,6 +273,12 @@ public final class AMethodDeclaration extends PMethodDeclaration
                 oldChild.parent(null);
                 return;
             }
+        }
+
+        if(this._type_ == oldChild)
+        {
+            setType((PType) newChild);
+            return;
         }
 
         for(ListIterator<PVarDeclaration> i = this._varDeclaration_.listIterator(); i.hasNext();)
@@ -613,19 +299,13 @@ public final class AMethodDeclaration extends PMethodDeclaration
             }
         }
 
-        if(this._begin_ == oldChild)
-        {
-            setBegin((TBegin) newChild);
-            return;
-        }
-
-        for(ListIterator<TEol> i = this._methodMiddle_.listIterator(); i.hasNext();)
+        for(ListIterator<PStatement> i = this._statement_.listIterator(); i.hasNext();)
         {
             if(i.next() == oldChild)
             {
                 if(newChild != null)
                 {
-                    i.set((TEol) newChild);
+                    i.set((PStatement) newChild);
                     newChild.parent(this);
                     oldChild.parent(null);
                     return;
@@ -637,40 +317,10 @@ public final class AMethodDeclaration extends PMethodDeclaration
             }
         }
 
-        if(this._statementList_ == oldChild)
+        if(this._endName_ == oldChild)
         {
-            setStatementList((PStatementList) newChild);
+            setEndName((TId) newChild);
             return;
-        }
-
-        if(this._end_ == oldChild)
-        {
-            setEnd((TEnd) newChild);
-            return;
-        }
-
-        if(this._methodDecEnd_ == oldChild)
-        {
-            setMethodDecEnd((TId) newChild);
-            return;
-        }
-
-        for(ListIterator<TEol> i = this._methodEnd_.listIterator(); i.hasNext();)
-        {
-            if(i.next() == oldChild)
-            {
-                if(newChild != null)
-                {
-                    i.set((TEol) newChild);
-                    newChild.parent(this);
-                    oldChild.parent(null);
-                    return;
-                }
-
-                i.remove();
-                oldChild.parent(null);
-                return;
-            }
         }
 
         throw new RuntimeException("Not a child.");

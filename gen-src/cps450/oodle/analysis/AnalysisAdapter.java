@@ -74,11 +74,6 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAClassInheritance(AClassInheritance node)
-    {
-        defaultCase(node);
-    }
-
     public void caseAClassDef(AClassDef node)
     {
         defaultCase(node);
@@ -89,27 +84,7 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAVarTypeDeclaration(AVarTypeDeclaration node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAVarInstantiation(AVarInstantiation node)
-    {
-        defaultCase(node);
-    }
-
     public void caseAMethodDeclaration(AMethodDeclaration node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAArgumentList(AArgumentList node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAArgumentDeclarationHead(AArgumentDeclarationHead node)
     {
         defaultCase(node);
     }
@@ -119,42 +94,27 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAIntVarType(AIntVarType node)
+    public void caseAOtherType(AOtherType node)
     {
         defaultCase(node);
     }
 
-    public void caseAStringVarType(AStringVarType node)
+    public void caseAIntegerType(AIntegerType node)
     {
         defaultCase(node);
     }
 
-    public void caseABooleanVarType(ABooleanVarType node)
+    public void caseAStringType(AStringType node)
     {
         defaultCase(node);
     }
 
-    public void caseAIdVarType(AIdVarType node)
+    public void caseABooleanType(ABooleanType node)
     {
         defaultCase(node);
     }
 
-    public void caseAArrayVarType(AArrayVarType node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseATest2ArrayVarType(ATest2ArrayVarType node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAStatementList(AStatementList node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAStatementHead(AStatementHead node)
+    public void caseAArrayType(AArrayType node)
     {
         defaultCase(node);
     }
@@ -179,272 +139,137 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseATest3AssignmentStatement(ATest3AssignmentStatement node)
+    public void caseAOrExpression(AOrExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseATest4IfStatement(ATest4IfStatement node)
+    public void caseAAndExpression(AAndExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAIfStatementElse(AIfStatementElse node)
+    public void caseAComparisonExpression(AComparisonExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseATest5LoopStatement(ATest5LoopStatement node)
+    public void caseAConcatenationExpression(AConcatenationExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAObjectCallStatement(AObjectCallStatement node)
+    public void caseAAddExpression(AAddExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseANormalCallStatement(ANormalCallStatement node)
+    public void caseAMultExpression(AMultExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAExpressionsExpressionList(AExpressionsExpressionList node)
+    public void caseAUnaryExpression(AUnaryExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAEmptyExpressionListExpressionList(AEmptyExpressionListExpressionList node)
+    public void caseAArrayExpression(AArrayExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAExpressionHead(AExpressionHead node)
+    public void caseAObjectCallExpression(AObjectCallExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseANegateUnaryOperator(ANegateUnaryOperator node)
+    public void caseACallExpression(ACallExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAPositiveUnaryOperator(APositiveUnaryOperator node)
+    public void caseAGroupExpression(AGroupExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseANotUnaryOperator(ANotUnaryOperator node)
+    public void caseAIdentifierExpression(AIdentifierExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAMultiplyMultOperator(AMultiplyMultOperator node)
+    public void caseAStringExpression(AStringExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseADivideMultOperator(ADivideMultOperator node)
+    public void caseAIntegerExpression(AIntegerExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAAddAddOperator(AAddAddOperator node)
+    public void caseATrueExpression(ATrueExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseASubtractAddOperator(ASubtractAddOperator node)
+    public void caseAFalseExpression(AFalseExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAEqualRelationalOperator(AEqualRelationalOperator node)
+    public void caseANullExpression(ANullExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAGreaterRelationalOperator(AGreaterRelationalOperator node)
+    public void caseAMeExpression(AMeExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAGreaterEqualRelationalOperator(AGreaterEqualRelationalOperator node)
+    public void caseANewObjectExpression(ANewObjectExpression node)
     {
         defaultCase(node);
     }
 
-    public void caseAObjectCall(AObjectCall node)
+    public void caseANotOperator(ANotOperator node)
     {
         defaultCase(node);
     }
 
-    public void caseAMethodCall(AMethodCall node)
+    public void caseAPlusOperator(APlusOperator node)
     {
         defaultCase(node);
     }
 
-    public void caseABracketOperation(ABracketOperation node)
+    public void caseAMinusOperator(AMinusOperator node)
     {
         defaultCase(node);
     }
 
-    public void caseAGetAtReference(AGetAtReference node)
+    public void caseAMultOperator(AMultOperator node)
     {
         defaultCase(node);
     }
 
-    public void caseAExpression(AExpression node)
+    public void caseADivOperator(ADivOperator node)
     {
         defaultCase(node);
     }
 
-    public void caseAOrOrExpression(AOrOrExpression node)
+    public void caseAEqualOperator(AEqualOperator node)
     {
         defaultCase(node);
     }
 
-    public void caseAExpr1OrExpression(AExpr1OrExpression node)
+    public void caseAGreaterOperator(AGreaterOperator node)
     {
         defaultCase(node);
     }
 
-    public void caseAAndAndExpression(AAndAndExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr2AndExpression(AExpr2AndExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseARelationalRelationalExpression(ARelationalRelationalExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr3RelationalExpression(AExpr3RelationalExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAConcatConcatExpression(AConcatConcatExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr4ConcatExpression(AExpr4ConcatExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAAddAddExpression(AAddAddExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr5AddExpression(AExpr5AddExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAMultMultExpression(AMultMultExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr6MultExpression(AExpr6MultExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAUnaryUnaryExpression(AUnaryUnaryExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr7UnaryExpression(AExpr7UnaryExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAImplicitObjectCallGroupObjectCallExpression(AImplicitObjectCallGroupObjectCallExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr8GroupObjectCallExpression(AExpr8GroupObjectCallExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAGetAtObjectCallExpression(AGetAtObjectCallExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr9ObjectCallExpression(AExpr9ObjectCallExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseACallCallExpression(ACallCallExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr10CallExpression(AExpr10CallExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAGroupGroupExpression(AGroupGroupExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAExpr11GroupExpression(AExpr11GroupExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAIdentifierRealExpression(AIdentifierRealExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAStringRealExpression(AStringRealExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAIntRealExpression(AIntRealExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseATrueRealExpression(ATrueRealExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAFalseRealExpression(AFalseRealExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseANullRealExpression(ANullRealExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAMeRealExpression(AMeRealExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseANewRealExpression(ANewRealExpression node)
+    public void caseAGreaterEqualOperator(AGreaterEqualOperator node)
     {
         defaultCase(node);
     }

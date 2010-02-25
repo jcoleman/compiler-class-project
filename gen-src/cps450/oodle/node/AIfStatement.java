@@ -2,12 +2,15 @@
 
 package cps450.oodle.node;
 
+import java.util.*;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
 public final class AIfStatement extends PStatement
 {
-    private PIfStatement _ifStatement_;
+    private PExpression _expression_;
+    private final LinkedList<PStatement> _trueCase_ = new LinkedList<PStatement>();
+    private final LinkedList<PStatement> _falseCase_ = new LinkedList<PStatement>();
 
     public AIfStatement()
     {
@@ -15,10 +18,16 @@ public final class AIfStatement extends PStatement
     }
 
     public AIfStatement(
-        @SuppressWarnings("hiding") PIfStatement _ifStatement_)
+        @SuppressWarnings("hiding") PExpression _expression_,
+        @SuppressWarnings("hiding") List<PStatement> _trueCase_,
+        @SuppressWarnings("hiding") List<PStatement> _falseCase_)
     {
         // Constructor
-        setIfStatement(_ifStatement_);
+        setExpression(_expression_);
+
+        setTrueCase(_trueCase_);
+
+        setFalseCase(_falseCase_);
 
     }
 
@@ -26,7 +35,9 @@ public final class AIfStatement extends PStatement
     public Object clone()
     {
         return new AIfStatement(
-            cloneNode(this._ifStatement_));
+            cloneNode(this._expression_),
+            cloneList(this._trueCase_),
+            cloneList(this._falseCase_));
     }
 
     public void apply(Switch sw)
@@ -34,16 +45,16 @@ public final class AIfStatement extends PStatement
         ((Analysis) sw).caseAIfStatement(this);
     }
 
-    public PIfStatement getIfStatement()
+    public PExpression getExpression()
     {
-        return this._ifStatement_;
+        return this._expression_;
     }
 
-    public void setIfStatement(PIfStatement node)
+    public void setExpression(PExpression node)
     {
-        if(this._ifStatement_ != null)
+        if(this._expression_ != null)
         {
-            this._ifStatement_.parent(null);
+            this._expression_.parent(null);
         }
 
         if(node != null)
@@ -56,23 +67,75 @@ public final class AIfStatement extends PStatement
             node.parent(this);
         }
 
-        this._ifStatement_ = node;
+        this._expression_ = node;
+    }
+
+    public LinkedList<PStatement> getTrueCase()
+    {
+        return this._trueCase_;
+    }
+
+    public void setTrueCase(List<PStatement> list)
+    {
+        this._trueCase_.clear();
+        this._trueCase_.addAll(list);
+        for(PStatement e : list)
+        {
+            if(e.parent() != null)
+            {
+                e.parent().removeChild(e);
+            }
+
+            e.parent(this);
+        }
+    }
+
+    public LinkedList<PStatement> getFalseCase()
+    {
+        return this._falseCase_;
+    }
+
+    public void setFalseCase(List<PStatement> list)
+    {
+        this._falseCase_.clear();
+        this._falseCase_.addAll(list);
+        for(PStatement e : list)
+        {
+            if(e.parent() != null)
+            {
+                e.parent().removeChild(e);
+            }
+
+            e.parent(this);
+        }
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._ifStatement_);
+            + toString(this._expression_)
+            + toString(this._trueCase_)
+            + toString(this._falseCase_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._ifStatement_ == child)
+        if(this._expression_ == child)
         {
-            this._ifStatement_ = null;
+            this._expression_ = null;
+            return;
+        }
+
+        if(this._trueCase_.remove(child))
+        {
+            return;
+        }
+
+        if(this._falseCase_.remove(child))
+        {
             return;
         }
 
@@ -83,10 +146,46 @@ public final class AIfStatement extends PStatement
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._ifStatement_ == oldChild)
+        if(this._expression_ == oldChild)
         {
-            setIfStatement((PIfStatement) newChild);
+            setExpression((PExpression) newChild);
             return;
+        }
+
+        for(ListIterator<PStatement> i = this._trueCase_.listIterator(); i.hasNext();)
+        {
+            if(i.next() == oldChild)
+            {
+                if(newChild != null)
+                {
+                    i.set((PStatement) newChild);
+                    newChild.parent(this);
+                    oldChild.parent(null);
+                    return;
+                }
+
+                i.remove();
+                oldChild.parent(null);
+                return;
+            }
+        }
+
+        for(ListIterator<PStatement> i = this._falseCase_.listIterator(); i.hasNext();)
+        {
+            if(i.next() == oldChild)
+            {
+                if(newChild != null)
+                {
+                    i.set((PStatement) newChild);
+                    newChild.parent(this);
+                    oldChild.parent(null);
+                    return;
+                }
+
+                i.remove();
+                oldChild.parent(null);
+                return;
+            }
         }
 
         throw new RuntimeException("Not a child.");

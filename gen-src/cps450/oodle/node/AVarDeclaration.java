@@ -2,16 +2,14 @@
 
 package cps450.oodle.node;
 
-import java.util.*;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
 public final class AVarDeclaration extends PVarDeclaration
 {
-    private TId _id_;
-    private PVarTypeDeclaration _varTypeDeclaration_;
-    private PVarInstantiation _varInstantiation_;
-    private final LinkedList<TEol> _eol_ = new LinkedList<TEol>();
+    private TId _name_;
+    private PType _type_;
+    private PExpression _instantiation_;
 
     public AVarDeclaration()
     {
@@ -19,19 +17,16 @@ public final class AVarDeclaration extends PVarDeclaration
     }
 
     public AVarDeclaration(
-        @SuppressWarnings("hiding") TId _id_,
-        @SuppressWarnings("hiding") PVarTypeDeclaration _varTypeDeclaration_,
-        @SuppressWarnings("hiding") PVarInstantiation _varInstantiation_,
-        @SuppressWarnings("hiding") List<TEol> _eol_)
+        @SuppressWarnings("hiding") TId _name_,
+        @SuppressWarnings("hiding") PType _type_,
+        @SuppressWarnings("hiding") PExpression _instantiation_)
     {
         // Constructor
-        setId(_id_);
+        setName(_name_);
 
-        setVarTypeDeclaration(_varTypeDeclaration_);
+        setType(_type_);
 
-        setVarInstantiation(_varInstantiation_);
-
-        setEol(_eol_);
+        setInstantiation(_instantiation_);
 
     }
 
@@ -39,10 +34,9 @@ public final class AVarDeclaration extends PVarDeclaration
     public Object clone()
     {
         return new AVarDeclaration(
-            cloneNode(this._id_),
-            cloneNode(this._varTypeDeclaration_),
-            cloneNode(this._varInstantiation_),
-            cloneList(this._eol_));
+            cloneNode(this._name_),
+            cloneNode(this._type_),
+            cloneNode(this._instantiation_));
     }
 
     public void apply(Switch sw)
@@ -50,16 +44,16 @@ public final class AVarDeclaration extends PVarDeclaration
         ((Analysis) sw).caseAVarDeclaration(this);
     }
 
-    public TId getId()
+    public TId getName()
     {
-        return this._id_;
+        return this._name_;
     }
 
-    public void setId(TId node)
+    public void setName(TId node)
     {
-        if(this._id_ != null)
+        if(this._name_ != null)
         {
-            this._id_.parent(null);
+            this._name_.parent(null);
         }
 
         if(node != null)
@@ -72,19 +66,19 @@ public final class AVarDeclaration extends PVarDeclaration
             node.parent(this);
         }
 
-        this._id_ = node;
+        this._name_ = node;
     }
 
-    public PVarTypeDeclaration getVarTypeDeclaration()
+    public PType getType()
     {
-        return this._varTypeDeclaration_;
+        return this._type_;
     }
 
-    public void setVarTypeDeclaration(PVarTypeDeclaration node)
+    public void setType(PType node)
     {
-        if(this._varTypeDeclaration_ != null)
+        if(this._type_ != null)
         {
-            this._varTypeDeclaration_.parent(null);
+            this._type_.parent(null);
         }
 
         if(node != null)
@@ -97,19 +91,19 @@ public final class AVarDeclaration extends PVarDeclaration
             node.parent(this);
         }
 
-        this._varTypeDeclaration_ = node;
+        this._type_ = node;
     }
 
-    public PVarInstantiation getVarInstantiation()
+    public PExpression getInstantiation()
     {
-        return this._varInstantiation_;
+        return this._instantiation_;
     }
 
-    public void setVarInstantiation(PVarInstantiation node)
+    public void setInstantiation(PExpression node)
     {
-        if(this._varInstantiation_ != null)
+        if(this._instantiation_ != null)
         {
-            this._varInstantiation_.parent(null);
+            this._instantiation_.parent(null);
         }
 
         if(node != null)
@@ -122,63 +116,37 @@ public final class AVarDeclaration extends PVarDeclaration
             node.parent(this);
         }
 
-        this._varInstantiation_ = node;
-    }
-
-    public LinkedList<TEol> getEol()
-    {
-        return this._eol_;
-    }
-
-    public void setEol(List<TEol> list)
-    {
-        this._eol_.clear();
-        this._eol_.addAll(list);
-        for(TEol e : list)
-        {
-            if(e.parent() != null)
-            {
-                e.parent().removeChild(e);
-            }
-
-            e.parent(this);
-        }
+        this._instantiation_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._id_)
-            + toString(this._varTypeDeclaration_)
-            + toString(this._varInstantiation_)
-            + toString(this._eol_);
+            + toString(this._name_)
+            + toString(this._type_)
+            + toString(this._instantiation_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._id_ == child)
+        if(this._name_ == child)
         {
-            this._id_ = null;
+            this._name_ = null;
             return;
         }
 
-        if(this._varTypeDeclaration_ == child)
+        if(this._type_ == child)
         {
-            this._varTypeDeclaration_ = null;
+            this._type_ = null;
             return;
         }
 
-        if(this._varInstantiation_ == child)
+        if(this._instantiation_ == child)
         {
-            this._varInstantiation_ = null;
-            return;
-        }
-
-        if(this._eol_.remove(child))
-        {
+            this._instantiation_ = null;
             return;
         }
 
@@ -189,40 +157,22 @@ public final class AVarDeclaration extends PVarDeclaration
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._id_ == oldChild)
+        if(this._name_ == oldChild)
         {
-            setId((TId) newChild);
+            setName((TId) newChild);
             return;
         }
 
-        if(this._varTypeDeclaration_ == oldChild)
+        if(this._type_ == oldChild)
         {
-            setVarTypeDeclaration((PVarTypeDeclaration) newChild);
+            setType((PType) newChild);
             return;
         }
 
-        if(this._varInstantiation_ == oldChild)
+        if(this._instantiation_ == oldChild)
         {
-            setVarInstantiation((PVarInstantiation) newChild);
+            setInstantiation((PExpression) newChild);
             return;
-        }
-
-        for(ListIterator<TEol> i = this._eol_.listIterator(); i.hasNext();)
-        {
-            if(i.next() == oldChild)
-            {
-                if(newChild != null)
-                {
-                    i.set((TEol) newChild);
-                    newChild.parent(this);
-                    oldChild.parent(null);
-                    return;
-                }
-
-                i.remove();
-                oldChild.parent(null);
-                return;
-            }
         }
 
         throw new RuntimeException("Not a child.");

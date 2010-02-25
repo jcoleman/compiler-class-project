@@ -8,16 +8,11 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AClassDef extends PClassDef
 {
-    private TKlass _klass_;
-    private TId _begin_;
-    private PClassInheritance _classInheritance_;
-    private TIs _is_;
-    private final LinkedList<TEol> _eol1_ = new LinkedList<TEol>();
+    private TId _beginName_;
+    private TId _extends_;
     private final LinkedList<PVarDeclaration> _varDeclaration_ = new LinkedList<PVarDeclaration>();
     private final LinkedList<PMethodDeclaration> _methodDeclaration_ = new LinkedList<PMethodDeclaration>();
-    private TEnd _end_;
-    private TId _classEnd_;
-    private final LinkedList<TEol> _eol2_ = new LinkedList<TEol>();
+    private TId _endName_;
 
     public AClassDef()
     {
@@ -25,37 +20,22 @@ public final class AClassDef extends PClassDef
     }
 
     public AClassDef(
-        @SuppressWarnings("hiding") TKlass _klass_,
-        @SuppressWarnings("hiding") TId _begin_,
-        @SuppressWarnings("hiding") PClassInheritance _classInheritance_,
-        @SuppressWarnings("hiding") TIs _is_,
-        @SuppressWarnings("hiding") List<TEol> _eol1_,
+        @SuppressWarnings("hiding") TId _beginName_,
+        @SuppressWarnings("hiding") TId _extends_,
         @SuppressWarnings("hiding") List<PVarDeclaration> _varDeclaration_,
         @SuppressWarnings("hiding") List<PMethodDeclaration> _methodDeclaration_,
-        @SuppressWarnings("hiding") TEnd _end_,
-        @SuppressWarnings("hiding") TId _classEnd_,
-        @SuppressWarnings("hiding") List<TEol> _eol2_)
+        @SuppressWarnings("hiding") TId _endName_)
     {
         // Constructor
-        setKlass(_klass_);
+        setBeginName(_beginName_);
 
-        setBegin(_begin_);
-
-        setClassInheritance(_classInheritance_);
-
-        setIs(_is_);
-
-        setEol1(_eol1_);
+        setExtends(_extends_);
 
         setVarDeclaration(_varDeclaration_);
 
         setMethodDeclaration(_methodDeclaration_);
 
-        setEnd(_end_);
-
-        setClassEnd(_classEnd_);
-
-        setEol2(_eol2_);
+        setEndName(_endName_);
 
     }
 
@@ -63,16 +43,11 @@ public final class AClassDef extends PClassDef
     public Object clone()
     {
         return new AClassDef(
-            cloneNode(this._klass_),
-            cloneNode(this._begin_),
-            cloneNode(this._classInheritance_),
-            cloneNode(this._is_),
-            cloneList(this._eol1_),
+            cloneNode(this._beginName_),
+            cloneNode(this._extends_),
             cloneList(this._varDeclaration_),
             cloneList(this._methodDeclaration_),
-            cloneNode(this._end_),
-            cloneNode(this._classEnd_),
-            cloneList(this._eol2_));
+            cloneNode(this._endName_));
     }
 
     public void apply(Switch sw)
@@ -80,16 +55,16 @@ public final class AClassDef extends PClassDef
         ((Analysis) sw).caseAClassDef(this);
     }
 
-    public TKlass getKlass()
+    public TId getBeginName()
     {
-        return this._klass_;
+        return this._beginName_;
     }
 
-    public void setKlass(TKlass node)
+    public void setBeginName(TId node)
     {
-        if(this._klass_ != null)
+        if(this._beginName_ != null)
         {
-            this._klass_.parent(null);
+            this._beginName_.parent(null);
         }
 
         if(node != null)
@@ -102,19 +77,19 @@ public final class AClassDef extends PClassDef
             node.parent(this);
         }
 
-        this._klass_ = node;
+        this._beginName_ = node;
     }
 
-    public TId getBegin()
+    public TId getExtends()
     {
-        return this._begin_;
+        return this._extends_;
     }
 
-    public void setBegin(TId node)
+    public void setExtends(TId node)
     {
-        if(this._begin_ != null)
+        if(this._extends_ != null)
         {
-            this._begin_.parent(null);
+            this._extends_.parent(null);
         }
 
         if(node != null)
@@ -127,77 +102,7 @@ public final class AClassDef extends PClassDef
             node.parent(this);
         }
 
-        this._begin_ = node;
-    }
-
-    public PClassInheritance getClassInheritance()
-    {
-        return this._classInheritance_;
-    }
-
-    public void setClassInheritance(PClassInheritance node)
-    {
-        if(this._classInheritance_ != null)
-        {
-            this._classInheritance_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._classInheritance_ = node;
-    }
-
-    public TIs getIs()
-    {
-        return this._is_;
-    }
-
-    public void setIs(TIs node)
-    {
-        if(this._is_ != null)
-        {
-            this._is_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._is_ = node;
-    }
-
-    public LinkedList<TEol> getEol1()
-    {
-        return this._eol1_;
-    }
-
-    public void setEol1(List<TEol> list)
-    {
-        this._eol1_.clear();
-        this._eol1_.addAll(list);
-        for(TEol e : list)
-        {
-            if(e.parent() != null)
-            {
-                e.parent().removeChild(e);
-            }
-
-            e.parent(this);
-        }
+        this._extends_ = node;
     }
 
     public LinkedList<PVarDeclaration> getVarDeclaration()
@@ -240,16 +145,16 @@ public final class AClassDef extends PClassDef
         }
     }
 
-    public TEnd getEnd()
+    public TId getEndName()
     {
-        return this._end_;
+        return this._endName_;
     }
 
-    public void setEnd(TEnd node)
+    public void setEndName(TId node)
     {
-        if(this._end_ != null)
+        if(this._endName_ != null)
         {
-            this._end_.parent(null);
+            this._endName_.parent(null);
         }
 
         if(node != null)
@@ -262,100 +167,33 @@ public final class AClassDef extends PClassDef
             node.parent(this);
         }
 
-        this._end_ = node;
-    }
-
-    public TId getClassEnd()
-    {
-        return this._classEnd_;
-    }
-
-    public void setClassEnd(TId node)
-    {
-        if(this._classEnd_ != null)
-        {
-            this._classEnd_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._classEnd_ = node;
-    }
-
-    public LinkedList<TEol> getEol2()
-    {
-        return this._eol2_;
-    }
-
-    public void setEol2(List<TEol> list)
-    {
-        this._eol2_.clear();
-        this._eol2_.addAll(list);
-        for(TEol e : list)
-        {
-            if(e.parent() != null)
-            {
-                e.parent().removeChild(e);
-            }
-
-            e.parent(this);
-        }
+        this._endName_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._klass_)
-            + toString(this._begin_)
-            + toString(this._classInheritance_)
-            + toString(this._is_)
-            + toString(this._eol1_)
+            + toString(this._beginName_)
+            + toString(this._extends_)
             + toString(this._varDeclaration_)
             + toString(this._methodDeclaration_)
-            + toString(this._end_)
-            + toString(this._classEnd_)
-            + toString(this._eol2_);
+            + toString(this._endName_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._klass_ == child)
+        if(this._beginName_ == child)
         {
-            this._klass_ = null;
+            this._beginName_ = null;
             return;
         }
 
-        if(this._begin_ == child)
+        if(this._extends_ == child)
         {
-            this._begin_ = null;
-            return;
-        }
-
-        if(this._classInheritance_ == child)
-        {
-            this._classInheritance_ = null;
-            return;
-        }
-
-        if(this._is_ == child)
-        {
-            this._is_ = null;
-            return;
-        }
-
-        if(this._eol1_.remove(child))
-        {
+            this._extends_ = null;
             return;
         }
 
@@ -369,20 +207,9 @@ public final class AClassDef extends PClassDef
             return;
         }
 
-        if(this._end_ == child)
+        if(this._endName_ == child)
         {
-            this._end_ = null;
-            return;
-        }
-
-        if(this._classEnd_ == child)
-        {
-            this._classEnd_ = null;
-            return;
-        }
-
-        if(this._eol2_.remove(child))
-        {
+            this._endName_ = null;
             return;
         }
 
@@ -393,46 +220,16 @@ public final class AClassDef extends PClassDef
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._klass_ == oldChild)
+        if(this._beginName_ == oldChild)
         {
-            setKlass((TKlass) newChild);
+            setBeginName((TId) newChild);
             return;
         }
 
-        if(this._begin_ == oldChild)
+        if(this._extends_ == oldChild)
         {
-            setBegin((TId) newChild);
+            setExtends((TId) newChild);
             return;
-        }
-
-        if(this._classInheritance_ == oldChild)
-        {
-            setClassInheritance((PClassInheritance) newChild);
-            return;
-        }
-
-        if(this._is_ == oldChild)
-        {
-            setIs((TIs) newChild);
-            return;
-        }
-
-        for(ListIterator<TEol> i = this._eol1_.listIterator(); i.hasNext();)
-        {
-            if(i.next() == oldChild)
-            {
-                if(newChild != null)
-                {
-                    i.set((TEol) newChild);
-                    newChild.parent(this);
-                    oldChild.parent(null);
-                    return;
-                }
-
-                i.remove();
-                oldChild.parent(null);
-                return;
-            }
         }
 
         for(ListIterator<PVarDeclaration> i = this._varDeclaration_.listIterator(); i.hasNext();)
@@ -471,34 +268,10 @@ public final class AClassDef extends PClassDef
             }
         }
 
-        if(this._end_ == oldChild)
+        if(this._endName_ == oldChild)
         {
-            setEnd((TEnd) newChild);
+            setEndName((TId) newChild);
             return;
-        }
-
-        if(this._classEnd_ == oldChild)
-        {
-            setClassEnd((TId) newChild);
-            return;
-        }
-
-        for(ListIterator<TEol> i = this._eol2_.listIterator(); i.hasNext();)
-        {
-            if(i.next() == oldChild)
-            {
-                if(newChild != null)
-                {
-                    i.set((TEol) newChild);
-                    newChild.parent(this);
-                    oldChild.parent(null);
-                    return;
-                }
-
-                i.remove();
-                oldChild.parent(null);
-                return;
-            }
         }
 
         throw new RuntimeException("Not a child.");

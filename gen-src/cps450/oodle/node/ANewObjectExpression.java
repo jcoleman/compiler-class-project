@@ -5,23 +5,19 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AArgumentDeclaration extends PArgumentDeclaration
+public final class ANewObjectExpression extends PExpression
 {
-    private TId _name_;
     private PType _type_;
 
-    public AArgumentDeclaration()
+    public ANewObjectExpression()
     {
         // Constructor
     }
 
-    public AArgumentDeclaration(
-        @SuppressWarnings("hiding") TId _name_,
+    public ANewObjectExpression(
         @SuppressWarnings("hiding") PType _type_)
     {
         // Constructor
-        setName(_name_);
-
         setType(_type_);
 
     }
@@ -29,39 +25,13 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
     @Override
     public Object clone()
     {
-        return new AArgumentDeclaration(
-            cloneNode(this._name_),
+        return new ANewObjectExpression(
             cloneNode(this._type_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAArgumentDeclaration(this);
-    }
-
-    public TId getName()
-    {
-        return this._name_;
-    }
-
-    public void setName(TId node)
-    {
-        if(this._name_ != null)
-        {
-            this._name_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._name_ = node;
+        ((Analysis) sw).caseANewObjectExpression(this);
     }
 
     public PType getType()
@@ -93,7 +63,6 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
     public String toString()
     {
         return ""
-            + toString(this._name_)
             + toString(this._type_);
     }
 
@@ -101,12 +70,6 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._name_ == child)
-        {
-            this._name_ = null;
-            return;
-        }
-
         if(this._type_ == child)
         {
             this._type_ = null;
@@ -120,12 +83,6 @@ public final class AArgumentDeclaration extends PArgumentDeclaration
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._name_ == oldChild)
-        {
-            setName((TId) newChild);
-            return;
-        }
-
         if(this._type_ == oldChild)
         {
             setType((PType) newChild);

@@ -5,17 +5,17 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ACallStatement extends PStatement
+public final class AObjectCallExpression extends PExpression
 {
     private PExpression _object_;
     private PExpression _methodCall_;
 
-    public ACallStatement()
+    public AObjectCallExpression()
     {
         // Constructor
     }
 
-    public ACallStatement(
+    public AObjectCallExpression(
         @SuppressWarnings("hiding") PExpression _object_,
         @SuppressWarnings("hiding") PExpression _methodCall_)
     {
@@ -29,14 +29,14 @@ public final class ACallStatement extends PStatement
     @Override
     public Object clone()
     {
-        return new ACallStatement(
+        return new AObjectCallExpression(
             cloneNode(this._object_),
             cloneNode(this._methodCall_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseACallStatement(this);
+        ((Analysis) sw).caseAObjectCallExpression(this);
     }
 
     public PExpression getObject()

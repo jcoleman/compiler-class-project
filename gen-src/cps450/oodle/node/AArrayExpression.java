@@ -5,50 +5,50 @@ package cps450.oodle.node;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ACallStatement extends PStatement
+public final class AArrayExpression extends PExpression
 {
-    private PExpression _object_;
-    private PExpression _methodCall_;
+    private TId _id_;
+    private PExpression _expression_;
 
-    public ACallStatement()
+    public AArrayExpression()
     {
         // Constructor
     }
 
-    public ACallStatement(
-        @SuppressWarnings("hiding") PExpression _object_,
-        @SuppressWarnings("hiding") PExpression _methodCall_)
+    public AArrayExpression(
+        @SuppressWarnings("hiding") TId _id_,
+        @SuppressWarnings("hiding") PExpression _expression_)
     {
         // Constructor
-        setObject(_object_);
+        setId(_id_);
 
-        setMethodCall(_methodCall_);
+        setExpression(_expression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new ACallStatement(
-            cloneNode(this._object_),
-            cloneNode(this._methodCall_));
+        return new AArrayExpression(
+            cloneNode(this._id_),
+            cloneNode(this._expression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseACallStatement(this);
+        ((Analysis) sw).caseAArrayExpression(this);
     }
 
-    public PExpression getObject()
+    public TId getId()
     {
-        return this._object_;
+        return this._id_;
     }
 
-    public void setObject(PExpression node)
+    public void setId(TId node)
     {
-        if(this._object_ != null)
+        if(this._id_ != null)
         {
-            this._object_.parent(null);
+            this._id_.parent(null);
         }
 
         if(node != null)
@@ -61,19 +61,19 @@ public final class ACallStatement extends PStatement
             node.parent(this);
         }
 
-        this._object_ = node;
+        this._id_ = node;
     }
 
-    public PExpression getMethodCall()
+    public PExpression getExpression()
     {
-        return this._methodCall_;
+        return this._expression_;
     }
 
-    public void setMethodCall(PExpression node)
+    public void setExpression(PExpression node)
     {
-        if(this._methodCall_ != null)
+        if(this._expression_ != null)
         {
-            this._methodCall_.parent(null);
+            this._expression_.parent(null);
         }
 
         if(node != null)
@@ -86,30 +86,30 @@ public final class ACallStatement extends PStatement
             node.parent(this);
         }
 
-        this._methodCall_ = node;
+        this._expression_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._object_)
-            + toString(this._methodCall_);
+            + toString(this._id_)
+            + toString(this._expression_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._object_ == child)
+        if(this._id_ == child)
         {
-            this._object_ = null;
+            this._id_ = null;
             return;
         }
 
-        if(this._methodCall_ == child)
+        if(this._expression_ == child)
         {
-            this._methodCall_ = null;
+            this._expression_ = null;
             return;
         }
 
@@ -120,15 +120,15 @@ public final class ACallStatement extends PStatement
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._object_ == oldChild)
+        if(this._id_ == oldChild)
         {
-            setObject((PExpression) newChild);
+            setId((TId) newChild);
             return;
         }
 
-        if(this._methodCall_ == oldChild)
+        if(this._expression_ == oldChild)
         {
-            setMethodCall((PExpression) newChild);
+            setExpression((PExpression) newChild);
             return;
         }
 

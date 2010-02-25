@@ -89,78 +89,162 @@ Ignored Tokens
   
 
 Productions
-  start = T.eol* class_def*;
+  start {-> start } = T.eol* class_def* {-> New start([class_def]) };
   
-  class_inheritance = T.inherits T.from id;
-  class_def = T.klass [begin]:T.id class_inheritance? T.is [eol1]:T.eol+
-              var_declaration*
-              method_declaration*
-              T.end [class_end]:T.id [eol2]:T.eol*;
+  class_inheritance {-> T.id } = T.inherits T.from id {-> id };
+  class_def {-> class_def } = T.klass [begin]:T.id class_inheritance? T.is [eol1]:T.eol+
+                              var_declaration*
+                              method_declaration*
+                              T.end [class_end]:T.id [eol2]:T.eol*
+                              {-> New class_def(begin, class_inheritance.id, [var_declaration], [method_declaration], class_end) };
   
-  var_declaration = T.id var_type_declaration? var_instantiation? T.eol+;
-  var_type_declaration = T.colon var_type;
-  var_instantiation = T.assignment_op expression;
+  var_declaration {-> var_declaration } = T.id var_type_declaration? var_instantiation? T.eol+
+                                          {-> New var_declaration(id, var_type_declaration.type, var_instantiation.expression) };
+  var_type_declaration {-> type } = T.colon var_type {-> var_type.type };
+  var_instantiation {-> expression } = T.assignment_op expression {-> expression };
   
-  method_declaration = [method_dec_begin]:id T.l_par argument_list? T.r_par var_type_declaration? T.is [method_begin]:T.eol+
-                       var_declaration*
-                       T.begin [method_middle]:T.eol+
-                       statement_list
-                       T.end [method_dec_end]:T.id [method_end]:T.eol+;
+  method_declaration {-> method_declaration } = [method_dec_begin]:id T.l_par argument_declaration_head* argument_declaration? T.r_par var_type_declaration? T.is [method_begin]:T.eol+
+                                                var_declaration*
+                                                T.begin [method_middle]:T.eol+
+                                                statement_list
+                                                T.end [method_dec_end]:T.id [method_end]:T.eol+
+                                                {-> New method_declaration(method_dec_begin, [argument_declaration_head.argument_declaration, argument_declaration], var_type_declaration.type, [var_declaration.var_declaration], [statement_list.statement], method_dec_end) };
   
-  argument_list = argument_declaration_head* argument_declaration;
-  argument_declaration_head = argument_declaration T.semicolon;
-  argument_declaration = T.id var_type_declaration;
+  argument_declaration_head {-> argument_declaration } = argument_declaration T.semicolon {-> argument_declaration.argument_declaration };
+  argument_declaration {-> argument_declaration } = T.id var_type_declaration {-> New argument_declaration(id, var_type_declaration.type) };
   
-  var_type = {int} T.int | {string} T.string | {boolean} T.boolean | {id} T.id | {array} array_var_type;
-  array_var_type = {test2} var_type T.l_bracket expression T.r_bracket;
+  var_type {-> type } = {int} T.int {-> New type.integer(int) }
+                      | {string} T.string {-> New type.string(string) }
+                      | {boolean} T.boolean {-> New type.boolean(boolean) }
+                      | {id} T.id {-> New type.other(id) }
+                      | {array} array_var_type {-> array_var_type.type };
+                      
+  array_var_type {-> type } = {test2} var_type T.l_bracket expression T.r_bracket {-> New type.array(var_type.type, expression) };
   
-  statement_list = statement_head*;
-  statement_head = statement T.eol+;
-  statement = {assignment} assignment_statement | {if} if_statement | {loop} loop_statement | {call} call_statement;
+  statement_list {-> statement* } = statement_head* {-> [statement_head.statement] };
+  statement_head {-> statement } = statement T.eol+ {-> statement };
+  statement {-> statement } = {assignment} assignment_statement {-> assignment_statement.statement }
+                            | {if} if_statement {-> if_statement.statement }
+                            | {loop} loop_statement {-> loop_statement.statement }
+                            | {call} call_statement {-> call_statement.statement };
   
-  assignment_statement = {test3} T.id bracket_operation* var_instantiation;
+  assignment_statement {-> statement } = {test3} T.id bracket_operation* var_instantiation {-> New statement.assignment(id, [bracket_operation.expression], var_instantiation.expression) };
   
-  if_statement = {test4} [begin_if]:T.if expression T.then T.eol+
-                 statement_list
-                 if_statement_else?
-                 T.end [if_end]:T.if;
-  if_statement_else = T.else T.eol+
-                      statement_list;
+  if_statement {-> statement } = {test4} [begin_if]:T.if expression T.then T.eol+
+                                 statement_list
+                                 if_statement_else?
+                                 T.end [if_end]:T.if
+                                 {-> New statement.if(expression, [statement_list.statement], [if_statement_else.statement]) };
+  if_statement_else {-> statement* } = T.else T.eol+
+                                      statement_list {-> [statement_list.statement] };
   
-  loop_statement = {test5} [loop_begin]:T.loop T.while expression T.eol+
-                   statement_list
-                   T.end [loop_end]:T.loop;
+  loop_statement {-> statement } = {test5} [loop_begin]:T.loop T.while expression T.eol+
+                                   statement_list
+                                   T.end [loop_end]:T.loop
+                                   {-> New statement.loop(expression, [statement_list.statement]) };
   
-  call_statement = {object} object_call_expression object_call | {normal} method_call;
+  call_statement {-> statement } = {object} object_call_expression object_call {-> New statement.call(object_call_expression.expression, object_call.expression) }
+  								 | {normal} method_call {-> New statement.call(Null, method_call.expression) };
   
   
-  expression_list = {expressions} expression_head* expression | {empty_expression_list} ;
-  expression_head = expression T.comma;
+  expression_list {-> expression* } = {expressions} expression_head* expression {-> [expression_head.expression, expression] }
+                                   | {empty_expression_list} {-> [] };
+  expression_head {-> expression } = expression T.comma {-> expression };
   
-  unary_operator = {negate} T.minus_op | {positive} T.plus_op | {not} T.not;
-  mult_operator = {multiply} T.mult_op | {divide} T.div_op;
-  add_operator = {add} T.plus_op | {subtract} T.minus_op;
-  relational_operator = {equal} T.eq_op | {greater} T.gt_op | {greater_equal} T.gte_op;
-  object_call = T.period method_call;
-  method_call = T.id T.l_par expression_list T.r_par;
-  bracket_operation = T.l_bracket expression T.r_bracket;
-  get_at_reference = T.id bracket_operation;
+  unary_operator {-> operator} = {negate} T.minus_op {-> New operator.minus() }
+                               | {positive} T.plus_op {-> New operator.plus() }
+                               | {not} T.not {-> New operator.not() };
+  mult_operator {-> operator } = {multiply} T.mult_op {-> New operator.mult() }
+                | {divide} T.div_op {-> New operator.div() };
+  add_operator {-> operator } = {add} T.plus_op {-> New operator.plus() }
+                              | {subtract} T.minus_op {-> New operator.minus() };
+  relational_operator {-> operator } = {equal} T.eq_op {-> New operator.equal() }
+                                     | {greater} T.gt_op {-> New operator.greater() }
+                                     | {greater_equal} T.gte_op{-> New operator.greater_equal() };
+  object_call {-> expression } = T.period method_call {-> method_call.expression };
+  method_call {-> expression } = T.id T.l_par expression_list T.r_par {-> New expression.call(id, [expression_list.expression]) };
+  bracket_operation {-> expression } = T.l_bracket expression T.r_bracket {-> expression };
+  get_at_reference {-> expression } = T.id bracket_operation {-> New expression.array(id, bracket_operation.expression) };
   
-  expression = or_expression;
-  or_expression = {or} or_expression T.or and_expression | {expr1} and_expression;
-  and_expression = {and} and_expression T.and relational_expression | {expr2} relational_expression;
-  relational_expression = {relational} [first]:concat_expression relational_operator [second]:concat_expression | {expr3} concat_expression;
-  concat_expression = {concat} concat_expression T.concat_op add_expression | {expr4} add_expression;
-  add_expression = {add} add_expression add_operator mult_expression | {expr5} mult_expression;
-  mult_expression = {mult} mult_expression mult_operator call_expression | {expr6} unary_expression;
-  unary_expression = {unary} unary_operator unary_expression | {expr7} group_object_call_expression;
-  group_object_call_expression = {implicit_object_call} group_object_call_expression object_call | {expr8} object_call_expression;
-  object_call_expression = {get_at} get_at_reference | {expr9} call_expression;
-  call_expression = {call} method_call | {expr10} group_expression;
-  group_expression = {group} T.l_par expression T.r_par | {expr11} real_expression;
-  real_expression = {identifier} T.id
-                    | {string} T.strlit | {int} T.intlit
-                    | {true} T.true | {false} T.false | {null} T.null | {me} T.me
-                    | {new} T.new var_type;
+  expression {-> expression } = or_expression {-> or_expression.expression };
+  or_expression {-> expression } = {or} or_expression T.or and_expression {-> New expression.or(or_expression.expression, and_expression.expression) }
+                                 | {expr1} and_expression {-> and_expression.expression };
+  and_expression {-> expression } = {and} and_expression T.and relational_expression {-> New expression.and(and_expression.expression, relational_expression.expression) }
+                                  | {expr2} relational_expression {-> relational_expression.expression };
+  relational_expression {-> expression } = {relational} [first]:concat_expression relational_operator [second]:concat_expression {-> New expression.comparison(relational_operator.operator, first.expression, second.expression) }
+                                         | {expr3} concat_expression {-> concat_expression.expression };
+  concat_expression {-> expression } = {concat} concat_expression T.concat_op add_expression {-> New expression.concatenation(concat_expression.expression, add_expression.expression) }
+                                     | {expr4} add_expression {-> add_expression.expression };
+  add_expression {-> expression } = {add} add_expression add_operator mult_expression {-> New expression.add(add_operator.operator, add_expression.expression, mult_expression.expression) }
+                                  | {expr5} mult_expression {-> mult_expression.expression };
+  mult_expression {-> expression } = {mult} mult_expression mult_operator call_expression {-> New expression.mult(mult_operator.operator, mult_expression.expression, call_expression.expression) }
+                                   | {expr6} unary_expression {-> unary_expression.expression };
+  unary_expression {-> expression } = {unary} unary_operator unary_expression {-> New expression.unary(unary_operator.operator, unary_expression.expression) }
+                                    | {expr7} group_object_call_expression {-> group_object_call_expression.expression };
+  group_object_call_expression {-> expression } = {implicit_object_call} group_object_call_expression object_call {-> New expression.object_call(group_object_call_expression.expression, object_call.expression) }
+                                                | {expr8} object_call_expression {-> object_call_expression.expression };
+  object_call_expression {-> expression } = {get_at} get_at_reference {-> get_at_reference.expression }
+                                          | {expr9} call_expression {-> call_expression.expression };
+  call_expression {-> expression } = {call} method_call {-> method_call.expression }
+                                   | {expr10} group_expression {-> group_expression.expression };
+  group_expression {-> expression } = {group} T.l_par expression T.r_par {-> New expression.group(expression) }
+                                    | {expr11} real_expression {-> real_expression.expression };
+  real_expression {-> expression } = {identifier} T.id {-> New expression.identifier(id) }
+                                     | {string} T.strlit {-> New expression.string(strlit) }
+                                     | {int} T.intlit {-> New expression.integer(intlit) }
+                                     | {true} T.true {-> New expression.true() }
+                                     | {false} T.false {-> New expression.false() }
+                                     | {null} T.null {-> New expression.null() }
+                                     | {me} T.me {-> New expression.me() }
+                                     | {new} T.new var_type {-> New expression.new_object(var_type.type) };
+  
+  
+  
+Abstract Syntax Tree
+  
+  start = class_def*;
+  class_def = [begin_name]:T.id [extends]:T.id? var_declaration* method_declaration* [end_name]:T.id;
+  
+  var_declaration = [name]:T.id type? [instantiation]:expression?;
+  
+  method_declaration = [begin_name]:T.id argument_declaration* type? var_declaration* statement* [end_name]:T.id;
+  
+  argument_declaration = [name]:T.id type;
+  
+  type = {other} T.id
+       | {integer} T.int
+       | {string} T.string
+       | {boolean} T.boolean
+       | {array} type expression;
+  
+  statement = {assignment} T.id [array_access]:expression* [value]:expression
+  			| {if} expression [true_case]:statement* [false_case]:statement*
+  			| {loop} [case]:expression statement*
+  			| {call} [object]:expression? [method_call]:expression;
+  			
+  expression = {or} [expr1]:expression [expr2]:expression
+             | {and} [expr1]:expression [expr2]:expression
+             | {comparison} operator [expr1]:expression [expr2]:expression
+             | {concatenation} [expr1]:expression [expr2]:expression
+             | {add} operator [expr1]:expression [expr2]:expression
+             | {mult} operator [expr1]:expression [expr2]:expression
+             | {unary} operator expression
+             | {array} T.id expression
+             | {object_call} [object]:expression? [method_call]:expression
+             | {call} T.id expression*
+             | {group} expression
+             | {identifier} T.id
+             | {string} T.strlit
+             | {integer} T.intlit
+             | {true}
+             | {false}
+             | {null}
+             | {me}
+             | {new_object} type;
+  
+  operator = {not} | {plus} | {minus} | {mult} | {div} | {equal} | {greater} | {greater_equal};
+  
+  
+  
   
   

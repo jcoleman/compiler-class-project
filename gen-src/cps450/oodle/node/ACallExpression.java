@@ -6,43 +6,38 @@ import java.util.*;
 import cps450.oodle.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AAssignmentStatement extends PStatement
+public final class ACallExpression extends PExpression
 {
     private TId _id_;
-    private final LinkedList<PExpression> _arrayAccess_ = new LinkedList<PExpression>();
-    private PExpression _value_;
+    private final LinkedList<PExpression> _expression_ = new LinkedList<PExpression>();
 
-    public AAssignmentStatement()
+    public ACallExpression()
     {
         // Constructor
     }
 
-    public AAssignmentStatement(
+    public ACallExpression(
         @SuppressWarnings("hiding") TId _id_,
-        @SuppressWarnings("hiding") List<PExpression> _arrayAccess_,
-        @SuppressWarnings("hiding") PExpression _value_)
+        @SuppressWarnings("hiding") List<PExpression> _expression_)
     {
         // Constructor
         setId(_id_);
 
-        setArrayAccess(_arrayAccess_);
-
-        setValue(_value_);
+        setExpression(_expression_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AAssignmentStatement(
+        return new ACallExpression(
             cloneNode(this._id_),
-            cloneList(this._arrayAccess_),
-            cloneNode(this._value_));
+            cloneList(this._expression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAAssignmentStatement(this);
+        ((Analysis) sw).caseACallExpression(this);
     }
 
     public TId getId()
@@ -70,15 +65,15 @@ public final class AAssignmentStatement extends PStatement
         this._id_ = node;
     }
 
-    public LinkedList<PExpression> getArrayAccess()
+    public LinkedList<PExpression> getExpression()
     {
-        return this._arrayAccess_;
+        return this._expression_;
     }
 
-    public void setArrayAccess(List<PExpression> list)
+    public void setExpression(List<PExpression> list)
     {
-        this._arrayAccess_.clear();
-        this._arrayAccess_.addAll(list);
+        this._expression_.clear();
+        this._expression_.addAll(list);
         for(PExpression e : list)
         {
             if(e.parent() != null)
@@ -90,38 +85,12 @@ public final class AAssignmentStatement extends PStatement
         }
     }
 
-    public PExpression getValue()
-    {
-        return this._value_;
-    }
-
-    public void setValue(PExpression node)
-    {
-        if(this._value_ != null)
-        {
-            this._value_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._value_ = node;
-    }
-
     @Override
     public String toString()
     {
         return ""
             + toString(this._id_)
-            + toString(this._arrayAccess_)
-            + toString(this._value_);
+            + toString(this._expression_);
     }
 
     @Override
@@ -134,14 +103,8 @@ public final class AAssignmentStatement extends PStatement
             return;
         }
 
-        if(this._arrayAccess_.remove(child))
+        if(this._expression_.remove(child))
         {
-            return;
-        }
-
-        if(this._value_ == child)
-        {
-            this._value_ = null;
             return;
         }
 
@@ -158,7 +121,7 @@ public final class AAssignmentStatement extends PStatement
             return;
         }
 
-        for(ListIterator<PExpression> i = this._arrayAccess_.listIterator(); i.hasNext();)
+        for(ListIterator<PExpression> i = this._expression_.listIterator(); i.hasNext();)
         {
             if(i.next() == oldChild)
             {
@@ -174,12 +137,6 @@ public final class AAssignmentStatement extends PStatement
                 oldChild.parent(null);
                 return;
             }
-        }
-
-        if(this._value_ == oldChild)
-        {
-            setValue((PExpression) newChild);
-            return;
         }
 
         throw new RuntimeException("Not a child.");

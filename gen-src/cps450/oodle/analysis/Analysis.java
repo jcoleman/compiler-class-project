@@ -13,7 +13,6 @@ public interface Analysis extends Switch
 
     void caseStart(Start node);
     void caseAStart(AStart node);
-    void caseAClassTail(AClassTail node);
     void caseAClassInheritance(AClassInheritance node);
     void caseAClassDef(AClassDef node);
     void caseAVarDeclaration(AVarDeclaration node);

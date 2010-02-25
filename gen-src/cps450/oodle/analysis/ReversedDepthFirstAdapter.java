@@ -51,53 +51,12 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     {
         inAStart(node);
         {
-            List<TEol> copy = new ArrayList<TEol>(node.getEnd());
+            List<PClassDef> copy = new ArrayList<PClassDef>(node.getClassDef());
             Collections.reverse(copy);
-            for(TEol e : copy)
+            for(PClassDef e : copy)
             {
                 e.apply(this);
             }
-        }
-        {
-            List<PClassTail> copy = new ArrayList<PClassTail>(node.getClassTail());
-            Collections.reverse(copy);
-            for(PClassTail e : copy)
-            {
-                e.apply(this);
-            }
-        }
-        if(node.getClassDef() != null)
-        {
-            node.getClassDef().apply(this);
-        }
-        {
-            List<TEol> copy = new ArrayList<TEol>(node.getBegin());
-            Collections.reverse(copy);
-            for(TEol e : copy)
-            {
-                e.apply(this);
-            }
-        }
-        outAStart(node);
-    }
-
-    public void inAClassTail(AClassTail node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAClassTail(AClassTail node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAClassTail(AClassTail node)
-    {
-        inAClassTail(node);
-        if(node.getClassDef() != null)
-        {
-            node.getClassDef().apply(this);
         }
         {
             List<TEol> copy = new ArrayList<TEol>(node.getEol());
@@ -107,7 +66,7 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
                 e.apply(this);
             }
         }
-        outAClassTail(node);
+        outAStart(node);
     }
 
     public void inAClassInheritance(AClassInheritance node)
@@ -153,6 +112,14 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAClassDef(AClassDef node)
     {
         inAClassDef(node);
+        {
+            List<TEol> copy = new ArrayList<TEol>(node.getEol2());
+            Collections.reverse(copy);
+            for(TEol e : copy)
+            {
+                e.apply(this);
+            }
+        }
         if(node.getClassEnd() != null)
         {
             node.getClassEnd().apply(this);
@@ -178,7 +145,7 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             }
         }
         {
-            List<TEol> copy = new ArrayList<TEol>(node.getEol());
+            List<TEol> copy = new ArrayList<TEol>(node.getEol1());
             Collections.reverse(copy);
             for(TEol e : copy)
             {

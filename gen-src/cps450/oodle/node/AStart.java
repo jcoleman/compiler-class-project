@@ -8,10 +8,8 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AStart extends PStart
 {
-    private final LinkedList<TEol> _begin_ = new LinkedList<TEol>();
-    private PClassDef _classDef_;
-    private final LinkedList<PClassTail> _classTail_ = new LinkedList<PClassTail>();
-    private final LinkedList<TEol> _end_ = new LinkedList<TEol>();
+    private final LinkedList<TEol> _eol_ = new LinkedList<TEol>();
+    private final LinkedList<PClassDef> _classDef_ = new LinkedList<PClassDef>();
 
     public AStart()
     {
@@ -19,19 +17,13 @@ public final class AStart extends PStart
     }
 
     public AStart(
-        @SuppressWarnings("hiding") List<TEol> _begin_,
-        @SuppressWarnings("hiding") PClassDef _classDef_,
-        @SuppressWarnings("hiding") List<PClassTail> _classTail_,
-        @SuppressWarnings("hiding") List<TEol> _end_)
+        @SuppressWarnings("hiding") List<TEol> _eol_,
+        @SuppressWarnings("hiding") List<PClassDef> _classDef_)
     {
         // Constructor
-        setBegin(_begin_);
+        setEol(_eol_);
 
         setClassDef(_classDef_);
-
-        setClassTail(_classTail_);
-
-        setEnd(_end_);
 
     }
 
@@ -39,10 +31,8 @@ public final class AStart extends PStart
     public Object clone()
     {
         return new AStart(
-            cloneList(this._begin_),
-            cloneNode(this._classDef_),
-            cloneList(this._classTail_),
-            cloneList(this._end_));
+            cloneList(this._eol_),
+            cloneList(this._classDef_));
     }
 
     public void apply(Switch sw)
@@ -50,15 +40,15 @@ public final class AStart extends PStart
         ((Analysis) sw).caseAStart(this);
     }
 
-    public LinkedList<TEol> getBegin()
+    public LinkedList<TEol> getEol()
     {
-        return this._begin_;
+        return this._eol_;
     }
 
-    public void setBegin(List<TEol> list)
+    public void setEol(List<TEol> list)
     {
-        this._begin_.clear();
-        this._begin_.addAll(list);
+        this._eol_.clear();
+        this._eol_.addAll(list);
         for(TEol e : list)
         {
             if(e.parent() != null)
@@ -70,61 +60,16 @@ public final class AStart extends PStart
         }
     }
 
-    public PClassDef getClassDef()
+    public LinkedList<PClassDef> getClassDef()
     {
         return this._classDef_;
     }
 
-    public void setClassDef(PClassDef node)
+    public void setClassDef(List<PClassDef> list)
     {
-        if(this._classDef_ != null)
-        {
-            this._classDef_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._classDef_ = node;
-    }
-
-    public LinkedList<PClassTail> getClassTail()
-    {
-        return this._classTail_;
-    }
-
-    public void setClassTail(List<PClassTail> list)
-    {
-        this._classTail_.clear();
-        this._classTail_.addAll(list);
-        for(PClassTail e : list)
-        {
-            if(e.parent() != null)
-            {
-                e.parent().removeChild(e);
-            }
-
-            e.parent(this);
-        }
-    }
-
-    public LinkedList<TEol> getEnd()
-    {
-        return this._end_;
-    }
-
-    public void setEnd(List<TEol> list)
-    {
-        this._end_.clear();
-        this._end_.addAll(list);
-        for(TEol e : list)
+        this._classDef_.clear();
+        this._classDef_.addAll(list);
+        for(PClassDef e : list)
         {
             if(e.parent() != null)
             {
@@ -139,33 +84,20 @@ public final class AStart extends PStart
     public String toString()
     {
         return ""
-            + toString(this._begin_)
-            + toString(this._classDef_)
-            + toString(this._classTail_)
-            + toString(this._end_);
+            + toString(this._eol_)
+            + toString(this._classDef_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._begin_.remove(child))
+        if(this._eol_.remove(child))
         {
             return;
         }
 
-        if(this._classDef_ == child)
-        {
-            this._classDef_ = null;
-            return;
-        }
-
-        if(this._classTail_.remove(child))
-        {
-            return;
-        }
-
-        if(this._end_.remove(child))
+        if(this._classDef_.remove(child))
         {
             return;
         }
@@ -177,7 +109,7 @@ public final class AStart extends PStart
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        for(ListIterator<TEol> i = this._begin_.listIterator(); i.hasNext();)
+        for(ListIterator<TEol> i = this._eol_.listIterator(); i.hasNext();)
         {
             if(i.next() == oldChild)
             {
@@ -195,37 +127,13 @@ public final class AStart extends PStart
             }
         }
 
-        if(this._classDef_ == oldChild)
-        {
-            setClassDef((PClassDef) newChild);
-            return;
-        }
-
-        for(ListIterator<PClassTail> i = this._classTail_.listIterator(); i.hasNext();)
+        for(ListIterator<PClassDef> i = this._classDef_.listIterator(); i.hasNext();)
         {
             if(i.next() == oldChild)
             {
                 if(newChild != null)
                 {
-                    i.set((PClassTail) newChild);
-                    newChild.parent(this);
-                    oldChild.parent(null);
-                    return;
-                }
-
-                i.remove();
-                oldChild.parent(null);
-                return;
-            }
-        }
-
-        for(ListIterator<TEol> i = this._end_.listIterator(); i.hasNext();)
-        {
-            if(i.next() == oldChild)
-            {
-                if(newChild != null)
-                {
-                    i.set((TEol) newChild);
+                    i.set((PClassDef) newChild);
                     newChild.parent(this);
                     oldChild.parent(null);
                     return;

@@ -12,11 +12,12 @@ public final class AClassDef extends PClassDef
     private TId _begin_;
     private PClassInheritance _classInheritance_;
     private TIs _is_;
-    private final LinkedList<TEol> _eol_ = new LinkedList<TEol>();
+    private final LinkedList<TEol> _eol1_ = new LinkedList<TEol>();
     private final LinkedList<PVarDeclaration> _varDeclaration_ = new LinkedList<PVarDeclaration>();
     private final LinkedList<PMethodDeclaration> _methodDeclaration_ = new LinkedList<PMethodDeclaration>();
     private TEnd _end_;
     private TId _classEnd_;
+    private final LinkedList<TEol> _eol2_ = new LinkedList<TEol>();
 
     public AClassDef()
     {
@@ -28,11 +29,12 @@ public final class AClassDef extends PClassDef
         @SuppressWarnings("hiding") TId _begin_,
         @SuppressWarnings("hiding") PClassInheritance _classInheritance_,
         @SuppressWarnings("hiding") TIs _is_,
-        @SuppressWarnings("hiding") List<TEol> _eol_,
+        @SuppressWarnings("hiding") List<TEol> _eol1_,
         @SuppressWarnings("hiding") List<PVarDeclaration> _varDeclaration_,
         @SuppressWarnings("hiding") List<PMethodDeclaration> _methodDeclaration_,
         @SuppressWarnings("hiding") TEnd _end_,
-        @SuppressWarnings("hiding") TId _classEnd_)
+        @SuppressWarnings("hiding") TId _classEnd_,
+        @SuppressWarnings("hiding") List<TEol> _eol2_)
     {
         // Constructor
         setKlass(_klass_);
@@ -43,7 +45,7 @@ public final class AClassDef extends PClassDef
 
         setIs(_is_);
 
-        setEol(_eol_);
+        setEol1(_eol1_);
 
         setVarDeclaration(_varDeclaration_);
 
@@ -52,6 +54,8 @@ public final class AClassDef extends PClassDef
         setEnd(_end_);
 
         setClassEnd(_classEnd_);
+
+        setEol2(_eol2_);
 
     }
 
@@ -63,11 +67,12 @@ public final class AClassDef extends PClassDef
             cloneNode(this._begin_),
             cloneNode(this._classInheritance_),
             cloneNode(this._is_),
-            cloneList(this._eol_),
+            cloneList(this._eol1_),
             cloneList(this._varDeclaration_),
             cloneList(this._methodDeclaration_),
             cloneNode(this._end_),
-            cloneNode(this._classEnd_));
+            cloneNode(this._classEnd_),
+            cloneList(this._eol2_));
     }
 
     public void apply(Switch sw)
@@ -175,15 +180,15 @@ public final class AClassDef extends PClassDef
         this._is_ = node;
     }
 
-    public LinkedList<TEol> getEol()
+    public LinkedList<TEol> getEol1()
     {
-        return this._eol_;
+        return this._eol1_;
     }
 
-    public void setEol(List<TEol> list)
+    public void setEol1(List<TEol> list)
     {
-        this._eol_.clear();
-        this._eol_.addAll(list);
+        this._eol1_.clear();
+        this._eol1_.addAll(list);
         for(TEol e : list)
         {
             if(e.parent() != null)
@@ -285,6 +290,26 @@ public final class AClassDef extends PClassDef
         this._classEnd_ = node;
     }
 
+    public LinkedList<TEol> getEol2()
+    {
+        return this._eol2_;
+    }
+
+    public void setEol2(List<TEol> list)
+    {
+        this._eol2_.clear();
+        this._eol2_.addAll(list);
+        for(TEol e : list)
+        {
+            if(e.parent() != null)
+            {
+                e.parent().removeChild(e);
+            }
+
+            e.parent(this);
+        }
+    }
+
     @Override
     public String toString()
     {
@@ -293,11 +318,12 @@ public final class AClassDef extends PClassDef
             + toString(this._begin_)
             + toString(this._classInheritance_)
             + toString(this._is_)
-            + toString(this._eol_)
+            + toString(this._eol1_)
             + toString(this._varDeclaration_)
             + toString(this._methodDeclaration_)
             + toString(this._end_)
-            + toString(this._classEnd_);
+            + toString(this._classEnd_)
+            + toString(this._eol2_);
     }
 
     @Override
@@ -328,7 +354,7 @@ public final class AClassDef extends PClassDef
             return;
         }
 
-        if(this._eol_.remove(child))
+        if(this._eol1_.remove(child))
         {
             return;
         }
@@ -352,6 +378,11 @@ public final class AClassDef extends PClassDef
         if(this._classEnd_ == child)
         {
             this._classEnd_ = null;
+            return;
+        }
+
+        if(this._eol2_.remove(child))
+        {
             return;
         }
 
@@ -386,7 +417,7 @@ public final class AClassDef extends PClassDef
             return;
         }
 
-        for(ListIterator<TEol> i = this._eol_.listIterator(); i.hasNext();)
+        for(ListIterator<TEol> i = this._eol1_.listIterator(); i.hasNext();)
         {
             if(i.next() == oldChild)
             {
@@ -450,6 +481,24 @@ public final class AClassDef extends PClassDef
         {
             setClassEnd((TId) newChild);
             return;
+        }
+
+        for(ListIterator<TEol> i = this._eol2_.listIterator(); i.hasNext();)
+        {
+            if(i.next() == oldChild)
+            {
+                if(newChild != null)
+                {
+                    i.set((TEol) newChild);
+                    newChild.parent(this);
+                    oldChild.parent(null);
+                    return;
+                }
+
+                i.remove();
+                oldChild.parent(null);
+                return;
+            }
         }
 
         throw new RuntimeException("Not a child.");

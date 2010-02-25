@@ -74,11 +74,6 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAClassTail(AClassTail node)
-    {
-        defaultCase(node);
-    }
-
     public void caseAClassInheritance(AClassInheritance node)
     {
         defaultCase(node);

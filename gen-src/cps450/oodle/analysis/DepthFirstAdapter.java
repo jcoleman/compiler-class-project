@@ -51,59 +51,20 @@ public class DepthFirstAdapter extends AnalysisAdapter
     {
         inAStart(node);
         {
-            List<TEol> copy = new ArrayList<TEol>(node.getBegin());
-            for(TEol e : copy)
-            {
-                e.apply(this);
-            }
-        }
-        if(node.getClassDef() != null)
-        {
-            node.getClassDef().apply(this);
-        }
-        {
-            List<PClassTail> copy = new ArrayList<PClassTail>(node.getClassTail());
-            for(PClassTail e : copy)
-            {
-                e.apply(this);
-            }
-        }
-        {
-            List<TEol> copy = new ArrayList<TEol>(node.getEnd());
-            for(TEol e : copy)
-            {
-                e.apply(this);
-            }
-        }
-        outAStart(node);
-    }
-
-    public void inAClassTail(AClassTail node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAClassTail(AClassTail node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAClassTail(AClassTail node)
-    {
-        inAClassTail(node);
-        {
             List<TEol> copy = new ArrayList<TEol>(node.getEol());
             for(TEol e : copy)
             {
                 e.apply(this);
             }
         }
-        if(node.getClassDef() != null)
         {
-            node.getClassDef().apply(this);
+            List<PClassDef> copy = new ArrayList<PClassDef>(node.getClassDef());
+            for(PClassDef e : copy)
+            {
+                e.apply(this);
+            }
         }
-        outAClassTail(node);
+        outAStart(node);
     }
 
     public void inAClassInheritance(AClassInheritance node)
@@ -166,7 +127,7 @@ public class DepthFirstAdapter extends AnalysisAdapter
             node.getIs().apply(this);
         }
         {
-            List<TEol> copy = new ArrayList<TEol>(node.getEol());
+            List<TEol> copy = new ArrayList<TEol>(node.getEol1());
             for(TEol e : copy)
             {
                 e.apply(this);
@@ -193,6 +154,13 @@ public class DepthFirstAdapter extends AnalysisAdapter
         if(node.getClassEnd() != null)
         {
             node.getClassEnd().apply(this);
+        }
+        {
+            List<TEol> copy = new ArrayList<TEol>(node.getEol2());
+            for(TEol e : copy)
+            {
+                e.apply(this);
+            }
         }
         outAClassDef(node);
     }

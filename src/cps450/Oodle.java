@@ -37,8 +37,9 @@ public class Oodle
         
         Parser parser = new Parser(lexer);
         
+        Node startNode = null;
         try {
-        	parser.parse();
+        	startNode = parser.parse();
         } catch (ParserException e) {
         	errorCount++;
         	String errorText = e.getMessage();
@@ -47,7 +48,10 @@ public class Oodle
 			System.out.println(SourceHolder.instance().getFilenameFor(t) + ":" + SourceHolder.instance().getLineNumberFor(t) + "," + t.getPos() + ":" + errorText);
         }
         
-        System.out.println("" + (lexer.errorCount + errorCount) +  " errors found");
+        SemanticChecker semanticChecker = new SemanticChecker();
+        startNode.apply(semanticChecker);
+        
+        System.out.println("" + (lexer.errorCount + errorCount + semanticChecker.getErrorCount()) +  " errors found");
     }
 
 }

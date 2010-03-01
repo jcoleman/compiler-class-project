@@ -179,11 +179,6 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAObjectCallExpression(AObjectCallExpression node)
-    {
-        defaultCase(node);
-    }
-
     public void caseACallExpression(ACallExpression node)
     {
         defaultCase(node);

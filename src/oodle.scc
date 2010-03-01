@@ -126,7 +126,7 @@ Productions
   statement {-> statement } = {assignment} assignment_statement {-> assignment_statement.statement }
                             | {if} if_statement {-> if_statement.statement }
                             | {loop} loop_statement {-> loop_statement.statement }
-                            | {call} call_statement {-> call_statement.statement };
+                            | {call_case} call_statement {-> call_statement.statement };
   
   assignment_statement {-> statement } = {test3} T.id bracket_operation* var_instantiation {-> New statement.assignment(id, [bracket_operation.expression], var_instantiation.expression) };
   
@@ -143,9 +143,7 @@ Productions
                                    T.end [loop_end]:T.loop
                                    {-> New statement.loop(expression, [statement_list.statement]) };
   
-  call_statement {-> statement } = {object} object_call_expression object_call {-> New statement.call(object_call_expression.expression, object_call.expression) }
-  								 | {normal} method_call {-> New statement.call(Null, method_call.expression) };
-  
+  call_statement {-> statement } = call_expression {-> New statement.call(call_expression.expression) };
   
   expression_list {-> expression* } = {expressions} expression_head* expression {-> [expression_head.expression, expression] }
                                    | {empty_expression_list} {-> [] };
@@ -161,10 +159,14 @@ Productions
   relational_operator {-> operator } = {equal} T.eq_op {-> New operator.equal() }
                                      | {greater} T.gt_op {-> New operator.greater() }
                                      | {greater_equal} T.gte_op{-> New operator.greater_equal() };
-  object_call {-> expression } = T.period method_call {-> method_call.expression };
-  method_call {-> expression } = T.id T.l_par expression_list T.r_par {-> New expression.call(id, [expression_list.expression]) };
   bracket_operation {-> expression } = T.l_bracket expression T.r_bracket {-> expression };
   get_at_reference {-> expression } = T.id bracket_operation {-> New expression.array(id, bracket_operation.expression) };
+ 
+  
+  object_call {-> expression } = object_call_expression T.period {-> object_call_expression.expression };
+  call_expression {-> expression } = object_call? T.id T.l_par expression_list T.r_par {-> New expression.call(object_call.expression, id, [expression_list.expression]) };
+  
+  
   
   expression {-> expression } = or_expression {-> or_expression.expression };
   or_expression {-> expression } = {or} or_expression T.or and_expression {-> New expression.or(or_expression.expression, and_expression.expression) }
@@ -180,13 +182,14 @@ Productions
   mult_expression {-> expression } = {mult} mult_expression mult_operator call_expression {-> New expression.mult(mult_operator.operator, mult_expression.expression, call_expression.expression) }
                                    | {expr6} unary_expression {-> unary_expression.expression };
   unary_expression {-> expression } = {unary} unary_operator unary_expression {-> New expression.unary(unary_operator.operator, unary_expression.expression) }
-                                    | {expr7} group_object_call_expression {-> group_object_call_expression.expression };
-  group_object_call_expression {-> expression } = {implicit_object_call} group_object_call_expression object_call {-> New expression.object_call(group_object_call_expression.expression, object_call.expression) }
-                                                | {expr8} object_call_expression {-> object_call_expression.expression };
+                                    | {expr7} object_call_expression {-> object_call_expression.expression };
+                                    
+                                    
   object_call_expression {-> expression } = {get_at} get_at_reference {-> get_at_reference.expression }
-                                          | {expr9} call_expression {-> call_expression.expression };
-  call_expression {-> expression } = {call} method_call {-> method_call.expression }
-                                   | {expr10} group_expression {-> group_expression.expression };
+                                          | {call_expr} call_expression {-> call_expression.expression }
+                                          | {expr9} group_expression {-> group_expression.expression };
+                                   
+                                   
   group_expression {-> expression } = {group} T.l_par expression T.r_par {-> New expression.group(expression) }
                                     | {expr11} real_expression {-> real_expression.expression };
   real_expression {-> expression } = {identifier} T.id {-> New expression.identifier(id) }
@@ -220,7 +223,7 @@ Abstract Syntax Tree
   statement = {assignment} T.id [array_access]:expression* [value]:expression
   			| {if} expression [true_case]:statement* [false_case]:statement*
   			| {loop} [case]:expression statement*
-  			| {call} [object]:expression? [method_call]:expression;
+  			| {call} expression;
   			
   expression = {or} [expr1]:expression [expr2]:expression
              | {and} [expr1]:expression [expr2]:expression
@@ -230,8 +233,7 @@ Abstract Syntax Tree
              | {mult} operator [expr1]:expression [expr2]:expression
              | {unary} operator expression
              | {array} T.id expression
-             | {object_call} [object]:expression? [method_call]:expression
-             | {call} T.id expression*
+             | {call} [object]:expression? [method]:T.id [arguments]:expression*
              | {group} expression
              | {identifier} T.id
              | {string} T.strlit

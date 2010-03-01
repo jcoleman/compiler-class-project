@@ -8,8 +8,9 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class ACallExpression extends PExpression
 {
-    private TId _id_;
-    private final LinkedList<PExpression> _expression_ = new LinkedList<PExpression>();
+    private PExpression _object_;
+    private TId _method_;
+    private final LinkedList<PExpression> _arguments_ = new LinkedList<PExpression>();
 
     public ACallExpression()
     {
@@ -17,13 +18,16 @@ public final class ACallExpression extends PExpression
     }
 
     public ACallExpression(
-        @SuppressWarnings("hiding") TId _id_,
-        @SuppressWarnings("hiding") List<PExpression> _expression_)
+        @SuppressWarnings("hiding") PExpression _object_,
+        @SuppressWarnings("hiding") TId _method_,
+        @SuppressWarnings("hiding") List<PExpression> _arguments_)
     {
         // Constructor
-        setId(_id_);
+        setObject(_object_);
 
-        setExpression(_expression_);
+        setMethod(_method_);
+
+        setArguments(_arguments_);
 
     }
 
@@ -31,8 +35,9 @@ public final class ACallExpression extends PExpression
     public Object clone()
     {
         return new ACallExpression(
-            cloneNode(this._id_),
-            cloneList(this._expression_));
+            cloneNode(this._object_),
+            cloneNode(this._method_),
+            cloneList(this._arguments_));
     }
 
     public void apply(Switch sw)
@@ -40,16 +45,16 @@ public final class ACallExpression extends PExpression
         ((Analysis) sw).caseACallExpression(this);
     }
 
-    public TId getId()
+    public PExpression getObject()
     {
-        return this._id_;
+        return this._object_;
     }
 
-    public void setId(TId node)
+    public void setObject(PExpression node)
     {
-        if(this._id_ != null)
+        if(this._object_ != null)
         {
-            this._id_.parent(null);
+            this._object_.parent(null);
         }
 
         if(node != null)
@@ -62,18 +67,43 @@ public final class ACallExpression extends PExpression
             node.parent(this);
         }
 
-        this._id_ = node;
+        this._object_ = node;
     }
 
-    public LinkedList<PExpression> getExpression()
+    public TId getMethod()
     {
-        return this._expression_;
+        return this._method_;
     }
 
-    public void setExpression(List<PExpression> list)
+    public void setMethod(TId node)
     {
-        this._expression_.clear();
-        this._expression_.addAll(list);
+        if(this._method_ != null)
+        {
+            this._method_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._method_ = node;
+    }
+
+    public LinkedList<PExpression> getArguments()
+    {
+        return this._arguments_;
+    }
+
+    public void setArguments(List<PExpression> list)
+    {
+        this._arguments_.clear();
+        this._arguments_.addAll(list);
         for(PExpression e : list)
         {
             if(e.parent() != null)
@@ -89,21 +119,28 @@ public final class ACallExpression extends PExpression
     public String toString()
     {
         return ""
-            + toString(this._id_)
-            + toString(this._expression_);
+            + toString(this._object_)
+            + toString(this._method_)
+            + toString(this._arguments_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._id_ == child)
+        if(this._object_ == child)
         {
-            this._id_ = null;
+            this._object_ = null;
             return;
         }
 
-        if(this._expression_.remove(child))
+        if(this._method_ == child)
+        {
+            this._method_ = null;
+            return;
+        }
+
+        if(this._arguments_.remove(child))
         {
             return;
         }
@@ -115,13 +152,19 @@ public final class ACallExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._id_ == oldChild)
+        if(this._object_ == oldChild)
         {
-            setId((TId) newChild);
+            setObject((PExpression) newChild);
             return;
         }
 
-        for(ListIterator<PExpression> i = this._expression_.listIterator(); i.hasNext();)
+        if(this._method_ == oldChild)
+        {
+            setMethod((TId) newChild);
+            return;
+        }
+
+        for(ListIterator<PExpression> i = this._arguments_.listIterator(); i.hasNext();)
         {
             if(i.next() == oldChild)
             {

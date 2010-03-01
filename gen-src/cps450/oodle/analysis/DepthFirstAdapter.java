@@ -425,13 +425,9 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseACallStatement(ACallStatement node)
     {
         inACallStatement(node);
-        if(node.getObject() != null)
+        if(node.getExpression() != null)
         {
-            node.getObject().apply(this);
-        }
-        if(node.getMethodCall() != null)
-        {
-            node.getMethodCall().apply(this);
+            node.getExpression().apply(this);
         }
         outACallStatement(node);
     }
@@ -648,31 +644,6 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outAArrayExpression(node);
     }
 
-    public void inAObjectCallExpression(AObjectCallExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAObjectCallExpression(AObjectCallExpression node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAObjectCallExpression(AObjectCallExpression node)
-    {
-        inAObjectCallExpression(node);
-        if(node.getObject() != null)
-        {
-            node.getObject().apply(this);
-        }
-        if(node.getMethodCall() != null)
-        {
-            node.getMethodCall().apply(this);
-        }
-        outAObjectCallExpression(node);
-    }
-
     public void inACallExpression(ACallExpression node)
     {
         defaultIn(node);
@@ -687,12 +658,16 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseACallExpression(ACallExpression node)
     {
         inACallExpression(node);
-        if(node.getId() != null)
+        if(node.getObject() != null)
         {
-            node.getId().apply(this);
+            node.getObject().apply(this);
+        }
+        if(node.getMethod() != null)
+        {
+            node.getMethod().apply(this);
         }
         {
-            List<PExpression> copy = new ArrayList<PExpression>(node.getExpression());
+            List<PExpression> copy = new ArrayList<PExpression>(node.getArguments());
             for(PExpression e : copy)
             {
                 e.apply(this);

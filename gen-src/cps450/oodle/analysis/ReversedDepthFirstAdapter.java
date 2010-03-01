@@ -435,13 +435,9 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseACallStatement(ACallStatement node)
     {
         inACallStatement(node);
-        if(node.getMethodCall() != null)
+        if(node.getExpression() != null)
         {
-            node.getMethodCall().apply(this);
-        }
-        if(node.getObject() != null)
-        {
-            node.getObject().apply(this);
+            node.getExpression().apply(this);
         }
         outACallStatement(node);
     }
@@ -658,31 +654,6 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAArrayExpression(node);
     }
 
-    public void inAObjectCallExpression(AObjectCallExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAObjectCallExpression(AObjectCallExpression node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAObjectCallExpression(AObjectCallExpression node)
-    {
-        inAObjectCallExpression(node);
-        if(node.getMethodCall() != null)
-        {
-            node.getMethodCall().apply(this);
-        }
-        if(node.getObject() != null)
-        {
-            node.getObject().apply(this);
-        }
-        outAObjectCallExpression(node);
-    }
-
     public void inACallExpression(ACallExpression node)
     {
         defaultIn(node);
@@ -698,16 +669,20 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     {
         inACallExpression(node);
         {
-            List<PExpression> copy = new ArrayList<PExpression>(node.getExpression());
+            List<PExpression> copy = new ArrayList<PExpression>(node.getArguments());
             Collections.reverse(copy);
             for(PExpression e : copy)
             {
                 e.apply(this);
             }
         }
-        if(node.getId() != null)
+        if(node.getMethod() != null)
         {
-            node.getId().apply(this);
+            node.getMethod().apply(this);
+        }
+        if(node.getObject() != null)
+        {
+            node.getObject().apply(this);
         }
         outACallExpression(node);
     }

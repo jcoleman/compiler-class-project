@@ -7,16 +7,26 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AMultOperator extends POperator
 {
+    private TMultOp _op_;
 
     public AMultOperator()
     {
         // Constructor
     }
 
+    public AMultOperator(
+        @SuppressWarnings("hiding") TMultOp _op_)
+    {
+        // Constructor
+        setOp(_op_);
+
+    }
+
     @Override
     public Object clone()
     {
-        return new AMultOperator();
+        return new AMultOperator(
+            cloneNode(this._op_));
     }
 
     public void apply(Switch sw)
@@ -24,16 +34,48 @@ public final class AMultOperator extends POperator
         ((Analysis) sw).caseAMultOperator(this);
     }
 
+    public TMultOp getOp()
+    {
+        return this._op_;
+    }
+
+    public void setOp(TMultOp node)
+    {
+        if(this._op_ != null)
+        {
+            this._op_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._op_ = node;
+    }
+
     @Override
     public String toString()
     {
-        return "";
+        return ""
+            + toString(this._op_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
+        if(this._op_ == child)
+        {
+            this._op_ = null;
+            return;
+        }
+
         throw new RuntimeException("Not a child.");
     }
 
@@ -41,6 +83,12 @@ public final class AMultOperator extends POperator
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
+        if(this._op_ == oldChild)
+        {
+            setOp((TMultOp) newChild);
+            return;
+        }
+
         throw new RuntimeException("Not a child.");
     }
 }

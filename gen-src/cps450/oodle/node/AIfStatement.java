@@ -8,6 +8,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AIfStatement extends PStatement
 {
+    private TIf _if_;
     private PExpression _expression_;
     private final LinkedList<PStatement> _trueCase_ = new LinkedList<PStatement>();
     private final LinkedList<PStatement> _falseCase_ = new LinkedList<PStatement>();
@@ -18,11 +19,14 @@ public final class AIfStatement extends PStatement
     }
 
     public AIfStatement(
+        @SuppressWarnings("hiding") TIf _if_,
         @SuppressWarnings("hiding") PExpression _expression_,
         @SuppressWarnings("hiding") List<PStatement> _trueCase_,
         @SuppressWarnings("hiding") List<PStatement> _falseCase_)
     {
         // Constructor
+        setIf(_if_);
+
         setExpression(_expression_);
 
         setTrueCase(_trueCase_);
@@ -35,6 +39,7 @@ public final class AIfStatement extends PStatement
     public Object clone()
     {
         return new AIfStatement(
+            cloneNode(this._if_),
             cloneNode(this._expression_),
             cloneList(this._trueCase_),
             cloneList(this._falseCase_));
@@ -43,6 +48,31 @@ public final class AIfStatement extends PStatement
     public void apply(Switch sw)
     {
         ((Analysis) sw).caseAIfStatement(this);
+    }
+
+    public TIf getIf()
+    {
+        return this._if_;
+    }
+
+    public void setIf(TIf node)
+    {
+        if(this._if_ != null)
+        {
+            this._if_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._if_ = node;
     }
 
     public PExpression getExpression()
@@ -114,6 +144,7 @@ public final class AIfStatement extends PStatement
     public String toString()
     {
         return ""
+            + toString(this._if_)
             + toString(this._expression_)
             + toString(this._trueCase_)
             + toString(this._falseCase_);
@@ -123,6 +154,12 @@ public final class AIfStatement extends PStatement
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
+        if(this._if_ == child)
+        {
+            this._if_ = null;
+            return;
+        }
+
         if(this._expression_ == child)
         {
             this._expression_ = null;
@@ -146,6 +183,12 @@ public final class AIfStatement extends PStatement
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
+        if(this._if_ == oldChild)
+        {
+            setIf((TIf) newChild);
+            return;
+        }
+
         if(this._expression_ == oldChild)
         {
             setExpression((PExpression) newChild);

@@ -7,6 +7,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AAndExpression extends PExpression
 {
+    private TAnd _and_;
     private PExpression _expr1_;
     private PExpression _expr2_;
 
@@ -16,10 +17,13 @@ public final class AAndExpression extends PExpression
     }
 
     public AAndExpression(
+        @SuppressWarnings("hiding") TAnd _and_,
         @SuppressWarnings("hiding") PExpression _expr1_,
         @SuppressWarnings("hiding") PExpression _expr2_)
     {
         // Constructor
+        setAnd(_and_);
+
         setExpr1(_expr1_);
 
         setExpr2(_expr2_);
@@ -30,6 +34,7 @@ public final class AAndExpression extends PExpression
     public Object clone()
     {
         return new AAndExpression(
+            cloneNode(this._and_),
             cloneNode(this._expr1_),
             cloneNode(this._expr2_));
     }
@@ -37,6 +42,31 @@ public final class AAndExpression extends PExpression
     public void apply(Switch sw)
     {
         ((Analysis) sw).caseAAndExpression(this);
+    }
+
+    public TAnd getAnd()
+    {
+        return this._and_;
+    }
+
+    public void setAnd(TAnd node)
+    {
+        if(this._and_ != null)
+        {
+            this._and_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._and_ = node;
     }
 
     public PExpression getExpr1()
@@ -93,6 +123,7 @@ public final class AAndExpression extends PExpression
     public String toString()
     {
         return ""
+            + toString(this._and_)
             + toString(this._expr1_)
             + toString(this._expr2_);
     }
@@ -101,6 +132,12 @@ public final class AAndExpression extends PExpression
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
+        if(this._and_ == child)
+        {
+            this._and_ = null;
+            return;
+        }
+
         if(this._expr1_ == child)
         {
             this._expr1_ = null;
@@ -120,6 +157,12 @@ public final class AAndExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
+        if(this._and_ == oldChild)
+        {
+            setAnd((TAnd) newChild);
+            return;
+        }
+
         if(this._expr1_ == oldChild)
         {
             setExpr1((PExpression) newChild);

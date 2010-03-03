@@ -28,4 +28,8 @@ public class Type {
 		}
 	}
 	
+	public String getName() {
+		return id;
+	}
+	
 }

@@ -7,6 +7,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AOrExpression extends PExpression
 {
+    private TOr _or_;
     private PExpression _expr1_;
     private PExpression _expr2_;
 
@@ -16,10 +17,13 @@ public final class AOrExpression extends PExpression
     }
 
     public AOrExpression(
+        @SuppressWarnings("hiding") TOr _or_,
         @SuppressWarnings("hiding") PExpression _expr1_,
         @SuppressWarnings("hiding") PExpression _expr2_)
     {
         // Constructor
+        setOr(_or_);
+
         setExpr1(_expr1_);
 
         setExpr2(_expr2_);
@@ -30,6 +34,7 @@ public final class AOrExpression extends PExpression
     public Object clone()
     {
         return new AOrExpression(
+            cloneNode(this._or_),
             cloneNode(this._expr1_),
             cloneNode(this._expr2_));
     }
@@ -37,6 +42,31 @@ public final class AOrExpression extends PExpression
     public void apply(Switch sw)
     {
         ((Analysis) sw).caseAOrExpression(this);
+    }
+
+    public TOr getOr()
+    {
+        return this._or_;
+    }
+
+    public void setOr(TOr node)
+    {
+        if(this._or_ != null)
+        {
+            this._or_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._or_ = node;
     }
 
     public PExpression getExpr1()
@@ -93,6 +123,7 @@ public final class AOrExpression extends PExpression
     public String toString()
     {
         return ""
+            + toString(this._or_)
             + toString(this._expr1_)
             + toString(this._expr2_);
     }
@@ -101,6 +132,12 @@ public final class AOrExpression extends PExpression
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
+        if(this._or_ == child)
+        {
+            this._or_ = null;
+            return;
+        }
+
         if(this._expr1_ == child)
         {
             this._expr1_ = null;
@@ -120,6 +157,12 @@ public final class AOrExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
+        if(this._or_ == oldChild)
+        {
+            setOr((TOr) newChild);
+            return;
+        }
+
         if(this._expr1_ == oldChild)
         {
             setExpr1((PExpression) newChild);

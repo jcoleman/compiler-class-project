@@ -7,6 +7,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AConcatenationExpression extends PExpression
 {
+    private TConcatOp _concatOp_;
     private PExpression _expr1_;
     private PExpression _expr2_;
 
@@ -16,10 +17,13 @@ public final class AConcatenationExpression extends PExpression
     }
 
     public AConcatenationExpression(
+        @SuppressWarnings("hiding") TConcatOp _concatOp_,
         @SuppressWarnings("hiding") PExpression _expr1_,
         @SuppressWarnings("hiding") PExpression _expr2_)
     {
         // Constructor
+        setConcatOp(_concatOp_);
+
         setExpr1(_expr1_);
 
         setExpr2(_expr2_);
@@ -30,6 +34,7 @@ public final class AConcatenationExpression extends PExpression
     public Object clone()
     {
         return new AConcatenationExpression(
+            cloneNode(this._concatOp_),
             cloneNode(this._expr1_),
             cloneNode(this._expr2_));
     }
@@ -37,6 +42,31 @@ public final class AConcatenationExpression extends PExpression
     public void apply(Switch sw)
     {
         ((Analysis) sw).caseAConcatenationExpression(this);
+    }
+
+    public TConcatOp getConcatOp()
+    {
+        return this._concatOp_;
+    }
+
+    public void setConcatOp(TConcatOp node)
+    {
+        if(this._concatOp_ != null)
+        {
+            this._concatOp_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._concatOp_ = node;
     }
 
     public PExpression getExpr1()
@@ -93,6 +123,7 @@ public final class AConcatenationExpression extends PExpression
     public String toString()
     {
         return ""
+            + toString(this._concatOp_)
             + toString(this._expr1_)
             + toString(this._expr2_);
     }
@@ -101,6 +132,12 @@ public final class AConcatenationExpression extends PExpression
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
+        if(this._concatOp_ == child)
+        {
+            this._concatOp_ = null;
+            return;
+        }
+
         if(this._expr1_ == child)
         {
             this._expr1_ = null;
@@ -120,6 +157,12 @@ public final class AConcatenationExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
+        if(this._concatOp_ == oldChild)
+        {
+            setConcatOp((TConcatOp) newChild);
+            return;
+        }
+
         if(this._expr1_ == oldChild)
         {
             setExpr1((PExpression) newChild);

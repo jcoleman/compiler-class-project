@@ -362,6 +362,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAIfStatement(AIfStatement node)
     {
         inAIfStatement(node);
+        if(node.getIf() != null)
+        {
+            node.getIf().apply(this);
+        }
         if(node.getExpression() != null)
         {
             node.getExpression().apply(this);
@@ -397,6 +401,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseALoopStatement(ALoopStatement node)
     {
         inALoopStatement(node);
+        if(node.getLoop() != null)
+        {
+            node.getLoop().apply(this);
+        }
         if(node.getCase() != null)
         {
             node.getCase().apply(this);
@@ -446,6 +454,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAOrExpression(AOrExpression node)
     {
         inAOrExpression(node);
+        if(node.getOr() != null)
+        {
+            node.getOr().apply(this);
+        }
         if(node.getExpr1() != null)
         {
             node.getExpr1().apply(this);
@@ -471,6 +483,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAAndExpression(AAndExpression node)
     {
         inAAndExpression(node);
+        if(node.getAnd() != null)
+        {
+            node.getAnd().apply(this);
+        }
         if(node.getExpr1() != null)
         {
             node.getExpr1().apply(this);
@@ -525,6 +541,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAConcatenationExpression(AConcatenationExpression node)
     {
         inAConcatenationExpression(node);
+        if(node.getConcatOp() != null)
+        {
+            node.getConcatOp().apply(this);
+        }
         if(node.getExpr1() != null)
         {
             node.getExpr1().apply(this);
@@ -863,6 +883,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseANotOperator(ANotOperator node)
     {
         inANotOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outANotOperator(node);
     }
 
@@ -880,6 +904,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAPlusOperator(APlusOperator node)
     {
         inAPlusOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAPlusOperator(node);
     }
 
@@ -897,6 +925,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAMinusOperator(AMinusOperator node)
     {
         inAMinusOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAMinusOperator(node);
     }
 
@@ -914,6 +946,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAMultOperator(AMultOperator node)
     {
         inAMultOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAMultOperator(node);
     }
 
@@ -931,6 +967,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseADivOperator(ADivOperator node)
     {
         inADivOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outADivOperator(node);
     }
 
@@ -948,6 +988,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAEqualOperator(AEqualOperator node)
     {
         inAEqualOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAEqualOperator(node);
     }
 
@@ -965,6 +1009,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAGreaterOperator(AGreaterOperator node)
     {
         inAGreaterOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAGreaterOperator(node);
     }
 
@@ -982,6 +1030,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAGreaterEqualOperator(AGreaterEqualOperator node)
     {
         inAGreaterEqualOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAGreaterEqualOperator(node);
     }
 }

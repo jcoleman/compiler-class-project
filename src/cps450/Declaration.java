@@ -13,5 +13,9 @@ public class Declaration {
 	public String getLocation() {
 		return this.location;
 	}
+	
+	public Type getType() {
+		return type;
+	}
 
 }

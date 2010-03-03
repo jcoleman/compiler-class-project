@@ -7,16 +7,26 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class AGreaterOperator extends POperator
 {
+    private TGtOp _op_;
 
     public AGreaterOperator()
     {
         // Constructor
     }
 
+    public AGreaterOperator(
+        @SuppressWarnings("hiding") TGtOp _op_)
+    {
+        // Constructor
+        setOp(_op_);
+
+    }
+
     @Override
     public Object clone()
     {
-        return new AGreaterOperator();
+        return new AGreaterOperator(
+            cloneNode(this._op_));
     }
 
     public void apply(Switch sw)
@@ -24,16 +34,48 @@ public final class AGreaterOperator extends POperator
         ((Analysis) sw).caseAGreaterOperator(this);
     }
 
+    public TGtOp getOp()
+    {
+        return this._op_;
+    }
+
+    public void setOp(TGtOp node)
+    {
+        if(this._op_ != null)
+        {
+            this._op_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._op_ = node;
+    }
+
     @Override
     public String toString()
     {
-        return "";
+        return ""
+            + toString(this._op_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
+        if(this._op_ == child)
+        {
+            this._op_ = null;
+            return;
+        }
+
         throw new RuntimeException("Not a child.");
     }
 
@@ -41,6 +83,12 @@ public final class AGreaterOperator extends POperator
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
+        if(this._op_ == oldChild)
+        {
+            setOp((TGtOp) newChild);
+            return;
+        }
+
         throw new RuntimeException("Not a child.");
     }
 }

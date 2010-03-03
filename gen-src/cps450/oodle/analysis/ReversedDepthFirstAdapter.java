@@ -389,6 +389,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getExpression().apply(this);
         }
+        if(node.getIf() != null)
+        {
+            node.getIf().apply(this);
+        }
         outAIfStatement(node);
     }
 
@@ -417,6 +421,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         if(node.getCase() != null)
         {
             node.getCase().apply(this);
+        }
+        if(node.getLoop() != null)
+        {
+            node.getLoop().apply(this);
         }
         outALoopStatement(node);
     }
@@ -464,6 +472,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getExpr1().apply(this);
         }
+        if(node.getOr() != null)
+        {
+            node.getOr().apply(this);
+        }
         outAOrExpression(node);
     }
 
@@ -488,6 +500,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         if(node.getExpr1() != null)
         {
             node.getExpr1().apply(this);
+        }
+        if(node.getAnd() != null)
+        {
+            node.getAnd().apply(this);
         }
         outAAndExpression(node);
     }
@@ -542,6 +558,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         if(node.getExpr1() != null)
         {
             node.getExpr1().apply(this);
+        }
+        if(node.getConcatOp() != null)
+        {
+            node.getConcatOp().apply(this);
         }
         outAConcatenationExpression(node);
     }
@@ -874,6 +894,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseANotOperator(ANotOperator node)
     {
         inANotOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outANotOperator(node);
     }
 
@@ -891,6 +915,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAPlusOperator(APlusOperator node)
     {
         inAPlusOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAPlusOperator(node);
     }
 
@@ -908,6 +936,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAMinusOperator(AMinusOperator node)
     {
         inAMinusOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAMinusOperator(node);
     }
 
@@ -925,6 +957,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAMultOperator(AMultOperator node)
     {
         inAMultOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAMultOperator(node);
     }
 
@@ -942,6 +978,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseADivOperator(ADivOperator node)
     {
         inADivOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outADivOperator(node);
     }
 
@@ -959,6 +999,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAEqualOperator(AEqualOperator node)
     {
         inAEqualOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAEqualOperator(node);
     }
 
@@ -976,6 +1020,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAGreaterOperator(AGreaterOperator node)
     {
         inAGreaterOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAGreaterOperator(node);
     }
 
@@ -993,6 +1041,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAGreaterEqualOperator(AGreaterEqualOperator node)
     {
         inAGreaterEqualOperator(node);
+        if(node.getOp() != null)
+        {
+            node.getOp().apply(this);
+        }
         outAGreaterEqualOperator(node);
     }
 }

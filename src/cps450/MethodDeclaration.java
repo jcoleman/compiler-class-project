@@ -11,4 +11,12 @@ public class MethodDeclaration extends Declaration {
 		argumentTypes = _argumentTypes;
 	}
 	
+	public Integer getArgumentCount() {
+		return this.argumentTypes.size();
+	}
+	
+	public ArrayList<Type> getArgumentTypes() {
+		return this.argumentTypes;
+	}
+	
 }

@@ -8,6 +8,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class ALoopStatement extends PStatement
 {
+    private TLoop _loop_;
     private PExpression _case_;
     private final LinkedList<PStatement> _statement_ = new LinkedList<PStatement>();
 
@@ -17,10 +18,13 @@ public final class ALoopStatement extends PStatement
     }
 
     public ALoopStatement(
+        @SuppressWarnings("hiding") TLoop _loop_,
         @SuppressWarnings("hiding") PExpression _case_,
         @SuppressWarnings("hiding") List<PStatement> _statement_)
     {
         // Constructor
+        setLoop(_loop_);
+
         setCase(_case_);
 
         setStatement(_statement_);
@@ -31,6 +35,7 @@ public final class ALoopStatement extends PStatement
     public Object clone()
     {
         return new ALoopStatement(
+            cloneNode(this._loop_),
             cloneNode(this._case_),
             cloneList(this._statement_));
     }
@@ -38,6 +43,31 @@ public final class ALoopStatement extends PStatement
     public void apply(Switch sw)
     {
         ((Analysis) sw).caseALoopStatement(this);
+    }
+
+    public TLoop getLoop()
+    {
+        return this._loop_;
+    }
+
+    public void setLoop(TLoop node)
+    {
+        if(this._loop_ != null)
+        {
+            this._loop_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._loop_ = node;
     }
 
     public PExpression getCase()
@@ -89,6 +119,7 @@ public final class ALoopStatement extends PStatement
     public String toString()
     {
         return ""
+            + toString(this._loop_)
             + toString(this._case_)
             + toString(this._statement_);
     }
@@ -97,6 +128,12 @@ public final class ALoopStatement extends PStatement
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
+        if(this._loop_ == child)
+        {
+            this._loop_ = null;
+            return;
+        }
+
         if(this._case_ == child)
         {
             this._case_ = null;
@@ -115,6 +152,12 @@ public final class ALoopStatement extends PStatement
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
+        if(this._loop_ == oldChild)
+        {
+            setLoop((TLoop) newChild);
+            return;
+        }
+
         if(this._case_ == oldChild)
         {
             setCase((PExpression) newChild);

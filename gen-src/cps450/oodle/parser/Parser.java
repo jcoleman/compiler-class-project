@@ -3252,24 +3252,26 @@ public class Parser
         PStatement pstatementNode1;
         {
             // Block
-        PExpression pexpressionNode2;
-        LinkedList listNode4 = new LinkedList();
+        TIf tifNode2;
+        PExpression pexpressionNode3;
         LinkedList listNode5 = new LinkedList();
-        pexpressionNode2 = (PExpression)nodeArrayList2.get(0);
+        LinkedList listNode6 = new LinkedList();
+        tifNode2 = (TIf)nodeArrayList1.get(0);
+        pexpressionNode3 = (PExpression)nodeArrayList2.get(0);
         {
             // Block
-        LinkedList listNode3 = new LinkedList();
-        listNode3 = (LinkedList)nodeArrayList5.get(0);
-	if(listNode3 != null)
+        LinkedList listNode4 = new LinkedList();
+        listNode4 = (LinkedList)nodeArrayList5.get(0);
+	if(listNode4 != null)
 	{
-	  listNode4.addAll(listNode3);
+	  listNode5.addAll(listNode4);
 	}
         }
         {
             // Block
         }
 
-        pstatementNode1 = new AIfStatement(pexpressionNode2, listNode4, listNode5);
+        pstatementNode1 = new AIfStatement(tifNode2, pexpressionNode3, listNode5, listNode6);
         }
 	nodeList.add(pstatementNode1);
         return nodeList;
@@ -3293,30 +3295,32 @@ public class Parser
         PStatement pstatementNode1;
         {
             // Block
-        PExpression pexpressionNode2;
-        LinkedList listNode4 = new LinkedList();
-        LinkedList listNode6 = new LinkedList();
-        pexpressionNode2 = (PExpression)nodeArrayList2.get(0);
+        TIf tifNode2;
+        PExpression pexpressionNode3;
+        LinkedList listNode5 = new LinkedList();
+        LinkedList listNode7 = new LinkedList();
+        tifNode2 = (TIf)nodeArrayList1.get(0);
+        pexpressionNode3 = (PExpression)nodeArrayList2.get(0);
         {
             // Block
-        LinkedList listNode3 = new LinkedList();
-        listNode3 = (LinkedList)nodeArrayList5.get(0);
-	if(listNode3 != null)
+        LinkedList listNode4 = new LinkedList();
+        listNode4 = (LinkedList)nodeArrayList5.get(0);
+	if(listNode4 != null)
 	{
-	  listNode4.addAll(listNode3);
+	  listNode5.addAll(listNode4);
 	}
         }
         {
             // Block
-        LinkedList listNode5 = new LinkedList();
-        listNode5 = (LinkedList)nodeArrayList6.get(0);
-	if(listNode5 != null)
+        LinkedList listNode6 = new LinkedList();
+        listNode6 = (LinkedList)nodeArrayList6.get(0);
+	if(listNode6 != null)
 	{
-	  listNode6.addAll(listNode5);
+	  listNode7.addAll(listNode6);
 	}
         }
 
-        pstatementNode1 = new AIfStatement(pexpressionNode2, listNode4, listNode6);
+        pstatementNode1 = new AIfStatement(tifNode2, pexpressionNode3, listNode5, listNode7);
         }
 	nodeList.add(pstatementNode1);
         return nodeList;
@@ -3363,20 +3367,22 @@ public class Parser
         PStatement pstatementNode1;
         {
             // Block
-        PExpression pexpressionNode2;
-        LinkedList listNode4 = new LinkedList();
-        pexpressionNode2 = (PExpression)nodeArrayList3.get(0);
+        TLoop tloopNode2;
+        PExpression pexpressionNode3;
+        LinkedList listNode5 = new LinkedList();
+        tloopNode2 = (TLoop)nodeArrayList1.get(0);
+        pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
         {
             // Block
-        LinkedList listNode3 = new LinkedList();
-        listNode3 = (LinkedList)nodeArrayList5.get(0);
-	if(listNode3 != null)
+        LinkedList listNode4 = new LinkedList();
+        listNode4 = (LinkedList)nodeArrayList5.get(0);
+	if(listNode4 != null)
 	{
-	  listNode4.addAll(listNode3);
+	  listNode5.addAll(listNode4);
 	}
         }
 
-        pstatementNode1 = new ALoopStatement(pexpressionNode2, listNode4);
+        pstatementNode1 = new ALoopStatement(tloopNode2, pexpressionNode3, listNode5);
         }
 	nodeList.add(pstatementNode1);
         return nodeList;
@@ -3494,8 +3500,10 @@ public class Parser
         POperator poperatorNode1;
         {
             // Block
+        TMinusOp tminusopNode2;
+        tminusopNode2 = (TMinusOp)nodeArrayList1.get(0);
 
-        poperatorNode1 = new AMinusOperator();
+        poperatorNode1 = new AMinusOperator(tminusopNode2);
         }
 	nodeList.add(poperatorNode1);
         return nodeList;
@@ -3512,8 +3520,10 @@ public class Parser
         POperator poperatorNode1;
         {
             // Block
+        TPlusOp tplusopNode2;
+        tplusopNode2 = (TPlusOp)nodeArrayList1.get(0);
 
-        poperatorNode1 = new APlusOperator();
+        poperatorNode1 = new APlusOperator(tplusopNode2);
         }
 	nodeList.add(poperatorNode1);
         return nodeList;
@@ -3530,8 +3540,10 @@ public class Parser
         POperator poperatorNode1;
         {
             // Block
+        TNot tnotNode2;
+        tnotNode2 = (TNot)nodeArrayList1.get(0);
 
-        poperatorNode1 = new ANotOperator();
+        poperatorNode1 = new ANotOperator(tnotNode2);
         }
 	nodeList.add(poperatorNode1);
         return nodeList;
@@ -3548,8 +3560,10 @@ public class Parser
         POperator poperatorNode1;
         {
             // Block
+        TMultOp tmultopNode2;
+        tmultopNode2 = (TMultOp)nodeArrayList1.get(0);
 
-        poperatorNode1 = new AMultOperator();
+        poperatorNode1 = new AMultOperator(tmultopNode2);
         }
 	nodeList.add(poperatorNode1);
         return nodeList;
@@ -3566,8 +3580,10 @@ public class Parser
         POperator poperatorNode1;
         {
             // Block
+        TDivOp tdivopNode2;
+        tdivopNode2 = (TDivOp)nodeArrayList1.get(0);
 
-        poperatorNode1 = new ADivOperator();
+        poperatorNode1 = new ADivOperator(tdivopNode2);
         }
 	nodeList.add(poperatorNode1);
         return nodeList;
@@ -3584,8 +3600,10 @@ public class Parser
         POperator poperatorNode1;
         {
             // Block
+        TPlusOp tplusopNode2;
+        tplusopNode2 = (TPlusOp)nodeArrayList1.get(0);
 
-        poperatorNode1 = new APlusOperator();
+        poperatorNode1 = new APlusOperator(tplusopNode2);
         }
 	nodeList.add(poperatorNode1);
         return nodeList;
@@ -3602,8 +3620,10 @@ public class Parser
         POperator poperatorNode1;
         {
             // Block
+        TMinusOp tminusopNode2;
+        tminusopNode2 = (TMinusOp)nodeArrayList1.get(0);
 
-        poperatorNode1 = new AMinusOperator();
+        poperatorNode1 = new AMinusOperator(tminusopNode2);
         }
 	nodeList.add(poperatorNode1);
         return nodeList;
@@ -3620,8 +3640,10 @@ public class Parser
         POperator poperatorNode1;
         {
             // Block
+        TEqOp teqopNode2;
+        teqopNode2 = (TEqOp)nodeArrayList1.get(0);
 
-        poperatorNode1 = new AEqualOperator();
+        poperatorNode1 = new AEqualOperator(teqopNode2);
         }
 	nodeList.add(poperatorNode1);
         return nodeList;
@@ -3638,8 +3660,10 @@ public class Parser
         POperator poperatorNode1;
         {
             // Block
+        TGtOp tgtopNode2;
+        tgtopNode2 = (TGtOp)nodeArrayList1.get(0);
 
-        poperatorNode1 = new AGreaterOperator();
+        poperatorNode1 = new AGreaterOperator(tgtopNode2);
         }
 	nodeList.add(poperatorNode1);
         return nodeList;
@@ -3656,8 +3680,10 @@ public class Parser
         POperator poperatorNode1;
         {
             // Block
+        TGteOp tgteopNode2;
+        tgteopNode2 = (TGteOp)nodeArrayList1.get(0);
 
-        poperatorNode1 = new AGreaterEqualOperator();
+        poperatorNode1 = new AGreaterEqualOperator(tgteopNode2);
         }
 	nodeList.add(poperatorNode1);
         return nodeList;
@@ -3814,12 +3840,14 @@ public class Parser
         PExpression pexpressionNode1;
         {
             // Block
-        PExpression pexpressionNode2;
+        TOr torNode2;
         PExpression pexpressionNode3;
-        pexpressionNode2 = (PExpression)nodeArrayList1.get(0);
-        pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
+        PExpression pexpressionNode4;
+        torNode2 = (TOr)nodeArrayList2.get(0);
+        pexpressionNode3 = (PExpression)nodeArrayList1.get(0);
+        pexpressionNode4 = (PExpression)nodeArrayList3.get(0);
 
-        pexpressionNode1 = new AOrExpression(pexpressionNode2, pexpressionNode3);
+        pexpressionNode1 = new AOrExpression(torNode2, pexpressionNode3, pexpressionNode4);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
@@ -3852,12 +3880,14 @@ public class Parser
         PExpression pexpressionNode1;
         {
             // Block
-        PExpression pexpressionNode2;
+        TAnd tandNode2;
         PExpression pexpressionNode3;
-        pexpressionNode2 = (PExpression)nodeArrayList1.get(0);
-        pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
+        PExpression pexpressionNode4;
+        tandNode2 = (TAnd)nodeArrayList2.get(0);
+        pexpressionNode3 = (PExpression)nodeArrayList1.get(0);
+        pexpressionNode4 = (PExpression)nodeArrayList3.get(0);
 
-        pexpressionNode1 = new AAndExpression(pexpressionNode2, pexpressionNode3);
+        pexpressionNode1 = new AAndExpression(tandNode2, pexpressionNode3, pexpressionNode4);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
@@ -3930,12 +3960,14 @@ public class Parser
         PExpression pexpressionNode1;
         {
             // Block
-        PExpression pexpressionNode2;
+        TConcatOp tconcatopNode2;
         PExpression pexpressionNode3;
-        pexpressionNode2 = (PExpression)nodeArrayList1.get(0);
-        pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
+        PExpression pexpressionNode4;
+        tconcatopNode2 = (TConcatOp)nodeArrayList2.get(0);
+        pexpressionNode3 = (PExpression)nodeArrayList1.get(0);
+        pexpressionNode4 = (PExpression)nodeArrayList3.get(0);
 
-        pexpressionNode1 = new AConcatenationExpression(pexpressionNode2, pexpressionNode3);
+        pexpressionNode1 = new AConcatenationExpression(tconcatopNode2, pexpressionNode3, pexpressionNode4);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;

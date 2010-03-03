@@ -21,9 +21,9 @@ public class SymbolTable {
 	
 	Symbol scopeContains(String name) {
 		Symbol symbol = null;
-		for (Iterator<Symbol> i = symbols.iterator(); i.hasNext();) {
-			symbol = i.next();
-			if (symbol.getScope() == this.getScope()) {
+		for (int i = symbols.size() - 1; i >= 0; i--) {
+			symbol = symbols.get(i);
+			if (symbol.getScope().equals(this.getScope())) {
 				if (symbol.getName().equals(name)) {
 					return symbol;
 				}
@@ -36,8 +36,8 @@ public class SymbolTable {
 	
 	Symbol lookup(String name) {
 		Symbol symbol = null;
-		for (Iterator<Symbol> i = symbols.iterator(); i.hasNext();) {
-			symbol = i.next();
+		for (int i = symbols.size() - 1; i >= 0; i--) {
+			symbol = symbols.get(i);
 			if (symbol.getName().equals(name)) {
 				return symbol;
 			}
@@ -50,6 +50,14 @@ public class SymbolTable {
 	}
 	
 	void endScope() {
+		for (int i = symbols.size() - 1; i >= 0; i--) {
+			Symbol symbol = symbols.get(i);
+			if (symbol.getScope().equals(this.getScope())) {
+				symbols.remove(i);
+			} else {
+				break;
+			}
+		}
 		level -= 1;
 	}
 	

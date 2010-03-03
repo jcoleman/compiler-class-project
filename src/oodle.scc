@@ -134,14 +134,14 @@ Productions
                                  statement_list
                                  if_statement_else?
                                  T.end [if_end]:T.if
-                                 {-> New statement.if(expression, [statement_list.statement], [if_statement_else.statement]) };
+                                 {-> New statement.if(begin_if, expression, [statement_list.statement], [if_statement_else.statement]) };
   if_statement_else {-> statement* } = T.else T.eol+
                                       statement_list {-> [statement_list.statement] };
   
   loop_statement {-> statement } = {test5} [loop_begin]:T.loop T.while expression T.eol+
                                    statement_list
                                    T.end [loop_end]:T.loop
-                                   {-> New statement.loop(expression, [statement_list.statement]) };
+                                   {-> New statement.loop(loop_begin, expression, [statement_list.statement]) };
   
   call_statement {-> statement } = call_expression {-> New statement.call(call_expression.expression) };
   
@@ -149,16 +149,16 @@ Productions
                                    | {empty_expression_list} {-> [] };
   expression_head {-> expression } = expression T.comma {-> expression };
   
-  unary_operator {-> operator} = {negate} T.minus_op {-> New operator.minus() }
-                               | {positive} T.plus_op {-> New operator.plus() }
-                               | {not} T.not {-> New operator.not() };
-  mult_operator {-> operator } = {multiply} T.mult_op {-> New operator.mult() }
-                | {divide} T.div_op {-> New operator.div() };
-  add_operator {-> operator } = {add} T.plus_op {-> New operator.plus() }
-                              | {subtract} T.minus_op {-> New operator.minus() };
-  relational_operator {-> operator } = {equal} T.eq_op {-> New operator.equal() }
-                                     | {greater} T.gt_op {-> New operator.greater() }
-                                     | {greater_equal} T.gte_op{-> New operator.greater_equal() };
+  unary_operator {-> operator} = {negate} T.minus_op {-> New operator.minus(minus_op) }
+                               | {positive} T.plus_op {-> New operator.plus(plus_op) }
+                               | {not} T.not {-> New operator.not(not) };
+  mult_operator {-> operator } = {multiply} T.mult_op {-> New operator.mult(mult_op) }
+                | {divide} T.div_op {-> New operator.div(div_op) };
+  add_operator {-> operator } = {add} T.plus_op {-> New operator.plus(plus_op) }
+                              | {subtract} T.minus_op {-> New operator.minus(minus_op) };
+  relational_operator {-> operator } = {equal} T.eq_op {-> New operator.equal(eq_op) }
+                                     | {greater} T.gt_op {-> New operator.greater(gt_op) }
+                                     | {greater_equal} T.gte_op{-> New operator.greater_equal(gte_op) };
   bracket_operation {-> expression } = T.l_bracket expression T.r_bracket {-> expression };
   get_at_reference {-> expression } = T.id bracket_operation {-> New expression.array(id, bracket_operation.expression) };
  
@@ -169,13 +169,13 @@ Productions
   
   
   expression {-> expression } = or_expression {-> or_expression.expression };
-  or_expression {-> expression } = {or} or_expression T.or and_expression {-> New expression.or(or_expression.expression, and_expression.expression) }
+  or_expression {-> expression } = {or} or_expression T.or and_expression {-> New expression.or(or, or_expression.expression, and_expression.expression) }
                                  | {expr1} and_expression {-> and_expression.expression };
-  and_expression {-> expression } = {and} and_expression T.and relational_expression {-> New expression.and(and_expression.expression, relational_expression.expression) }
+  and_expression {-> expression } = {and} and_expression T.and relational_expression {-> New expression.and(and, and_expression.expression, relational_expression.expression) }
                                   | {expr2} relational_expression {-> relational_expression.expression };
   relational_expression {-> expression } = {relational} [first]:concat_expression relational_operator [second]:concat_expression {-> New expression.comparison(relational_operator.operator, first.expression, second.expression) }
                                          | {expr3} concat_expression {-> concat_expression.expression };
-  concat_expression {-> expression } = {concat} concat_expression T.concat_op add_expression {-> New expression.concatenation(concat_expression.expression, add_expression.expression) }
+  concat_expression {-> expression } = {concat} concat_expression T.concat_op add_expression {-> New expression.concatenation(concat_op, concat_expression.expression, add_expression.expression) }
                                      | {expr4} add_expression {-> add_expression.expression };
   add_expression {-> expression } = {add} add_expression add_operator mult_expression {-> New expression.add(add_operator.operator, add_expression.expression, mult_expression.expression) }
                                   | {expr5} mult_expression {-> mult_expression.expression };
@@ -221,14 +221,14 @@ Abstract Syntax Tree
        | {array} type expression;
   
   statement = {assignment} T.id [array_access]:expression* [value]:expression
-  			| {if} expression [true_case]:statement* [false_case]:statement*
-  			| {loop} [case]:expression statement*
+  			| {if} T.if expression [true_case]:statement* [false_case]:statement*
+  			| {loop} T.loop [case]:expression statement*
   			| {call} expression;
   			
-  expression = {or} [expr1]:expression [expr2]:expression
-             | {and} [expr1]:expression [expr2]:expression
+  expression = {or} T.or [expr1]:expression [expr2]:expression
+             | {and} T.and [expr1]:expression [expr2]:expression
              | {comparison} operator [expr1]:expression [expr2]:expression
-             | {concatenation} [expr1]:expression [expr2]:expression
+             | {concatenation} T.concat_op [expr1]:expression [expr2]:expression
              | {add} operator [expr1]:expression [expr2]:expression
              | {mult} operator [expr1]:expression [expr2]:expression
              | {unary} operator expression
@@ -244,7 +244,7 @@ Abstract Syntax Tree
              | {me}
              | {new_object} type;
   
-  operator = {not} | {plus} | {minus} | {mult} | {div} | {equal} | {greater} | {greater_equal};
+  operator = {not} [op]:T.not | {plus} [op]:T.plus_op | {minus} [op]:T.minus_op | {mult} [op]:T.mult_op | {div} [op]:T.div_op | {equal} [op]:T.eq_op | {greater} [op]:T.gt_op | {greater_equal} [op]:T.gte_op;
   
   
   

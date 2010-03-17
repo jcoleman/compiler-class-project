@@ -26,6 +26,8 @@ public class SemanticChecker extends DepthFirstAdapter {
 		ArrayList<Type> outTypes = new ArrayList<Type>();
 		outTypes.add(Type.getType("int"));
 		symbolTable.push("writeint", new MethodDeclaration(Type.getType("void"), "SYSTEM DECLARED", outTypes));
+		symbolTable.push("in", new VariableDeclaration(Type.getType("in"), "SYSTEM DECLARED"));
+		symbolTable.push("readint", new MethodDeclaration(Type.getType("int"), "SYSTEM DECLARED", new ArrayList<Type>()));
 		symbolTable.beginScope();
 	}
 	
@@ -221,7 +223,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 			if (!(lt == integer || lt == string)) { // only need to check one side since we already know they are the same type
 				reportError(token, "Expected expressions of type 'integer' or 'string' in comparison got '" + lt.getName() + "' at operator " + token.getText());
 			} else {
-				result = lt;
+				result = Type.getType("boolean");
 			}
 		}
 		

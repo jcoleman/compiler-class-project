@@ -316,6 +316,23 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outAArrayType(node);
     }
 
+    public void inAIfHelper(AIfHelper node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAIfHelper(AIfHelper node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAIfHelper(AIfHelper node)
+    {
+        inAIfHelper(node);
+        outAIfHelper(node);
+    }
+
     public void inAElseHelper(AElseHelper node)
     {
         defaultIn(node);
@@ -331,6 +348,23 @@ public class DepthFirstAdapter extends AnalysisAdapter
     {
         inAElseHelper(node);
         outAElseHelper(node);
+    }
+
+    public void inALoopHelper(ALoopHelper node)
+    {
+        defaultIn(node);
+    }
+
+    public void outALoopHelper(ALoopHelper node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseALoopHelper(ALoopHelper node)
+    {
+        inALoopHelper(node);
+        outALoopHelper(node);
     }
 
     public void inAAssignmentStatement(AAssignmentStatement node)
@@ -387,6 +421,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getExpression().apply(this);
         }
+        if(node.getIfHelper() != null)
+        {
+            node.getIfHelper().apply(this);
+        }
         {
             List<PStatement> copy = new ArrayList<PStatement>(node.getTrueCase());
             for(PStatement e : copy)
@@ -429,6 +467,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
         if(node.getCase() != null)
         {
             node.getCase().apply(this);
+        }
+        if(node.getLoopHelper() != null)
+        {
+            node.getLoopHelper().apply(this);
         }
         {
             List<PStatement> copy = new ArrayList<PStatement>(node.getStatement());

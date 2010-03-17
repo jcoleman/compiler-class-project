@@ -322,6 +322,23 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAArrayType(node);
     }
 
+    public void inAIfHelper(AIfHelper node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAIfHelper(AIfHelper node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAIfHelper(AIfHelper node)
+    {
+        inAIfHelper(node);
+        outAIfHelper(node);
+    }
+
     public void inAElseHelper(AElseHelper node)
     {
         defaultIn(node);
@@ -337,6 +354,23 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     {
         inAElseHelper(node);
         outAElseHelper(node);
+    }
+
+    public void inALoopHelper(ALoopHelper node)
+    {
+        defaultIn(node);
+    }
+
+    public void outALoopHelper(ALoopHelper node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseALoopHelper(ALoopHelper node)
+    {
+        inALoopHelper(node);
+        outALoopHelper(node);
     }
 
     public void inAAssignmentStatement(AAssignmentStatement node)
@@ -406,6 +440,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
                 e.apply(this);
             }
         }
+        if(node.getIfHelper() != null)
+        {
+            node.getIfHelper().apply(this);
+        }
         if(node.getExpression() != null)
         {
             node.getExpression().apply(this);
@@ -438,6 +476,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             {
                 e.apply(this);
             }
+        }
+        if(node.getLoopHelper() != null)
+        {
+            node.getLoopHelper().apply(this);
         }
         if(node.getCase() != null)
         {

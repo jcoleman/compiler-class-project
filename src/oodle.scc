@@ -131,20 +131,18 @@ Productions
   
   assignment_statement {-> statement } = {test3} T.id bracket_operation* var_instantiation {-> New statement.assignment(id, [bracket_operation.expression], var_instantiation.expression) };
   
-  else_helper {-> else_helper } = {-> New else_helper() };
   if_statement {-> statement } = {test4} [begin_if]:T.if expression T.then T.eol+
                                  statement_list
-                                 else_helper
                                  if_statement_else?
                                  T.end [if_end]:T.if
-                                 {-> New statement.if(begin_if, expression, [statement_list.statement], else_helper.else_helper, [if_statement_else.statement]) };
+                                 {-> New statement.if(begin_if, expression, New if_helper(), [statement_list.statement], New else_helper(), [if_statement_else.statement]) };
   if_statement_else {-> statement* } = T.else T.eol+
                                       statement_list {-> [statement_list.statement] };
   
   loop_statement {-> statement } = {test5} [loop_begin]:T.loop T.while expression T.eol+
                                    statement_list
                                    T.end [loop_end]:T.loop
-                                   {-> New statement.loop(loop_begin, expression, [statement_list.statement]) };
+                                   {-> New statement.loop(loop_begin, expression, New loop_helper(), [statement_list.statement]) };
   
   call_statement {-> statement } = call_expression {-> New statement.call(call_expression.expression) };
   
@@ -223,10 +221,12 @@ Abstract Syntax Tree
        | {boolean} T.boolean
        | {array} type expression;
   
+  if_helper = ;
   else_helper = ;
+  loop_helper = ;
   statement = {assignment} T.id [array_access]:expression* [value]:expression
-  			| {if} T.if expression [true_case]:statement* else_helper [false_case]:statement*
-  			| {loop} T.loop [case]:expression statement*
+  			| {if} T.if expression if_helper [true_case]:statement* else_helper [false_case]:statement*
+  			| {loop} T.loop [case]:expression loop_helper statement*
   			| {call} expression;
   			
   expression = {or} T.or [expr1]:expression [expr2]:expression

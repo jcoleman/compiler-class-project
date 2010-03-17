@@ -10,6 +10,7 @@ public final class ALoopStatement extends PStatement
 {
     private TLoop _loop_;
     private PExpression _case_;
+    private PLoopHelper _loopHelper_;
     private final LinkedList<PStatement> _statement_ = new LinkedList<PStatement>();
 
     public ALoopStatement()
@@ -20,12 +21,15 @@ public final class ALoopStatement extends PStatement
     public ALoopStatement(
         @SuppressWarnings("hiding") TLoop _loop_,
         @SuppressWarnings("hiding") PExpression _case_,
+        @SuppressWarnings("hiding") PLoopHelper _loopHelper_,
         @SuppressWarnings("hiding") List<PStatement> _statement_)
     {
         // Constructor
         setLoop(_loop_);
 
         setCase(_case_);
+
+        setLoopHelper(_loopHelper_);
 
         setStatement(_statement_);
 
@@ -37,6 +41,7 @@ public final class ALoopStatement extends PStatement
         return new ALoopStatement(
             cloneNode(this._loop_),
             cloneNode(this._case_),
+            cloneNode(this._loopHelper_),
             cloneList(this._statement_));
     }
 
@@ -95,6 +100,31 @@ public final class ALoopStatement extends PStatement
         this._case_ = node;
     }
 
+    public PLoopHelper getLoopHelper()
+    {
+        return this._loopHelper_;
+    }
+
+    public void setLoopHelper(PLoopHelper node)
+    {
+        if(this._loopHelper_ != null)
+        {
+            this._loopHelper_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._loopHelper_ = node;
+    }
+
     public LinkedList<PStatement> getStatement()
     {
         return this._statement_;
@@ -121,6 +151,7 @@ public final class ALoopStatement extends PStatement
         return ""
             + toString(this._loop_)
             + toString(this._case_)
+            + toString(this._loopHelper_)
             + toString(this._statement_);
     }
 
@@ -137,6 +168,12 @@ public final class ALoopStatement extends PStatement
         if(this._case_ == child)
         {
             this._case_ = null;
+            return;
+        }
+
+        if(this._loopHelper_ == child)
+        {
+            this._loopHelper_ = null;
             return;
         }
 
@@ -161,6 +198,12 @@ public final class ALoopStatement extends PStatement
         if(this._case_ == oldChild)
         {
             setCase((PExpression) newChild);
+            return;
+        }
+
+        if(this._loopHelper_ == oldChild)
+        {
+            setLoopHelper((PLoopHelper) newChild);
             return;
         }
 

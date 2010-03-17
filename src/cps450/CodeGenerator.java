@@ -10,18 +10,37 @@ import cps450.oodle.node.*;
 public class CodeGenerator extends DepthFirstAdapter {
 	
 	PrintWriter writer;
+
 	int ifStatementCount = 0;
 	Stack<Integer> ifStatementCounts;
+	int loopStatementCount;
+	Stack<Integer> loopStatementCounts;
 	
 	public CodeGenerator(PrintWriter _writer) {
 		super();
 		writer = _writer;
 		ifStatementCounts = new Stack<Integer>();
+		loopStatementCounts = new Stack<Integer>();
 	}
 	
 	private void emit(String sourceLine) {
 		System.out.println(sourceLine);
 		writer.println(sourceLine);
+	}
+	
+	private void emitOodleStatement(Token token) {
+		emit("");
+		emit("# " + SourceHolder.instance().getLine(token.getLine()-1));
+	}
+	
+	@Override
+	public void inAClassDef(AClassDef node) {
+		emit(".data");
+	}
+
+	@Override
+	public void inAMethodDeclaration(AMethodDeclaration node) {
+		emit(".text");
 	}
 
 	@Override
@@ -45,6 +64,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("andl %ebx, %eax");
 		emit("pushl %eax # Store AndExpression result");
 	}
+	
+	@Override
+	public void inAAssignmentStatement(AAssignmentStatement node) {
+		emitOodleStatement(node.getId());
+	}
 
 	@Override
 	public void outAAssignmentStatement(AAssignmentStatement node) {
@@ -58,11 +82,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 			emit("popl %eax # Clean up the Object Expression");
 		}
 	}
-
+	
 	@Override
-	public void outACallStatement(ACallStatement node) {
-		// TODO Auto-generated method stub
-		super.outACallStatement(node);
+	public void inACallStatement(ACallStatement node) {
+		ACallExpression expr = (ACallExpression)node.getExpression();
+		emitOodleStatement(expr.getMethod());
 	}
 
 	@Override
@@ -96,10 +120,12 @@ public class CodeGenerator extends DepthFirstAdapter {
 
 	@Override
 	public void inAIfStatement(AIfStatement node) {
+		emitOodleStatement(node.getIf());
+	}
+
+	@Override
+	public void outAIfHelper(AIfHelper node) {
 		this.ifStatementCounts.push(this.ifStatementCount);
-		
-		emit(SourceHolder.instance().getLine(node.getIf().getLine()));
-		
 		emit("popl %eax # Get comparison value for IfStatement");
 		emit("cmpl 0, %eax");
 		emit("jne _true_statements_" + this.ifStatementCounts.peek());
@@ -128,14 +154,29 @@ public class CodeGenerator extends DepthFirstAdapter {
 
 	@Override
 	public void inALoopStatement(ALoopStatement node) {
-		// TODO Auto-generated method stub
-		super.inALoopStatement(node);
+		emitOodleStatement(node.getLoop());
+		
+		this.loopStatementCounts.push(this.loopStatementCount);
+		
+		emit("_begin_loop_statement_" + this.loopStatementCounts.peek() + ":");
+	}
+
+	@Override
+	public void outALoopHelper(ALoopHelper node) {
+		emit("popl %eax # Get comparison value for LoopStatement");
+		emit("cmpl 0, %eax");
+		emit("jne _loop_statements_" + this.loopStatementCounts.peek());
+		emit("jmp _end_loop_statement_" + this.loopStatementCounts.peek());
+		emit("_loop_statements_" + this.loopStatementCounts.peek() + ":");
 	}
 
 	@Override
 	public void outALoopStatement(ALoopStatement node) {
-		// TODO Auto-generated method stub
-		super.outALoopStatement(node);
+		emit("jmp _begin_loop_statement_" + this.loopStatementCounts.peek());
+		emit("_end_loop_statement_" + this.loopStatementCounts.peek() + ":");
+		
+		this.loopStatementCounts.pop();
+		this.loopStatementCount++;
 	}
 
 	@Override

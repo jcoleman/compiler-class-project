@@ -10,6 +10,7 @@ public final class AIfStatement extends PStatement
 {
     private TIf _if_;
     private PExpression _expression_;
+    private PIfHelper _ifHelper_;
     private final LinkedList<PStatement> _trueCase_ = new LinkedList<PStatement>();
     private PElseHelper _elseHelper_;
     private final LinkedList<PStatement> _falseCase_ = new LinkedList<PStatement>();
@@ -22,6 +23,7 @@ public final class AIfStatement extends PStatement
     public AIfStatement(
         @SuppressWarnings("hiding") TIf _if_,
         @SuppressWarnings("hiding") PExpression _expression_,
+        @SuppressWarnings("hiding") PIfHelper _ifHelper_,
         @SuppressWarnings("hiding") List<PStatement> _trueCase_,
         @SuppressWarnings("hiding") PElseHelper _elseHelper_,
         @SuppressWarnings("hiding") List<PStatement> _falseCase_)
@@ -30,6 +32,8 @@ public final class AIfStatement extends PStatement
         setIf(_if_);
 
         setExpression(_expression_);
+
+        setIfHelper(_ifHelper_);
 
         setTrueCase(_trueCase_);
 
@@ -45,6 +49,7 @@ public final class AIfStatement extends PStatement
         return new AIfStatement(
             cloneNode(this._if_),
             cloneNode(this._expression_),
+            cloneNode(this._ifHelper_),
             cloneList(this._trueCase_),
             cloneNode(this._elseHelper_),
             cloneList(this._falseCase_));
@@ -103,6 +108,31 @@ public final class AIfStatement extends PStatement
         }
 
         this._expression_ = node;
+    }
+
+    public PIfHelper getIfHelper()
+    {
+        return this._ifHelper_;
+    }
+
+    public void setIfHelper(PIfHelper node)
+    {
+        if(this._ifHelper_ != null)
+        {
+            this._ifHelper_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._ifHelper_ = node;
     }
 
     public LinkedList<PStatement> getTrueCase()
@@ -176,6 +206,7 @@ public final class AIfStatement extends PStatement
         return ""
             + toString(this._if_)
             + toString(this._expression_)
+            + toString(this._ifHelper_)
             + toString(this._trueCase_)
             + toString(this._elseHelper_)
             + toString(this._falseCase_);
@@ -194,6 +225,12 @@ public final class AIfStatement extends PStatement
         if(this._expression_ == child)
         {
             this._expression_ = null;
+            return;
+        }
+
+        if(this._ifHelper_ == child)
+        {
+            this._ifHelper_ = null;
             return;
         }
 
@@ -229,6 +266,12 @@ public final class AIfStatement extends PStatement
         if(this._expression_ == oldChild)
         {
             setExpression((PExpression) newChild);
+            return;
+        }
+
+        if(this._ifHelper_ == oldChild)
+        {
+            setIfHelper((PIfHelper) newChild);
             return;
         }
 

@@ -1,6 +1,7 @@
 package cps450;
 
 import java.io.File;
+import java.util.Stack;
 import java.io.PrintWriter;
 
 import cps450.oodle.analysis.*;
@@ -10,10 +11,12 @@ public class CodeGenerator extends DepthFirstAdapter {
 	
 	PrintWriter writer;
 	int ifStatementCount = 0;
+	Stack<Integer> ifStatementCounts;
 	
 	public CodeGenerator(PrintWriter _writer) {
 		super();
 		writer = _writer;
+		ifStatementCounts = new Stack<Integer>();
 	}
 	
 	private void emit(String sourceLine) {
@@ -92,14 +95,41 @@ public class CodeGenerator extends DepthFirstAdapter {
 	}
 
 	@Override
+	public void inAIfStatement(AIfStatement node) {
+		this.ifStatementCounts.push(this.ifStatementCount);
+		
+		emit(SourceHolder.instance().getLine(node.getIf().getLine()));
+		
+		emit("popl %eax # Get comparison value for IfStatement");
+		emit("cmpl 0, %eax");
+		emit("jne _true_statements_" + this.ifStatementCounts.peek());
+		emit("jmp _false_statements_" + this.ifStatementCounts.peek());
+		emit("_true_statements_" + this.ifStatementCounts.peek() + ":");
+	}
+
+	@Override
+	public void outAElseHelper(AElseHelper node) {
+		emit("jmp _end_if_statement_" + this.ifStatementCounts.peek());
+		emit("_false_statements_" + this.ifStatementCounts.peek() + ":");
+	}
+
+	@Override
 	public void outAIfStatement(AIfStatement node) {
-		// TODO Auto-generated method stub
-		super.outAIfStatement(node);
+		emit("_end_if_statement_" + this.ifStatementCounts.peek() + ":");
+		
+		this.ifStatementCounts.pop();
+		this.ifStatementCount++;
 	}
 
 	@Override
 	public void outAIntegerExpression(AIntegerExpression node) {
 		emit("pushl $" + node.getIntlit().getText());
+	}
+
+	@Override
+	public void inALoopStatement(ALoopStatement node) {
+		// TODO Auto-generated method stub
+		super.inALoopStatement(node);
 	}
 
 	@Override

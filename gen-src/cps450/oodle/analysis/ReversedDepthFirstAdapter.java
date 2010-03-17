@@ -322,6 +322,23 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAArrayType(node);
     }
 
+    public void inAElseHelper(AElseHelper node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAElseHelper(AElseHelper node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAElseHelper(AElseHelper node)
+    {
+        inAElseHelper(node);
+        outAElseHelper(node);
+    }
+
     public void inAAssignmentStatement(AAssignmentStatement node)
     {
         defaultIn(node);
@@ -376,6 +393,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             {
                 e.apply(this);
             }
+        }
+        if(node.getElseHelper() != null)
+        {
+            node.getElseHelper().apply(this);
         }
         {
             List<PStatement> copy = new ArrayList<PStatement>(node.getTrueCase());

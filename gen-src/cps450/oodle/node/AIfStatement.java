@@ -11,6 +11,7 @@ public final class AIfStatement extends PStatement
     private TIf _if_;
     private PExpression _expression_;
     private final LinkedList<PStatement> _trueCase_ = new LinkedList<PStatement>();
+    private PElseHelper _elseHelper_;
     private final LinkedList<PStatement> _falseCase_ = new LinkedList<PStatement>();
 
     public AIfStatement()
@@ -22,6 +23,7 @@ public final class AIfStatement extends PStatement
         @SuppressWarnings("hiding") TIf _if_,
         @SuppressWarnings("hiding") PExpression _expression_,
         @SuppressWarnings("hiding") List<PStatement> _trueCase_,
+        @SuppressWarnings("hiding") PElseHelper _elseHelper_,
         @SuppressWarnings("hiding") List<PStatement> _falseCase_)
     {
         // Constructor
@@ -30,6 +32,8 @@ public final class AIfStatement extends PStatement
         setExpression(_expression_);
 
         setTrueCase(_trueCase_);
+
+        setElseHelper(_elseHelper_);
 
         setFalseCase(_falseCase_);
 
@@ -42,6 +46,7 @@ public final class AIfStatement extends PStatement
             cloneNode(this._if_),
             cloneNode(this._expression_),
             cloneList(this._trueCase_),
+            cloneNode(this._elseHelper_),
             cloneList(this._falseCase_));
     }
 
@@ -120,6 +125,31 @@ public final class AIfStatement extends PStatement
         }
     }
 
+    public PElseHelper getElseHelper()
+    {
+        return this._elseHelper_;
+    }
+
+    public void setElseHelper(PElseHelper node)
+    {
+        if(this._elseHelper_ != null)
+        {
+            this._elseHelper_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._elseHelper_ = node;
+    }
+
     public LinkedList<PStatement> getFalseCase()
     {
         return this._falseCase_;
@@ -147,6 +177,7 @@ public final class AIfStatement extends PStatement
             + toString(this._if_)
             + toString(this._expression_)
             + toString(this._trueCase_)
+            + toString(this._elseHelper_)
             + toString(this._falseCase_);
     }
 
@@ -168,6 +199,12 @@ public final class AIfStatement extends PStatement
 
         if(this._trueCase_.remove(child))
         {
+            return;
+        }
+
+        if(this._elseHelper_ == child)
+        {
+            this._elseHelper_ = null;
             return;
         }
 
@@ -211,6 +248,12 @@ public final class AIfStatement extends PStatement
                 oldChild.parent(null);
                 return;
             }
+        }
+
+        if(this._elseHelper_ == oldChild)
+        {
+            setElseHelper((PElseHelper) newChild);
+            return;
         }
 
         for(ListIterator<PStatement> i = this._falseCase_.listIterator(); i.hasNext();)

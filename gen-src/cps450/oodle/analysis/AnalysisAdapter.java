@@ -119,6 +119,11 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseAElseHelper(AElseHelper node)
+    {
+        defaultCase(node);
+    }
+
     public void caseAAssignmentStatement(AAssignmentStatement node)
     {
         defaultCase(node);

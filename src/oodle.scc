@@ -89,6 +89,7 @@ Ignored Tokens
   
 
 Productions
+  
   start {-> start } = T.eol* class_def* {-> New start([class_def]) };
   
   class_inheritance {-> T.id } = T.inherits T.from id {-> id };
@@ -130,11 +131,13 @@ Productions
   
   assignment_statement {-> statement } = {test3} T.id bracket_operation* var_instantiation {-> New statement.assignment(id, [bracket_operation.expression], var_instantiation.expression) };
   
+  else_helper {-> else_helper } = {-> New else_helper() };
   if_statement {-> statement } = {test4} [begin_if]:T.if expression T.then T.eol+
                                  statement_list
+                                 else_helper
                                  if_statement_else?
                                  T.end [if_end]:T.if
-                                 {-> New statement.if(begin_if, expression, [statement_list.statement], [if_statement_else.statement]) };
+                                 {-> New statement.if(begin_if, expression, [statement_list.statement], else_helper.else_helper, [if_statement_else.statement]) };
   if_statement_else {-> statement* } = T.else T.eol+
                                       statement_list {-> [statement_list.statement] };
   
@@ -220,8 +223,9 @@ Abstract Syntax Tree
        | {boolean} T.boolean
        | {array} type expression;
   
+  else_helper = ;
   statement = {assignment} T.id [array_access]:expression* [value]:expression
-  			| {if} T.if expression [true_case]:statement* [false_case]:statement*
+  			| {if} T.if expression [true_case]:statement* else_helper [false_case]:statement*
   			| {loop} T.loop [case]:expression statement*
   			| {call} expression;
   			

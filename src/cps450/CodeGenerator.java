@@ -9,6 +9,7 @@ import cps450.oodle.node.*;
 public class CodeGenerator extends DepthFirstAdapter {
 	
 	PrintWriter writer;
+	int ifStatementCount = 0;
 	
 	public CodeGenerator(PrintWriter _writer) {
 		super();
@@ -24,8 +25,14 @@ public class CodeGenerator extends DepthFirstAdapter {
 	public void outAAddExpression(AAddExpression node) {
 		emit("popl %eax # AddExpression");
 		emit("popl %ebx");
-		emit("addl %ebx, %eax");
-		emit("pushl %eax # Store AddExpression result");
+		
+		if (node.getOperator() instanceof APlusOperator) {
+			emit("addl %eax, %ebx");
+		} else if (node.getOperator() instanceof AMinusOperator) {
+			emit("subl %eax, %ebx");
+		}
+		
+		emit("pushl %ebx # Store AddExpression result");
 	}
 
 	@Override
@@ -109,8 +116,17 @@ public class CodeGenerator extends DepthFirstAdapter {
 
 	@Override
 	public void outAMultExpression(AMultExpression node) {
-		// TODO Auto-generated method stub
-		super.outAMultExpression(node);
+		emit("popl %eax # MultExpression");
+		emit("popl %ebx");
+		
+		if (node.getOperator() instanceof AMultOperator) {
+			emit("imull %ebx, %eax");
+		} else if (node.getOperator() instanceof ADivOperator) {
+			emit("cdq");
+			emit("idivl %ebx");
+		}
+		
+		emit("pushl %eax # Store MultExpression result");
 	}
 
 	@Override

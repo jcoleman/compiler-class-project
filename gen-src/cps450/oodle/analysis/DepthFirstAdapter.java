@@ -696,27 +696,6 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outACallExpression(node);
     }
 
-    public void inAGroupExpression(AGroupExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAGroupExpression(AGroupExpression node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAGroupExpression(AGroupExpression node)
-    {
-        inAGroupExpression(node);
-        if(node.getExpression() != null)
-        {
-            node.getExpression().apply(this);
-        }
-        outAGroupExpression(node);
-    }
-
     public void inAIdentifierExpression(AIdentifierExpression node)
     {
         defaultIn(node);

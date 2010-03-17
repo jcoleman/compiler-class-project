@@ -184,11 +184,6 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAGroupExpression(AGroupExpression node)
-    {
-        defaultCase(node);
-    }
-
     public void caseAIdentifierExpression(AIdentifierExpression node)
     {
         defaultCase(node);

@@ -179,7 +179,7 @@ Productions
                                      | {expr4} add_expression {-> add_expression.expression };
   add_expression {-> expression } = {add} add_expression add_operator mult_expression {-> New expression.add(add_operator.operator, add_expression.expression, mult_expression.expression) }
                                   | {expr5} mult_expression {-> mult_expression.expression };
-  mult_expression {-> expression } = {mult} mult_expression mult_operator call_expression {-> New expression.mult(mult_operator.operator, mult_expression.expression, call_expression.expression) }
+  mult_expression {-> expression } = {mult} mult_expression mult_operator unary_expression {-> New expression.mult(mult_operator.operator, mult_expression.expression, unary_expression.expression) }
                                    | {expr6} unary_expression {-> unary_expression.expression };
   unary_expression {-> expression } = {unary} unary_operator unary_expression {-> New expression.unary(unary_operator.operator, unary_expression.expression) }
                                     | {expr7} object_call_expression {-> object_call_expression.expression };
@@ -190,7 +190,7 @@ Productions
                                           | {expr9} group_expression {-> group_expression.expression };
                                    
                                    
-  group_expression {-> expression } = {group} T.l_par expression T.r_par {-> New expression.group(expression) }
+  group_expression {-> expression } = {group} T.l_par expression T.r_par {-> expression.expression }
                                     | {expr11} real_expression {-> real_expression.expression };
   real_expression {-> expression } = {identifier} T.id {-> New expression.identifier(id) }
                                      | {string} T.strlit {-> New expression.string(strlit) }
@@ -234,7 +234,6 @@ Abstract Syntax Tree
              | {unary} operator expression
              | {array} T.id expression
              | {call} [object]:expression? [method]:T.id [arguments]:expression*
-             | {group} expression
              | {identifier} T.id
              | {string} T.strlit
              | {integer} T.intlit

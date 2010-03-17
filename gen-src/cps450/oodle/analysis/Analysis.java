@@ -35,7 +35,6 @@ public interface Analysis extends Switch
     void caseAUnaryExpression(AUnaryExpression node);
     void caseAArrayExpression(AArrayExpression node);
     void caseACallExpression(ACallExpression node);
-    void caseAGroupExpression(AGroupExpression node);
     void caseAIdentifierExpression(AIdentifierExpression node);
     void caseAStringExpression(AStringExpression node);
     void caseAIntegerExpression(AIntegerExpression node);

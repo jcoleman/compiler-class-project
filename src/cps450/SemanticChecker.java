@@ -21,6 +21,12 @@ public class SemanticChecker extends DepthFirstAdapter {
 		decorations = new Hashtable<Node, Type>();
 		errorCount = 0;
 		Type.intialize();
+		
+		symbolTable.push("out", new VariableDeclaration(Type.getType("out"), "SYSTEM DECLARED"));
+		ArrayList<Type> outTypes = new ArrayList<Type>();
+		outTypes.add(Type.getType("int"));
+		symbolTable.push("writeint", new MethodDeclaration(Type.getType("void"), "SYSTEM DECLARED", outTypes));
+		symbolTable.beginScope();
 	}
 	
 	private String locationFor(Token t) {
@@ -74,13 +80,13 @@ public class SemanticChecker extends DepthFirstAdapter {
 				// Size is correct, check types
 				int i = 0;
 				for (Iterator<PExpression> args = node.getArguments().iterator(); args.hasNext();) {
-					i++;
 					PExpression arg = args.next();
 					Type argType = decorations.get(arg);
 					Type correctArgType = decl.getArgumentTypes().get(i);
 					if (argType != correctArgType) {
 						reportError(node.getMethod(), "Wrong type encountered in method call at argument " + (i+1) + ": expected '" + correctArgType.getName() + "' found '" + argType.getName() + "'");
 					}
+					i++;
 				}
 			}
 			returnType = decl.getType();
@@ -242,11 +248,6 @@ public class SemanticChecker extends DepthFirstAdapter {
 		}
 		
 		decorations.put(node, result);
-	}
-
-	@Override
-	public void outAGroupExpression(AGroupExpression node) {
-		decorations.put(node, decorations.get(node.getExpression()));
 	}
 
 	@Override

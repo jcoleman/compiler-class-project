@@ -51,7 +51,20 @@ public class Oodle
         SemanticChecker semanticChecker = new SemanticChecker();
         startNode.apply(semanticChecker);
         
-        System.out.println("" + (lexer.errorCount + errorCount + semanticChecker.getErrorCount()) +  " errors found");
+        Integer totalErrorCount = lexer.errorCount + errorCount + semanticChecker.getErrorCount();
+        System.out.println("" + totalErrorCount +  " errors found");
+        
+        if (totalErrorCount == 0) {
+        	String primaryFilename = SourceHolder.instance().getPrimaryFilename();
+            String outputName = primaryFilename.substring(0, primaryFilename.lastIndexOf(".ood"));
+            
+            PrintWriter writer = new PrintWriter(new FileWriter(outputName + ".s"));
+            CodeGenerator codeGenerator = new CodeGenerator(writer);
+            startNode.apply(codeGenerator);
+            writer.flush();
+            writer.close();
+        }
+        
     }
 
 }

@@ -53,6 +53,10 @@ public class SourceHolder {
     	}
     }
     
+    public String getPrimaryFilename() {
+    	return this.filenames.get(0);
+    }
+    
     // Converts multiple files into one file for parsing
     // Also stores the line number translation information
     public File concatenateFiles() throws IOException {	

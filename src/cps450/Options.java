@@ -12,6 +12,7 @@ public class Options {
 	
 	// Options
 	public Boolean debugTokens = false;
+	public Boolean assembleOnly = false;
 	public ArrayList<String> files;
 	
 	private Options() {
@@ -40,6 +41,8 @@ public class Options {
 	public void processArgument(String arg) {
 		if (arg.equals("-ds")) {
 			debugTokens = true;
+		} else if (arg.equals("-S")) {
+			assembleOnly = true;
 		}
 	}
 	

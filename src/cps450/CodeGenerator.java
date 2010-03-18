@@ -101,13 +101,13 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("cmpl %ebx, %eax");
 		
 		if (node.getOperator() instanceof AEqualOperator) {
-			emit("sete %eax # Equal");
+			emit("sete %al # Equal");
 		} else if (node.getOperator() instanceof AGreaterOperator) {
-			emit("setg %eax # Greater");
+			emit("setg %al # Greater");
 		} else if (node.getOperator() instanceof AGreaterEqualOperator) {
-			emit("setge %eax # GreaterOrEqual");
+			emit("setge %al # GreaterOrEqual");
 		}
-		emit("movzbl %eax");
+		emit("movzbl %al, %eax");
 		
 		emit("pushl %eax # Store ComparisonExpression result");
 	}

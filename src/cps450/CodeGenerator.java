@@ -131,6 +131,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 	@Override
 	public void outAIfHelper(AIfHelper node) {
 		this.ifStatementCounts.push(this.ifStatementCount);
+		this.ifStatementCount++;
 		emit("popl %eax # Get comparison value for IfStatement");
 		emit("cmpl 0, %eax");
 		emit("jne _true_statements_" + this.ifStatementCounts.peek());
@@ -149,7 +150,6 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("_end_if_statement_" + this.ifStatementCounts.peek() + ":");
 		
 		this.ifStatementCounts.pop();
-		this.ifStatementCount++;
 	}
 
 	@Override
@@ -162,6 +162,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emitOodleStatement(node.getLoop());
 		
 		this.loopStatementCounts.push(this.loopStatementCount);
+		this.loopStatementCount++;
 		
 		emit("_begin_loop_statement_" + this.loopStatementCounts.peek() + ":");
 	}
@@ -181,7 +182,6 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("_end_loop_statement_" + this.loopStatementCounts.peek() + ":");
 		
 		this.loopStatementCounts.pop();
-		this.loopStatementCount++;
 	}
 
 	@Override

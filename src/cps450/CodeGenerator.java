@@ -98,7 +98,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 	public void outAComparisonExpression(AComparisonExpression node) {
 		emit("popl %eax # ComparisonExpression");
 		emit("popl %ebx");
-		emit("cmpl %ebx, %eax");
+		emit("cmpl %eax, %ebx");
 		
 		if (node.getOperator() instanceof AEqualOperator) {
 			emit("sete %al # Equal");

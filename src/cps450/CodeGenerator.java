@@ -36,11 +36,8 @@ public class CodeGenerator extends DepthFirstAdapter {
 	@Override
 	public void inAClassDef(AClassDef node) {
 		emit(".data");
-	}
-
-	@Override
-	public void inAMethodDeclaration(AMethodDeclaration node) {
-		emit(".text");
+		emit(".comm _out, 4, 4");
+		emit(".comm _in, 4, 4");
 	}
 
 	@Override
@@ -78,15 +75,23 @@ public class CodeGenerator extends DepthFirstAdapter {
 
 	@Override
 	public void outACallExpression(ACallExpression node) {
+		emit("call " + node.getMethod().getText());
+		emit("addl $" + (node.getArguments().size() * 4) + ", %esp # Clean up the argument values");
 		if (node.getObject() != null) {
-			emit("popl %eax # Clean up the Object Expression");
+			emit("popl %ebx # Clean up the Object Expression");
 		}
+		emit("pushl %eax # Assume that we got a return value");
 	}
 	
 	@Override
 	public void inACallStatement(ACallStatement node) {
 		ACallExpression expr = (ACallExpression)node.getExpression();
 		emitOodleStatement(expr.getMethod());
+	}
+
+	@Override
+	public void outACallStatement(ACallStatement node) {
+		emit("popl %eax # Cleanup unused return value in CallStatement");
 	}
 
 	@Override
@@ -180,15 +185,28 @@ public class CodeGenerator extends DepthFirstAdapter {
 	}
 
 	@Override
+	public void inAMethodDeclaration(AMethodDeclaration node) {
+		emit(".text");
+		if (node.getBeginName().getText().equals("start")) {
+			emit(".global main");
+			emit("main:");
+		} else {
+			emit("_" + node.getBeginName().getText() + ":");
+		}
+	}
+
+	@Override
 	public void outAMethodDeclaration(AMethodDeclaration node) {
-		// TODO Auto-generated method stub
-		super.outAMethodDeclaration(node);
+		if (node.getBeginName().getText().equals("start")) {
+			emit("push $0");
+			emit("call exit");
+		}
 	}
 
 	@Override
 	public void outAMultExpression(AMultExpression node) {
-		emit("popl %eax # MultExpression");
-		emit("popl %ebx");
+		emit("popl %ebx # MultExpression");
+		emit("popl %eax");
 		
 		if (node.getOperator() instanceof AMultOperator) {
 			emit("imull %ebx, %eax");
@@ -232,7 +250,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 
 	@Override
 	public void outAVarDeclaration(AVarDeclaration node) {
-		emit(".comm " + node.getName().getText() + ", 4, 4");
+		emit(".comm _" + node.getName().getText() + ", 4, 4");
 	}
 	
 	

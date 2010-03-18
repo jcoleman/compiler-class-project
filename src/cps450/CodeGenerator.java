@@ -133,7 +133,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		this.ifStatementCounts.push(this.ifStatementCount);
 		this.ifStatementCount++;
 		emit("popl %eax # Get comparison value for IfStatement");
-		emit("cmpl 0, %eax");
+		emit("cmpl $0, %eax");
 		emit("jne _true_statements_" + this.ifStatementCounts.peek());
 		emit("jmp _false_statements_" + this.ifStatementCounts.peek());
 		emit("_true_statements_" + this.ifStatementCounts.peek() + ":");
@@ -170,7 +170,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 	@Override
 	public void outALoopHelper(ALoopHelper node) {
 		emit("popl %eax # Get comparison value for LoopStatement");
-		emit("cmpl 0, %eax");
+		emit("cmpl $0, %eax");
 		emit("jne _loop_statements_" + this.loopStatementCounts.peek());
 		emit("jmp _end_loop_statement_" + this.loopStatementCounts.peek());
 		emit("_loop_statements_" + this.loopStatementCounts.peek() + ":");

@@ -30,7 +30,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 	
 	private void emitOodleStatement(Token token) {
 		emit("");
-		emit("# " + SourceHolder.instance().getLine(token.getLine()-1));
+		emit("# " + token.getLine() + ": " + SourceHolder.instance().getLine(token.getLine()-1));
 	}
 	
 	@Override

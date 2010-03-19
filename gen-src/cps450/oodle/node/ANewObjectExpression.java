@@ -7,6 +7,7 @@ import cps450.oodle.analysis.*;
 @SuppressWarnings("nls")
 public final class ANewObjectExpression extends PExpression
 {
+    private TNew _new_;
     private PType _type_;
 
     public ANewObjectExpression()
@@ -15,9 +16,12 @@ public final class ANewObjectExpression extends PExpression
     }
 
     public ANewObjectExpression(
+        @SuppressWarnings("hiding") TNew _new_,
         @SuppressWarnings("hiding") PType _type_)
     {
         // Constructor
+        setNew(_new_);
+
         setType(_type_);
 
     }
@@ -26,12 +30,38 @@ public final class ANewObjectExpression extends PExpression
     public Object clone()
     {
         return new ANewObjectExpression(
+            cloneNode(this._new_),
             cloneNode(this._type_));
     }
 
     public void apply(Switch sw)
     {
         ((Analysis) sw).caseANewObjectExpression(this);
+    }
+
+    public TNew getNew()
+    {
+        return this._new_;
+    }
+
+    public void setNew(TNew node)
+    {
+        if(this._new_ != null)
+        {
+            this._new_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        this._new_ = node;
     }
 
     public PType getType()
@@ -63,6 +93,7 @@ public final class ANewObjectExpression extends PExpression
     public String toString()
     {
         return ""
+            + toString(this._new_)
             + toString(this._type_);
     }
 
@@ -70,6 +101,12 @@ public final class ANewObjectExpression extends PExpression
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
+        if(this._new_ == child)
+        {
+            this._new_ = null;
+            return;
+        }
+
         if(this._type_ == child)
         {
             this._type_ = null;
@@ -83,6 +120,12 @@ public final class ANewObjectExpression extends PExpression
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
+        if(this._new_ == oldChild)
+        {
+            setNew((TNew) newChild);
+            return;
+        }
+
         if(this._type_ == oldChild)
         {
             setType((PType) newChild);

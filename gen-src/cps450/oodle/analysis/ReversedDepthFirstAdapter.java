@@ -898,6 +898,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAMeExpression(AMeExpression node)
     {
         inAMeExpression(node);
+        if(node.getMe() != null)
+        {
+            node.getMe().apply(this);
+        }
         outAMeExpression(node);
     }
 
@@ -918,6 +922,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         if(node.getType() != null)
         {
             node.getType().apply(this);
+        }
+        if(node.getNew() != null)
+        {
+            node.getNew().apply(this);
         }
         outANewObjectExpression(node);
     }

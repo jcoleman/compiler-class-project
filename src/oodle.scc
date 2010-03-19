@@ -199,8 +199,8 @@ Productions
                                      | {true} T.true {-> New expression.true() }
                                      | {false} T.false {-> New expression.false() }
                                      | {null} T.null {-> New expression.null() }
-                                     | {me} T.me {-> New expression.me() }
-                                     | {new} T.new var_type {-> New expression.new_object(var_type.type) };
+                                     | {me} T.me {-> New expression.me(me) }
+                                     | {new} T.new var_type {-> New expression.new_object(new, var_type.type) };
   
   
   
@@ -244,8 +244,8 @@ Abstract Syntax Tree
              | {true}
              | {false}
              | {null}
-             | {me}
-             | {new_object} type;
+             | {me} T.me
+             | {new_object} T.new type;
   
   operator = {not} [op]:T.not | {plus} [op]:T.plus_op | {minus} [op]:T.minus_op | {mult} [op]:T.mult_op | {div} [op]:T.div_op | {equal} [op]:T.eq_op | {greater} [op]:T.gt_op | {greater_equal} [op]:T.gte_op;
   

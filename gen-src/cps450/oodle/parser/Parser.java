@@ -4331,8 +4331,10 @@ public class Parser
         PExpression pexpressionNode1;
         {
             // Block
+        TMe tmeNode2;
+        tmeNode2 = (TMe)nodeArrayList1.get(0);
 
-        pexpressionNode1 = new AMeExpression();
+        pexpressionNode1 = new AMeExpression(tmeNode2);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
@@ -4350,10 +4352,12 @@ public class Parser
         PExpression pexpressionNode1;
         {
             // Block
-        PType ptypeNode2;
-        ptypeNode2 = (PType)nodeArrayList2.get(0);
+        TNew tnewNode2;
+        PType ptypeNode3;
+        tnewNode2 = (TNew)nodeArrayList1.get(0);
+        ptypeNode3 = (PType)nodeArrayList2.get(0);
 
-        pexpressionNode1 = new ANewObjectExpression(ptypeNode2);
+        pexpressionNode1 = new ANewObjectExpression(tnewNode2, ptypeNode3);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;

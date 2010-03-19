@@ -37,7 +37,11 @@ public class SemanticChecker extends DepthFirstAdapter {
 	
 	private void reportError(Token t, String errorText) {
 		this.errorCount++;
-		System.out.println(locationFor(t) + ":" + errorText);
+		String output = "";
+		if (t != null) {
+			output += locationFor(t) + ":";
+		}
+		System.out.println(output + errorText);
 	}
 	
 	private Type typeFor(PType type) {
@@ -111,6 +115,11 @@ public class SemanticChecker extends DepthFirstAdapter {
 			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the method declaration, but instead found " + node.getEndName().getText());
 		}
 		
+		// Only allow one method declaration for now...
+		if (!node.getBeginName().getText().equals("start")) {
+			reportError(node.getBeginName(), "Method declarations other than 'start' not yet supported");
+		}
+		
 		// Push the method declaration onto the symbol table
 		MethodDeclaration declaration = new MethodDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()), argumentTypes );
 		Symbol previousDeclaration = symbolTable.scopeContains(node.getBeginName().getText());
@@ -125,6 +134,13 @@ public class SemanticChecker extends DepthFirstAdapter {
 		// Add the method name as a variable (for assigning the return value)
 		VariableDeclaration returnDecl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()) );
 		symbolTable.push(node.getBeginName().getText(), returnDecl);
+	}
+
+	@Override
+	public void inAStart(AStart node) {
+		if (node.getClassDef().size() != 1) {
+			reportError(null, "You may only define one class");
+		}
 	}
 
 	@Override
@@ -409,8 +425,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void outAArrayExpression(AArrayExpression node) {
-		// TODO Auto-generated method stub
-		super.outAArrayExpression(node);
+		reportError(node.getId(), "Arrays are not yet supported");
 	}
 
 	@Override
@@ -420,14 +435,27 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void outAMeExpression(AMeExpression node) {
-		// TODO Auto-generated method stub
-		super.outAMeExpression(node);
+		reportError(node.getMe(), "Referencing the current object by 'me' is not yet supported");
 	}
 
 	@Override
 	public void outANewObjectExpression(ANewObjectExpression node) {
-		// TODO Auto-generated method stub
-		super.outANewObjectExpression(node);
+		reportError(node.getNew(), "Instantiation of classes not yet supported");
+	}
+
+	@Override
+	public void inAConcatenationExpression(AConcatenationExpression node) {
+		reportError(node.getConcatOp(), "String concatenation not yet supported");
+	}
+
+	@Override
+	public void inAStringExpression(AStringExpression node) {
+		reportError(node.getStrlit(), "Strings not yet supported");
+	}
+
+	@Override
+	public void inAStringType(AStringType node) {
+		reportError(node.getString(), "Strings not yet supported");
 	}
 
 	public Integer getErrorCount() {

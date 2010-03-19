@@ -887,6 +887,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAMeExpression(AMeExpression node)
     {
         inAMeExpression(node);
+        if(node.getMe() != null)
+        {
+            node.getMe().apply(this);
+        }
         outAMeExpression(node);
     }
 
@@ -904,6 +908,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseANewObjectExpression(ANewObjectExpression node)
     {
         inANewObjectExpression(node);
+        if(node.getNew() != null)
+        {
+            node.getNew().apply(this);
+        }
         if(node.getType() != null)
         {
             node.getType().apply(this);

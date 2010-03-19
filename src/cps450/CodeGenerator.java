@@ -32,13 +32,21 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("# " + token.getLine() + ": " + SourceHolder.instance().getLine(token.getLine()-1));
 	}
 	
+	/*
+	 * Start the generated with the predefined data directives. 
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAClassDef(cps450.oodle.node.AClassDef)
+	 */
 	@Override
 	public void inAClassDef(AClassDef node) {
 		emit(".data");
 		emit(".comm _out, 4, 4");
 		emit(".comm _in, 4, 4");
 	}
-
+	
+	/*
+	 * Generate assembly for addition expressions.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAAddExpression(cps450.oodle.node.AAddExpression)
+	 */
 	@Override
 	public void outAAddExpression(AAddExpression node) {
 		emit("popl %eax # AddExpression");
@@ -52,7 +60,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		emit("pushl %ebx # Store AddExpression result");
 	}
-
+	
+	/*
+	 * Generate assembly for And expressions.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAAndExpression(cps450.oodle.node.AAndExpression)
+	 */
 	@Override
 	public void outAAndExpression(AAndExpression node) {
 		emit("popl %eax # AndExpression");
@@ -61,17 +73,29 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax # Store AndExpression result");
 	}
 	
+	/*
+	 * Output a comment with the oodle source.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAAssignmentStatement(cps450.oodle.node.AAssignmentStatement)
+	 */
 	@Override
 	public void inAAssignmentStatement(AAssignmentStatement node) {
 		emitOodleStatement(node.getId());
 	}
-
+	
+	/*
+	 * Generate assembly for assignment statements.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAAssignmentStatement(cps450.oodle.node.AAssignmentStatement)
+	 */
 	@Override
 	public void outAAssignmentStatement(AAssignmentStatement node) {
 		emit("popl %eax # AssignmentStatement");
 		emit("movl %eax, _" + node.getId().getText());
 	}
-
+	
+	/*
+	 * Generate assembly for method calls
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outACallExpression(cps450.oodle.node.ACallExpression)
+	 */
 	@Override
 	public void outACallExpression(ACallExpression node) {
 		emit("call " + node.getMethod().getText());
@@ -82,17 +106,29 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax # Assume that we got a return value");
 	}
 	
+	/*
+	 * Output a comment with the oodle source.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inACallStatement(cps450.oodle.node.ACallStatement)
+	 */
 	@Override
 	public void inACallStatement(ACallStatement node) {
 		ACallExpression expr = (ACallExpression)node.getExpression();
 		emitOodleStatement(expr.getMethod());
 	}
-
+	
+	/*
+	 * Generate assembly to cleanup after the call statements.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outACallStatement(cps450.oodle.node.ACallStatement)
+	 */
 	@Override
 	public void outACallStatement(ACallStatement node) {
 		emit("popl %eax # Cleanup unused return value in CallStatement");
 	}
-
+	
+	/*
+	 * Generate assembly for the comparison expressions.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAComparisonExpression(cps450.oodle.node.AComparisonExpression)
+	 */
 	@Override
 	public void outAComparisonExpression(AComparisonExpression node) {
 		emit("popl %eax # ComparisonExpression");
@@ -110,23 +146,39 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		emit("pushl %eax # Store ComparisonExpression result");
 	}
-
+	
+	/*
+	 * Generate assembly for a false keyword.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAFalseExpression(cps450.oodle.node.AFalseExpression)
+	 */
 	@Override
 	public void outAFalseExpression(AFalseExpression node) {
 		emit("pushl $0 # FalseExpression");
 	}
-
+	
+	/*
+	 * Generate assembly to evaluate the value of a variable.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAIdentifierExpression(cps450.oodle.node.AIdentifierExpression)
+	 */
 	@Override
 	public void outAIdentifierExpression(AIdentifierExpression node) {
 		emit("movl _" + node.getId().getText() + ", %eax");
 		emit("pushl %eax");
 	}
-
+	
+	/*
+	 * Output oodle source as comment in assembly.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAIfStatement(cps450.oodle.node.AIfStatement)
+	 */
 	@Override
 	public void inAIfStatement(AIfStatement node) {
 		emitOodleStatement(node.getIf());
 	}
-
+	
+	/*
+	 * Generate the assembly to test the if expression and execute the correct statements.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAIfHelper(cps450.oodle.node.AIfHelper)
+	 */
 	@Override
 	public void outAIfHelper(AIfHelper node) {
 		this.ifStatementCounts.push(this.ifStatementCount);
@@ -137,25 +189,41 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("jmp _false_statements_" + this.ifStatementCounts.peek());
 		emit("_true_statements_" + this.ifStatementCounts.peek() + ":");
 	}
-
+	
+	/*
+	 * Generate the code in the middle of the if so we only execute the correct statements.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAElseHelper(cps450.oodle.node.AElseHelper)
+	 */
 	@Override
 	public void outAElseHelper(AElseHelper node) {
 		emit("jmp _end_if_statement_" + this.ifStatementCounts.peek());
 		emit("_false_statements_" + this.ifStatementCounts.peek() + ":");
 	}
-
+	
+	/*
+	 * Generate the end label for the if statements.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAIfStatement(cps450.oodle.node.AIfStatement)
+	 */
 	@Override
 	public void outAIfStatement(AIfStatement node) {
 		emit("_end_if_statement_" + this.ifStatementCounts.peek() + ":");
 		
 		this.ifStatementCounts.pop();
 	}
-
+	
+	/*
+	 * Generate assembly to evaluate an integer literal.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAIntegerExpression(cps450.oodle.node.AIntegerExpression)
+	 */
 	@Override
 	public void outAIntegerExpression(AIntegerExpression node) {
 		emit("pushl $" + node.getIntlit().getText());
 	}
-
+	
+	/*
+	 * Output oodle source as a comment.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inALoopStatement(cps450.oodle.node.ALoopStatement)
+	 */
 	@Override
 	public void inALoopStatement(ALoopStatement node) {
 		emitOodleStatement(node.getLoop());
@@ -165,7 +233,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		emit("_begin_loop_statement_" + this.loopStatementCounts.peek() + ":");
 	}
-
+	
+	/*
+	 * Generate test expression evaluation in loop statement
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outALoopHelper(cps450.oodle.node.ALoopHelper)
+	 */
 	@Override
 	public void outALoopHelper(ALoopHelper node) {
 		emit("popl %eax # Get comparison value for LoopStatement");
@@ -174,7 +246,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("jmp _end_loop_statement_" + this.loopStatementCounts.peek());
 		emit("_loop_statements_" + this.loopStatementCounts.peek() + ":");
 	}
-
+	
+	/*
+	 * Generate the end label of a loop statement and reset to the beginning of the loop.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outALoopStatement(cps450.oodle.node.ALoopStatement)
+	 */
 	@Override
 	public void outALoopStatement(ALoopStatement node) {
 		emit("jmp _begin_loop_statement_" + this.loopStatementCounts.peek());
@@ -182,7 +258,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		this.loopStatementCounts.pop();
 	}
-
+	
+	/*
+	 * Generate assembly labels for a method beginning.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAMethodDeclaration(cps450.oodle.node.AMethodDeclaration)
+	 */
 	@Override
 	public void inAMethodDeclaration(AMethodDeclaration node) {
 		emit(".text");
@@ -193,7 +273,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 			emit("_" + node.getBeginName().getText() + ":");
 		}
 	}
-
+	
+	/*
+	 * Generate the assembly to end the program.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAMethodDeclaration(cps450.oodle.node.AMethodDeclaration)
+	 */
 	@Override
 	public void outAMethodDeclaration(AMethodDeclaration node) {
 		if (node.getBeginName().getText().equals("start")) {
@@ -201,7 +285,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 			emit("call exit");
 		}
 	}
-
+	
+	/*
+	 * Generate assembly to evaluate multiplication and division operations.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAMultExpression(cps450.oodle.node.AMultExpression)
+	 */
 	@Override
 	public void outAMultExpression(AMultExpression node) {
 		emit("popl %ebx # MultExpression");
@@ -216,12 +304,20 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		emit("pushl %eax # Store MultExpression result");
 	}
-
+	
+	/*
+	 * Generate code to save the value of null.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outANullExpression(cps450.oodle.node.ANullExpression)
+	 */
 	@Override
 	public void outANullExpression(ANullExpression node) {
 		emit("pushl $0");
 	}
-
+	
+	/*
+	 * Generate code to evaluate and Or expression.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAOrExpression(cps450.oodle.node.AOrExpression)
+	 */
 	@Override
 	public void outAOrExpression(AOrExpression node) {
 		emit("popl %eax # AndExpression");
@@ -229,12 +325,20 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("orl %ebx, %eax");
 		emit("pushl %eax # Store AndExpression result");
 	}
-
+	
+	/*
+	 * Generate code to evaluate the value of the true expression.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outATrueExpression(cps450.oodle.node.ATrueExpression)
+	 */
 	@Override
 	public void outATrueExpression(ATrueExpression node) {
 		emit("pushl $1 # TrueExpression");
 	}
-
+	
+	/*
+	 * Generate assembly code to evaluate unary (+/-) expressions.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAUnaryExpression(cps450.oodle.node.AUnaryExpression)
+	 */
 	@Override
 	public void outAUnaryExpression(AUnaryExpression node) {
 		emit("popl %eax # Begin UnaryExpression");
@@ -246,7 +350,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax # End UnaryExpression");
 		
 	}
-
+	
+	/*
+	 * Generate assembly code to define a variable's storage space.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAVarDeclaration(cps450.oodle.node.AVarDeclaration)
+	 */
 	@Override
 	public void outAVarDeclaration(AVarDeclaration node) {
 		emit(".comm _" + node.getName().getText() + ", 4, 4");

@@ -106,6 +106,11 @@ public class SemanticChecker extends DepthFirstAdapter {
 			argumentTypes.add( typeFor(arg.getType()) );
 		}
 		
+		// Verify that the naming on both ends is the same
+		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
+			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the method declaration, but instead found " + node.getEndName().getText());
+		}
+		
 		// Push the method declaration onto the symbol table
 		MethodDeclaration declaration = new MethodDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()), argumentTypes );
 		Symbol previousDeclaration = symbolTable.scopeContains(node.getBeginName().getText());
@@ -120,6 +125,14 @@ public class SemanticChecker extends DepthFirstAdapter {
 		// Add the method name as a variable (for assigning the return value)
 		VariableDeclaration returnDecl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()) );
 		symbolTable.push(node.getBeginName().getText(), returnDecl);
+	}
+
+	@Override
+	public void inAClassDef(AClassDef node) {
+		// Verify that the naming on both ends is the same
+		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
+			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the class definition, but instead found " + node.getEndName().getText());
+		}
 	}
 
 	@Override

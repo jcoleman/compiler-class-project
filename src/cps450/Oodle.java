@@ -63,8 +63,42 @@ public class Oodle
             startNode.apply(codeGenerator);
             writer.flush();
             writer.close();
+            
+            if (!Options.instance().assembleOnly) {
+    			assemble(outputName);
+    		}
         }
         
+    }
+    
+    
+    /**
+     * Run GCC to assemble the generated source code.
+     * @param outputName
+     * @throws IOException
+     */
+    private static void assemble(String outputName) throws IOException {
+    	// Call GCC
+    	Process p = Runtime.getRuntime().exec("gcc -g " + outputName + ".s stdlib.o -o" + outputName);
+    	BufferedReader stdInput = new BufferedReader(new 
+        InputStreamReader(p.getInputStream()));
+
+        BufferedReader stdError = new BufferedReader(new 
+        InputStreamReader(p.getErrorStream()));
+
+        // read the output from the command
+        String s;
+        while ((s = stdInput.readLine()) != null) {
+            System.out.println(s);
+        }
+        
+        // read any errors from the attempted command
+        while ((s = stdError.readLine()) != null) {
+           System.out.println(s);
+        }
+    	
+    	// Delete the temp assembly file
+    	(new File(outputName + ".s")).delete();
     }
 
 }

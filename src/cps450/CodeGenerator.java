@@ -24,7 +24,6 @@ public class CodeGenerator extends DepthFirstAdapter {
 	}
 	
 	private void emit(String sourceLine) {
-		System.out.println(sourceLine);
 		writer.println(sourceLine);
 	}
 	

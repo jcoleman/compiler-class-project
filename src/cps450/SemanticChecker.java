@@ -241,7 +241,14 @@ public class SemanticChecker extends DepthFirstAdapter {
 		Type result = Type.getType("error");
 		Type lt = decorations.get(node.getExpr1());
 		Type rt = decorations.get(node.getExpr2());
-		Token token = (node.getOperator() instanceof AGreaterOperator ? ((AGreaterOperator)node.getOperator()).getOp() : ((AGreaterEqualOperator)node.getOperator()).getOp());
+		Token token = null;
+		if (node.getOperator() instanceof AGreaterOperator) {
+			token = ((AGreaterOperator)node.getOperator()).getOp();
+		} else if (node.getOperator() instanceof AGreaterEqualOperator) {
+			token = ((AGreaterEqualOperator)node.getOperator()).getOp();
+		} else if (node.getOperator() instanceof AEqualOperator) {
+			token = ((AEqualOperator)node.getOperator()).getOp();
+		}
 
 		if (lt != rt) {
 			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());

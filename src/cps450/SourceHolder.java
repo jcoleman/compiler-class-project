@@ -59,7 +59,8 @@ public class SourceHolder {
     }
     
     public String getPrimaryFilename() {
-    	return this.filenames.get(0);
+    	File f = new File(this.filenames.get(this.filenames.size() - 1));
+    	return f.getName();
     }
     
     // Converts multiple files into one file for parsing
@@ -70,32 +71,43 @@ public class SourceHolder {
     	linesCorrectLineIndex = new ArrayList<Integer>();
     	lines = new ArrayList<String>();
    		
-    	// create new temporary file
-    	File tmp = File.createTempFile("oodle-compiler", ".ood");
-    	BufferedWriter writer = new BufferedWriter( new FileWriter(tmp) );
-        
-        for (int i = 0; i < Options.instance().files.size(); ++i) {
-        	// open each file
-        	BufferedReader rd = new BufferedReader( new FileReader( Options.instance().files.get(i) ) );
-        	
-        	int lineCount = 0;
-        	String line;
-        	while ( (line = rd.readLine()) != null ) {
-        		lineCount++;
-        		
-        		lines.add(line);
-        		
-       			// write its output to the temporary file
-           		writer.write(line, 0, line.length());
-           		writer.newLine();
-       			
-           		// setup line numbering mapping
-       			linesFileIndex.add(i);
-       			linesCorrectLineIndex.add(lineCount);
-       		}
-       		
-       	}
-       	writer.close();
+    	BufferedWriter writer = null;
+    	File tmp = null;
+    	
+    	try {
+    		// create new temporary file
+        	tmp = File.createTempFile("oodle-compiler", ".ood");
+        	writer = new BufferedWriter( new FileWriter(tmp) );
+            
+            for (int i = 0; i < Options.instance().files.size(); ++i) {
+            	// open each file
+            	BufferedReader rd = new BufferedReader( new FileReader( Options.instance().files.get(i) ) );
+            	
+            	int lineCount = 0;
+            	String line;
+            	while ( (line = rd.readLine()) != null ) {
+            		lineCount++;
+            		
+            		lines.add(line);
+            		
+           			// write its output to the temporary file
+               		writer.write(line, 0, line.length());
+               		writer.newLine();
+           			
+               		// setup line numbering mapping
+           			linesFileIndex.add(i);
+           			linesCorrectLineIndex.add(lineCount);
+           		}
+           		
+           	}
+    	} catch (Exception e) {
+    		System.err.println("Error reading source file");
+    	} finally {
+    		if (writer != null) {
+    			writer.close();
+    		}
+    	}
+       	
        	return tmp;
     }
 	

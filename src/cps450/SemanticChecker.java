@@ -12,13 +12,13 @@ import cps450.oodle.node.*;
 public class SemanticChecker extends DepthFirstAdapter {
 
 	SymbolTable symbolTable;
-	Hashtable<Node, Type> decorations;
+	Hashtable<Node, Type> typeDecorations;
 	Integer errorCount;
 	
 	public SemanticChecker() {
 		super();
 		symbolTable = new SymbolTable();
-		decorations = new Hashtable<Node, Type>();
+		typeDecorations = new Hashtable<Node, Type>();
 		errorCount = 0;
 		Type.intialize();
 		
@@ -87,7 +87,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 				int i = 0;
 				for (Iterator<PExpression> args = node.getArguments().iterator(); args.hasNext();) {
 					PExpression arg = args.next();
-					Type argType = decorations.get(arg);
+					Type argType = typeDecorations.get(arg);
 					Type correctArgType = decl.getArgumentTypes().get(i);
 					if (argType != correctArgType) {
 						reportError(node.getMethod(), "Wrong type encountered in method call at argument " + (i+1) + ": expected '" + correctArgType.getName() + "' found '" + argType.getName() + "'");
@@ -98,7 +98,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 			returnType = decl.getType();
 		}
 		
-		decorations.put(node, returnType);
+		typeDecorations.put(node, returnType);
 	}
 
 	@Override
@@ -139,7 +139,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 	@Override
 	public void inAStart(AStart node) {
 		if (node.getClassDef().size() != 1) {
-			reportError(null, "You may only define one class");
+			reportError(null, "You must define exactly one class");
 		}
 	}
 
@@ -168,8 +168,8 @@ public class SemanticChecker extends DepthFirstAdapter {
 	@Override
 	public void outAAddExpression(AAddExpression node) {
 		Type result = Type.getType("error");
-		Type lt = decorations.get(node.getExpr1());
-		Type rt = decorations.get(node.getExpr2());
+		Type lt = typeDecorations.get(node.getExpr1());
+		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = (node.getOperator() instanceof APlusOperator ? ((APlusOperator)node.getOperator()).getOp() : ((AMinusOperator)node.getOperator()).getOp());
 
 		if (lt != rt) {
@@ -184,14 +184,14 @@ public class SemanticChecker extends DepthFirstAdapter {
 			}
 		}
 		
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
 	public void outAAndExpression(AAndExpression node) {
 		Type result = Type.getType("error");
-		Type lt = decorations.get(node.getExpr1());
-		Type rt = decorations.get(node.getExpr2());
+		Type lt = typeDecorations.get(node.getExpr1());
+		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = node.getAnd();
 
 		if (lt != rt) {
@@ -206,7 +206,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 			}
 		}
 		
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
@@ -222,7 +222,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 			decl = id.getDeclaration();
 			if (decl instanceof VariableDeclaration) {
 				Type expectedType = decl.getType();
-				Type exprType = decorations.get(node.getValue());
+				Type exprType = typeDecorations.get(node.getValue());
 				if (exprType != expectedType) {
 					reportError(node.getId(), "Expected expression of type '" + expectedType.getName() + "' got '" + exprType.getName() + "' at assignment to variable '" + node.getId().getText() + "'");
 				} else {
@@ -233,14 +233,14 @@ public class SemanticChecker extends DepthFirstAdapter {
 			}
 		}
 		
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
 	public void outAComparisonExpression(AComparisonExpression node) {
 		Type result = Type.getType("error");
-		Type lt = decorations.get(node.getExpr1());
-		Type rt = decorations.get(node.getExpr2());
+		Type lt = typeDecorations.get(node.getExpr1());
+		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = null;
 		if (node.getOperator() instanceof AGreaterOperator) {
 			token = ((AGreaterOperator)node.getOperator()).getOp();
@@ -263,14 +263,14 @@ public class SemanticChecker extends DepthFirstAdapter {
 			}
 		}
 		
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
 	public void outAConcatenationExpression(AConcatenationExpression node) {
 		Type result = Type.getType("error");
-		Type lt = decorations.get(node.getExpr1());
-		Type rt = decorations.get(node.getExpr2());
+		Type lt = typeDecorations.get(node.getExpr1());
+		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = node.getConcatOp();
 
 		if (lt != rt) {
@@ -285,7 +285,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 			}
 		}
 		
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
@@ -303,13 +303,13 @@ public class SemanticChecker extends DepthFirstAdapter {
 				reportError(node.getId(), "Attempted to use a non-variable identifier in an expression context");
 			}
 		}
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
 	public void outAIfStatement(AIfStatement node) {
 		Type result = Type.getType("error");
-		Type actualType = decorations.get(node.getExpression());
+		Type actualType = typeDecorations.get(node.getExpression());
 		Type expectedType = Type.getType("boolean");
 		Token token = node.getIf();
 		
@@ -319,18 +319,18 @@ public class SemanticChecker extends DepthFirstAdapter {
 			result = actualType;
 		}
 		
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
 	public void outAIntegerExpression(AIntegerExpression node) {
-		decorations.put(node, Type.getType("int"));
+		typeDecorations.put(node, Type.getType("int"));
 	}
 
 	@Override
 	public void outALoopStatement(ALoopStatement node) {
 		Type result = Type.getType("error");
-		Type actualType = decorations.get(node.getCase());
+		Type actualType = typeDecorations.get(node.getCase());
 		Type expectedType = Type.getType("boolean");
 		Token token = node.getLoop();
 		
@@ -340,14 +340,14 @@ public class SemanticChecker extends DepthFirstAdapter {
 			result = actualType;
 		}
 		
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
 	public void outAMultExpression(AMultExpression node) {
 		Type result = Type.getType("error");
-		Type lt = decorations.get(node.getExpr1());
-		Type rt = decorations.get(node.getExpr2());
+		Type lt = typeDecorations.get(node.getExpr1());
+		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = (node.getOperator() instanceof AMultOperator ? ((AMultOperator)node.getOperator()).getOp() : ((ADivOperator)node.getOperator()).getOp());
 
 		if (lt != rt) {
@@ -362,19 +362,19 @@ public class SemanticChecker extends DepthFirstAdapter {
 			}
 		}
 		
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
 	public void outANullExpression(ANullExpression node) {
-		decorations.put(node, Type.getType("null"));
+		typeDecorations.put(node, Type.getType("null"));
 	}
 
 	@Override
 	public void outAOrExpression(AOrExpression node) {
 		Type result = Type.getType("error");
-		Type lt = decorations.get(node.getExpr1());
-		Type rt = decorations.get(node.getExpr2());
+		Type lt = typeDecorations.get(node.getExpr1());
+		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = node.getOr();
 
 		if (lt != rt) {
@@ -389,23 +389,23 @@ public class SemanticChecker extends DepthFirstAdapter {
 			}
 		}
 		
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
 	public void outAStringExpression(AStringExpression node) {
-		decorations.put(node, Type.getType("string"));
+		typeDecorations.put(node, Type.getType("string"));
 	}
 
 	@Override
 	public void outATrueExpression(ATrueExpression node) {
-		decorations.put(node, Type.getType("boolean"));
+		typeDecorations.put(node, Type.getType("boolean"));
 	}
 
 	@Override
 	public void outAUnaryExpression(AUnaryExpression node) {
 		Type result = Type.getType("error");
-		Type actualType = decorations.get(node.getExpression());
+		Type actualType = typeDecorations.get(node.getExpression());
 		Type expectedType = null;
 		Token token = null;
 		
@@ -427,7 +427,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 			result = actualType;
 		}
 		
-		decorations.put(node, result);
+		typeDecorations.put(node, result);
 	}
 
 	@Override
@@ -437,7 +437,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void outAFalseExpression(AFalseExpression node) {
-		decorations.put(node, Type.getType("boolean"));
+		typeDecorations.put(node, Type.getType("boolean"));
 	}
 
 	@Override

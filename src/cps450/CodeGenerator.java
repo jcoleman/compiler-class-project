@@ -1,6 +1,7 @@
 package cps450;
 
 import java.io.File;
+import java.util.Hashtable;
 import java.util.Stack;
 import java.io.PrintWriter;
 
@@ -15,12 +16,18 @@ public class CodeGenerator extends DepthFirstAdapter {
 	Stack<Integer> ifStatementCounts;
 	int loopStatementCount;
 	Stack<Integer> loopStatementCounts;
+	Hashtable<String, ClassDeclaration> classTable;
+	Hashtable<Node, Type> typeDecorations;
+	MethodDeclaration currentMethodDeclaration = null;
+	ClassDeclaration currentClassDeclaration = null;
 	
-	public CodeGenerator(PrintWriter _writer) {
+	public CodeGenerator(PrintWriter _writer, Hashtable<String, ClassDeclaration> _classTable, Hashtable<Node, Type> _typeDecorations) {
 		super();
 		writer = _writer;
 		ifStatementCounts = new Stack<Integer>();
 		loopStatementCounts = new Stack<Integer>();
+		classTable = _classTable;
+		typeDecorations = _typeDecorations;
 	}
 	
 	private void emit(String sourceLine) {
@@ -34,13 +41,22 @@ public class CodeGenerator extends DepthFirstAdapter {
 	
 	/*
 	 * Start the generated with the predefined data directives. 
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAStart(cps450.oodle.node.AStart)
+	 */
+	@Override
+	public void inAStart(AStart node) {
+		emit(".data");
+		emit(".comm _out, 4, 4");
+		emit(".comm _in, 4, 4");
+	}
+
+	/*
+	 * Start the generated with the predefined data directives. 
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAClassDef(cps450.oodle.node.AClassDef)
 	 */
 	@Override
 	public void inAClassDef(AClassDef node) {
-		emit(".data");
-		emit(".comm _out, 4, 4");
-		emit(".comm _in, 4, 4");
+		currentClassDeclaration = classTable.get(node.getBeginName().getText());
 	}
 	
 	/*
@@ -89,7 +105,17 @@ public class CodeGenerator extends DepthFirstAdapter {
 	@Override
 	public void outAAssignmentStatement(AAssignmentStatement node) {
 		emit("popl %eax # AssignmentStatement");
-		emit("movl %eax, _" + node.getId().getText());
+		
+		String name = node.getId().getText();
+		Type type = typeDecorations.get(node);
+		ClassDeclaration klass = classTable.get(type.getName());
+		
+		VariableDeclaration local = currentMethodDeclaration.getVariable(name);
+		if (local != null) {
+			emit("movl %eax, " + local.getStackOffset() + "(%ebp) # Get local variable '" + name + "'");
+		} else {
+			emit("movl %eax, _" + node.getId().getText());
+		}
 	}
 	
 	/*
@@ -162,8 +188,16 @@ public class CodeGenerator extends DepthFirstAdapter {
 	 */
 	@Override
 	public void outAIdentifierExpression(AIdentifierExpression node) {
-		emit("movl _" + node.getId().getText() + ", %eax");
-		emit("pushl %eax");
+		String name = node.getId().getText();
+		Type type = typeDecorations.get(node);
+		ClassDeclaration klass = classTable.get(type.getName());
+		
+		VariableDeclaration local = currentMethodDeclaration.getVariable(name);
+		if (local != null) {
+			emit("pushl " + local.getStackOffset() + "(%ebp) # Push local variable '" + name + "'");
+		} else {
+			emit("pushl _" + name);
+		}
 	}
 	
 	/*
@@ -265,13 +299,21 @@ public class CodeGenerator extends DepthFirstAdapter {
 	 */
 	@Override
 	public void inAMethodDeclaration(AMethodDeclaration node) {
+		currentMethodDeclaration = currentClassDeclaration.getMethod(node.getBeginName().getText());
 		emit(".text");
 		if (node.getBeginName().getText().equals("start")) {
 			emit(".global main");
 			emit("main:");
-		} else {
-			emit("_" + node.getBeginName().getText() + ":");
 		}
+		
+		emit("\n# Method: " + node.getBeginName().getText());
+		
+		emit(node.getBeginName().getText() + ":");
+		
+		// Activation record
+		emit("pushl %ebp");
+		emit("movl %esp, %ebp");
+		emit("subl $" + ((currentMethodDeclaration.getLocalCount()) * 4) + ", %esp # Make space for local variables");
 	}
 	
 	/*
@@ -280,10 +322,21 @@ public class CodeGenerator extends DepthFirstAdapter {
 	 */
 	@Override
 	public void outAMethodDeclaration(AMethodDeclaration node) {
+		// Set return value
+		emit("movl " + currentMethodDeclaration.getVariable(node.getBeginName().getText()).getStackOffset() + "(%ebp), %eax # Set return value");
+		
+		// Cleanup activation record
+		emit("addl $" + ((node.getVarDeclaration().size() + 1) * 4) + ", %esp # Cleanup local variables");
+		
+		// Replace old EBP value
+		emit("popl %ebp");
+		
 		if (node.getBeginName().getText().equals("start")) {
 			emit("push $0");
 			emit("call exit");
 		}
+		
+		emit("ret");
 	}
 	
 	/*
@@ -357,7 +410,9 @@ public class CodeGenerator extends DepthFirstAdapter {
 	 */
 	@Override
 	public void outAVarDeclaration(AVarDeclaration node) {
-		emit(".comm _" + node.getName().getText() + ", 4, 4");
+		if (currentMethodDeclaration == null) {
+			emit(".comm _" + node.getName().getText() + ", 4, 4");
+		}
 	}
 	
 	

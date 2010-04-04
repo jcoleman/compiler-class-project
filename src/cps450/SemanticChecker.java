@@ -13,12 +13,21 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	SymbolTable symbolTable;
 	Hashtable<Node, Type> typeDecorations;
+	Hashtable<String, ClassDeclaration> classTable;
 	Integer errorCount;
+	int curArgCount;
+	ClassDeclaration currentClassDeclaration = null;
+	MethodDeclaration currentMethodDeclaration = null;
 	
 	public SemanticChecker() {
 		super();
+	}
+	
+	public SemanticChecker(Hashtable<String, ClassDeclaration> _classTable, Hashtable<Node, Type> _typeDecorations) {
+		super();
+		classTable = _classTable;
 		symbolTable = new SymbolTable();
-		typeDecorations = new Hashtable<Node, Type>();
+		typeDecorations = _typeDecorations;
 		errorCount = 0;
 		Type.intialize();
 		
@@ -61,12 +70,21 @@ public class SemanticChecker extends DepthFirstAdapter {
 	
 	@Override
 	public void outAVarDeclaration(AVarDeclaration node) {
-		Declaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
+		VariableDeclaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
 		Symbol previousDeclaration = symbolTable.scopeContains(node.getName().getText());
 		if (previousDeclaration != null) {
 			reportError(node.getName(), "Variable '" + node.getName().getText() + "' previously defined at "  + previousDeclaration.getDeclaration().getLocation());
 		}
 		symbolTable.push(node.getName().getText(), decl);
+		
+		if (currentMethodDeclaration != null) {
+			currentMethodDeclaration.incrementLocalCount();   
+			decl.setLocalPosition(currentMethodDeclaration.getLocalCount());
+			currentMethodDeclaration.addVariable(node.getName().getText(), (VariableDeclaration)decl);
+		} else {
+			currentClassDeclaration.addVariable(node.getName().getText(), (VariableDeclaration)decl);
+		}
+		
 	}
 
 	@Override
@@ -103,6 +121,8 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void inAMethodDeclaration(AMethodDeclaration node) {
+		curArgCount = 0;
+		
 		// Get the parameter types
 		ArrayList<Type> argumentTypes = new ArrayList<Type>();
 		for (Iterator<PArgumentDeclaration> i = node.getArgumentDeclaration().iterator(); i.hasNext();) {
@@ -115,11 +135,6 @@ public class SemanticChecker extends DepthFirstAdapter {
 			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the method declaration, but instead found " + node.getEndName().getText());
 		}
 		
-		// Only allow one method declaration for now...
-		if (!node.getBeginName().getText().equals("start")) {
-			reportError(node.getBeginName(), "Method declarations other than 'start' not yet supported");
-		}
-		
 		// Push the method declaration onto the symbol table
 		MethodDeclaration declaration = new MethodDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()), argumentTypes );
 		Symbol previousDeclaration = symbolTable.scopeContains(node.getBeginName().getText());
@@ -127,13 +142,17 @@ public class SemanticChecker extends DepthFirstAdapter {
 			reportError(node.getBeginName(), "Method '" + node.getBeginName().getText() + "' previously defined at " + previousDeclaration.getDeclaration().getLocation() + ".");
 		}
 		symbolTable.push(node.getBeginName().getText(), declaration);
+		currentMethodDeclaration = declaration;
+		currentClassDeclaration.addMethod(node.getBeginName().getText(), declaration);
 		
 		// Increment the scope
 		symbolTable.beginScope();
 		
 		// Add the method name as a variable (for assigning the return value)
 		VariableDeclaration returnDecl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()) );
-		symbolTable.push(node.getBeginName().getText(), returnDecl);
+		currentMethodDeclaration.incrementLocalCount();
+		returnDecl.setLocalPosition(currentMethodDeclaration.getLocalCount());
+		currentMethodDeclaration.addVariable(node.getBeginName().getText(), returnDecl);
 	}
 
 	@Override
@@ -149,15 +168,26 @@ public class SemanticChecker extends DepthFirstAdapter {
 		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
 			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the class definition, but instead found " + node.getEndName().getText());
 		}
+		
+		currentClassDeclaration = new ClassDeclaration(Type.getType(node.getBeginName().getText()), locationFor(node.getBeginName()));
+		classTable.put(node.getBeginName().getText(), currentClassDeclaration);
+		
+		// Reset processing
+		currentMethodDeclaration = null;
 	}
 
 	@Override
 	public void outAArgumentDeclaration(AArgumentDeclaration node) {
-		Declaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
+		VariableDeclaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
 		if (symbolTable.scopeContains(node.getName().getText()) != null) {
 			reportError(node.getName(), "Argument '" + node.getName().getText() + "' previously defined.");
 		}
 		symbolTable.push(node.getName().getText(), decl);
+		
+		decl.setArgumentPosition(curArgCount);
+		currentMethodDeclaration.addVariable(node.getName().getText(), (VariableDeclaration)decl);
+		
+		curArgCount++;
 	}
 
 	@Override
@@ -220,7 +250,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 			reportError(node.getId(), "Attempted to assign a value to an undefined variable '" + node.getId().getText() + "'");
 		} else {
 			decl = id.getDeclaration();
-			if (decl instanceof VariableDeclaration) {
+			if (decl instanceof VariableDeclaration || decl instanceof MethodDeclaration) {
 				Type expectedType = decl.getType();
 				Type exprType = typeDecorations.get(node.getValue());
 				if (exprType != expectedType) {

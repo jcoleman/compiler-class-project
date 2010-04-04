@@ -10,6 +10,7 @@ import cps450.oodle.parser.ParserException;
 import cps450.oodle.lexer.*;
 
 import java.io.*;
+import java.util.Hashtable;
 
 public class Oodle
 {
@@ -48,7 +49,10 @@ public class Oodle
 			System.out.println(SourceHolder.instance().getFilenameFor(t) + ":" + SourceHolder.instance().getLineNumberFor(t) + "," + t.getPos() + ":" + errorText);
         }
         
-        SemanticChecker semanticChecker = new SemanticChecker();
+        Hashtable<Node, Type> typeDecorations = new Hashtable<Node, Type>();
+        Hashtable<String, ClassDeclaration> classTable = new Hashtable<String, ClassDeclaration>();
+        
+        SemanticChecker semanticChecker = new SemanticChecker(classTable, typeDecorations);
         startNode.apply(semanticChecker);
         
         Integer totalErrorCount = lexer.errorCount + errorCount + semanticChecker.getErrorCount();
@@ -59,7 +63,7 @@ public class Oodle
             String outputName = primaryFilename.substring(0, primaryFilename.lastIndexOf(".ood"));
             
             PrintWriter writer = new PrintWriter(new FileWriter(outputName + ".s"));
-            CodeGenerator codeGenerator = new CodeGenerator(writer);
+            CodeGenerator codeGenerator = new CodeGenerator(writer, classTable, typeDecorations);
             startNode.apply(codeGenerator);
             writer.flush();
             writer.close();

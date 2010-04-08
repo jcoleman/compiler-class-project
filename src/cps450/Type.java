@@ -19,6 +19,10 @@ public class Type {
 	}
 	
 	public static Type getType(String id) {
+		if (id.equals("string")) {
+			id = "String"; // Always use the class String
+		}
+		
 		if (types.containsKey(id)) {
 			return types.get(id);
 		} else {

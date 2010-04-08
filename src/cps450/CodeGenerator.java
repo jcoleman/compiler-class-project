@@ -1,7 +1,9 @@
 package cps450;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Stack;
 import java.io.PrintWriter;
 
@@ -132,6 +134,28 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax # Assume that we got a return value");
 	}
 	
+	@Override
+	public void caseACallExpression(ACallExpression node) {
+		inACallExpression(node);
+        if(node.getObject() != null)
+        {
+            node.getObject().apply(this);
+        }
+        if(node.getMethod() != null)
+        {
+            node.getMethod().apply(this);
+        }
+        {
+            List<PExpression> copy = new ArrayList<PExpression>(node.getArguments());
+            java.util.Collections.reverse(copy);
+            for(PExpression e : copy)
+            {
+                e.apply(this);
+            }
+        }
+        outACallExpression(node);
+	}
+
 	/*
 	 * Output a comment with the oodle source.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#inACallStatement(cps450.oodle.node.ACallStatement)

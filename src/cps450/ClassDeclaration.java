@@ -29,4 +29,8 @@ public class ClassDeclaration extends Declaration {
 		return variables.get(name);
 	}
 	
+	public Integer getInstanceVariableCount() {
+		return variables.size();
+	}
+	
 }

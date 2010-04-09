@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import java.io.PrintWriter;
 
@@ -21,6 +22,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 	Hashtable<String, ClassDeclaration> classTable;
 	Hashtable<Node, Type> typeDecorations;
 	MethodDeclaration currentMethodDeclaration = null;
+	String currentClassName;
 	ClassDeclaration currentClassDeclaration = null;
 	
 	public CodeGenerator(PrintWriter _writer, Hashtable<String, ClassDeclaration> _classTable, Hashtable<Node, Type> _typeDecorations) {
@@ -41,6 +43,25 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("# " + token.getLine() + ": " + SourceHolder.instance().getLine(token.getLine()-1));
 	}
 	
+	public String getMethodLabel(String className, String methodName) {
+		if (!(className.equals("in") || className.equals("out"))) {
+			return className + "_" + methodName;
+		} else {
+			return methodName;
+		}
+	}
+	
+	public void emitClassInstantiationExpressionFor(ClassDeclaration klass) {
+		// Allocate space for the object
+		// - 2 * 4 bytes reserved + 4 * instance variable count
+		emit("# Instantiate object");
+		emit("pushl $4"); // Size of each reserved element is 4 bytes
+		emit("pushl $" + (2 + klass.getInstanceVariableCount())); // Total allocated elements
+		emit("call calloc");
+		emit("addl $8, %esp");
+		emit("pushl %eax");
+	}
+	
 	/*
 	 * Start the generated with the predefined data directives. 
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAStart(cps450.oodle.node.AStart)
@@ -52,12 +73,32 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit(".comm _in, 4, 4");
 	}
 
+	@Override
+	public void outStart(Start node) {
+		emit("");
+		emit(".text");
+		emit(".global main");
+		emit("main:");
+		
+		// Instantiate the main class
+		emitClassInstantiationExpressionFor(currentClassDeclaration);
+		
+		// Self argument is left on the stack from the instantiation expression
+		emit("call " + getMethodLabel(currentClassName, "start"));
+		emit("addl $4, %esp # Cleanup method argument");
+		
+		// End the program
+		emit("push $0");
+		emit("call exit");
+	}
+
 	/*
 	 * Start the generated with the predefined data directives. 
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAClassDef(cps450.oodle.node.AClassDef)
 	 */
 	@Override
 	public void inAClassDef(AClassDef node) {
+		currentClassName = node.getBeginName().getText();
 		currentClassDeclaration = classTable.get(node.getBeginName().getText());
 	}
 	
@@ -109,28 +150,48 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("popl %eax # AssignmentStatement");
 		
 		String name = node.getId().getText();
-		Type type = typeDecorations.get(node);
-		ClassDeclaration klass = classTable.get(type.getName());
 		
 		VariableDeclaration local = currentMethodDeclaration.getVariable(name);
 		if (local != null) {
 			emit("movl %eax, " + local.getStackOffset() + "(%ebp) # Get local variable '" + name + "'");
 		} else {
-			emit("movl %eax, _" + node.getId().getText());
+			VariableDeclaration instance = currentClassDeclaration.getVariable(name);
+			if (instance != null) {
+				VariableDeclaration self = currentMethodDeclaration.getVariable("me");
+				emit("movl " + self.getStackOffset() + "(%ebp), %ebx # Get reference to self");
+				emit("movl %eax, " + instance.getInstanceOffset() +"(%ebx) # Move value to Klass#" + name);
+			} else {
+				// Global variable
+				emit("movl %eax, _" + name);
+			}
 		}
 	}
 	
 	/*
-	 * Generate assembly for method calls
+	 * Generate assembly to push the self argument before a method call
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inACallExpression(cps450.oodle.node.ACallExpression)
+	 */
+	@Override
+	public void inACallExpression(ACallExpression node) {
+		if (node.getObject() == null) {
+			// Method call has implicit callee; pass along the current lexical self
+			VariableDeclaration self = currentMethodDeclaration.getVariable("me");
+			emit("pushl " + self.getStackOffset() + "(%ebp) # Push reference to self as argument");
+		}
+		// Else: explicit object callee; self value pushed by the expression evaluation
+	}
+
+	/*
+	 * Generate assembly for the actual calling of the method
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#outACallExpression(cps450.oodle.node.ACallExpression)
 	 */
 	@Override
 	public void outACallExpression(ACallExpression node) {
-		emit("call " + node.getMethod().getText());
-		emit("addl $" + (node.getArguments().size() * 4) + ", %esp # Clean up the argument values");
-		if (node.getObject() != null) {
-			emit("popl %ebx # Clean up the Object Expression");
-		}
+		String klass = (node.getObject() == null) ? currentClassName : typeDecorations.get(node.getObject()).getName();
+		String methodName = node.getMethod().getText();
+		String methodLabel = getMethodLabel(klass, methodName);
+		emit("call " + methodLabel);
+		emit("addl $" + ((node.getArguments().size() + 1) * 4) + ", %esp # Clean up the argument values");
 		emit("pushl %eax # Assume that we got a return value");
 	}
 	
@@ -213,14 +274,20 @@ public class CodeGenerator extends DepthFirstAdapter {
 	@Override
 	public void outAIdentifierExpression(AIdentifierExpression node) {
 		String name = node.getId().getText();
-		Type type = typeDecorations.get(node);
-		ClassDeclaration klass = classTable.get(type.getName());
 		
 		VariableDeclaration local = currentMethodDeclaration.getVariable(name);
 		if (local != null) {
 			emit("pushl " + local.getStackOffset() + "(%ebp) # Push local variable '" + name + "'");
 		} else {
-			emit("pushl _" + name);
+			VariableDeclaration instance = currentClassDeclaration.getVariable(name);
+			if (instance != null) {
+				VariableDeclaration self = currentMethodDeclaration.getVariable("me");
+				emit("movl " + self.getStackOffset() + "(%ebp), %ebx # Get reference to self");
+				emit("pushl " + instance.getInstanceOffset() +"(%ebx) # Push value of Klass#" + name);
+			} else {
+				// Global variable
+				emit("pushl _" + name);
+			}
 		}
 	}
 	
@@ -325,14 +392,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 	public void inAMethodDeclaration(AMethodDeclaration node) {
 		currentMethodDeclaration = currentClassDeclaration.getMethod(node.getBeginName().getText());
 		emit(".text");
-		if (node.getBeginName().getText().equals("start")) {
-			emit(".global main");
-			emit("main:");
-		}
 		
-		emit("\n# Method: " + node.getBeginName().getText());
+		String name = node.getBeginName().getText();
+		emit("\n# Method: " + currentClassName + "#" + name);
 		
-		emit(node.getBeginName().getText() + ":");
+		emit(getMethodLabel(currentClassName, name) + ":");
 		
 		// Activation record
 		emit("pushl %ebp");
@@ -354,11 +418,6 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		// Replace old EBP value
 		emit("popl %ebp");
-		
-		if (node.getBeginName().getText().equals("start")) {
-			emit("push $0");
-			emit("call exit");
-		}
 		
 		emit("ret");
 	}
@@ -434,9 +493,9 @@ public class CodeGenerator extends DepthFirstAdapter {
 	 */
 	@Override
 	public void outAVarDeclaration(AVarDeclaration node) {
-		if (currentMethodDeclaration == null) {
-			emit(".comm _" + node.getName().getText() + ", 4, 4");
-		}
+		//if (currentMethodDeclaration == null) {
+		//	emit(".comm _" + node.getName().getText() + ", 4, 4");
+		//}
 	}
 	
 	

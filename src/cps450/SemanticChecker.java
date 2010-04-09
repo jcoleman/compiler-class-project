@@ -80,9 +80,10 @@ public class SemanticChecker extends DepthFirstAdapter {
 		if (currentMethodDeclaration != null) {
 			currentMethodDeclaration.incrementLocalCount();   
 			decl.setLocalPosition(currentMethodDeclaration.getLocalCount());
-			currentMethodDeclaration.addVariable(node.getName().getText(), (VariableDeclaration)decl);
+			currentMethodDeclaration.addVariable(node.getName().getText(), decl);
 		} else {
-			currentClassDeclaration.addVariable(node.getName().getText(), (VariableDeclaration)decl);
+			decl.setInstancePosition(currentClassDeclaration.getInstanceVariableCount());
+			currentClassDeclaration.addVariable(node.getName().getText(), decl);
 		}
 		
 	}
@@ -121,14 +122,14 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void inAMethodDeclaration(AMethodDeclaration node) {
-		curArgCount = 0;
-		
 		// Get the parameter types
 		ArrayList<Type> argumentTypes = new ArrayList<Type>();
 		for (Iterator<PArgumentDeclaration> i = node.getArgumentDeclaration().iterator(); i.hasNext();) {
 			AArgumentDeclaration arg = (AArgumentDeclaration)i.next();
 			argumentTypes.add( typeFor(arg.getType()) );
 		}
+		
+		curArgCount = argumentTypes.size(); // Total argument count including self
 		
 		// Verify that the naming on both ends is the same
 		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
@@ -153,6 +154,12 @@ public class SemanticChecker extends DepthFirstAdapter {
 		currentMethodDeclaration.incrementLocalCount();
 		returnDecl.setLocalPosition(currentMethodDeclaration.getLocalCount());
 		currentMethodDeclaration.addVariable(node.getBeginName().getText(), returnDecl);
+		
+		// Add the self argument to the method's variables (as argument)
+		VariableDeclaration self = new VariableDeclaration( currentClassDeclaration.getType(), locationFor(node.getBeginName()) );
+		self.setArgumentPosition(curArgCount);
+		currentMethodDeclaration.addVariable("me", self);
+		curArgCount -= 1;
 	}
 
 	@Override
@@ -187,7 +194,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 		decl.setArgumentPosition(curArgCount);
 		currentMethodDeclaration.addVariable(node.getName().getText(), (VariableDeclaration)decl);
 		
-		curArgCount++;
+		curArgCount--;
 	}
 
 	@Override

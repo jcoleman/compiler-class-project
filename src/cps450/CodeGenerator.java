@@ -384,6 +384,12 @@ public class CodeGenerator extends DepthFirstAdapter {
 		this.loopStatementCounts.pop();
 	}
 	
+	@Override
+	public void outAMeExpression(AMeExpression node) {
+		VariableDeclaration self = currentMethodDeclaration.getVariable("me");
+		emit("pushl " + self.getStackOffset() + "(%ebp) # MeExpression");
+	}
+
 	/*
 	 * Generate assembly labels for a method beginning.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAMethodDeclaration(cps450.oodle.node.AMethodDeclaration)
@@ -441,6 +447,13 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax # Store MultExpression result");
 	}
 	
+	@Override
+	public void outANewObjectExpression(ANewObjectExpression node) {
+		String className = typeDecorations.get(node).getName();
+		ClassDeclaration klass = classTable.get(className);
+		emitClassInstantiationExpressionFor(klass);
+	}
+
 	/*
 	 * Generate code to save the value of null.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#outANullExpression(cps450.oodle.node.ANullExpression)

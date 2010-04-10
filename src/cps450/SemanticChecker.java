@@ -17,6 +17,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 	Integer errorCount;
 	int curArgCount;
 	ClassDeclaration currentClassDeclaration = null;
+	String currentClassName;
 	MethodDeclaration currentMethodDeclaration = null;
 	
 	public SemanticChecker() {
@@ -164,8 +165,15 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void inAStart(AStart node) {
-		if (node.getClassDef().size() != 1) {
-			reportError(null, "You must define exactly one class");
+		if (node.getClassDef().size() < 1) {
+			reportError(null, "You must define at least one class");
+		}
+	}
+	
+	@Override
+	public void outAStart(AStart node) {
+		if (currentClassDeclaration != null && currentClassDeclaration.getMethod("start") == null) {
+			reportError(null, "You must define the method 'start' in the primary class '" + currentClassName + "'");
 		}
 	}
 
@@ -177,6 +185,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 		}
 		
 		currentClassDeclaration = new ClassDeclaration(Type.getType(node.getBeginName().getText()), locationFor(node.getBeginName()));
+		currentClassName = node.getBeginName().getText();
 		classTable.put(node.getBeginName().getText(), currentClassDeclaration);
 		
 		// Reset processing
@@ -479,12 +488,12 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void outAMeExpression(AMeExpression node) {
-		reportError(node.getMe(), "Referencing the current object by 'me' is not yet supported");
+		typeDecorations.put(node, Type.getType(currentClassName));
 	}
 
 	@Override
 	public void outANewObjectExpression(ANewObjectExpression node) {
-		reportError(node.getNew(), "Instantiation of classes not yet supported");
+		typeDecorations.put(node, typeFor(node.getType()));
 	}
 
 	@Override

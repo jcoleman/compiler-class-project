@@ -32,12 +32,9 @@ public class SemanticChecker extends DepthFirstAdapter {
 		errorCount = 0;
 		Type.intialize();
 		
-		symbolTable.push("out", new VariableDeclaration(Type.getType("out"), "SYSTEM DECLARED"));
-		ArrayList<Type> outTypes = new ArrayList<Type>();
-		outTypes.add(Type.getType("int"));
-		symbolTable.push("writeint", new MethodDeclaration(Type.getType("void"), "SYSTEM DECLARED", outTypes));
-		symbolTable.push("in", new VariableDeclaration(Type.getType("in"), "SYSTEM DECLARED"));
-		symbolTable.push("readint", new MethodDeclaration(Type.getType("int"), "SYSTEM DECLARED", new ArrayList<Type>()));
+		symbolTable.push("out", new VariableDeclaration(Type.getType("Writer"), "SYSTEM DECLARED"));
+		symbolTable.push("in", new VariableDeclaration(Type.getType("Reader"), "SYSTEM DECLARED"));
+		
 		symbolTable.beginScope();
 	}
 	
@@ -86,18 +83,18 @@ public class SemanticChecker extends DepthFirstAdapter {
 			decl.setInstancePosition(currentClassDeclaration.getInstanceVariableCount());
 			currentClassDeclaration.addVariable(node.getName().getText(), decl);
 		}
-		
 	}
 
 	@Override
 	public void outACallExpression(ACallExpression node) {
 		Type returnType = Type.getType("error");
 		
-		Symbol symbol = symbolTable.lookup(node.getMethod().getText());
-		if (symbol == null) {
+		ClassDeclaration klass = node.getObject() == null ?
+				currentClassDeclaration : classTable.get(typeDecorations.get(node.getObject()).getName());
+		MethodDeclaration decl = klass.getMethod(node.getMethod().getText());
+		if (decl == null) {
 			reportError(node.getMethod(), "Used undefined method '" + node.getMethod().getText() + "'");
 		} else {
-			MethodDeclaration decl = (MethodDeclaration) symbol.getDeclaration();
 			// Check count of arguments
 			Integer actualArgCount = node.getArguments().size();
 			if (decl.getArgumentCount() != actualArgCount) {
@@ -109,7 +106,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 					PExpression arg = args.next();
 					Type argType = typeDecorations.get(arg);
 					Type correctArgType = decl.getArgumentTypes().get(i);
-					if (argType != correctArgType) {
+					if (!correctArgType.compatibleWith(argType)) {
 						reportError(node.getMethod(), "Wrong type encountered in method call at argument " + (i+1) + ": expected '" + correctArgType.getName() + "' found '" + argType.getName() + "'");
 					}
 					i++;
@@ -139,9 +136,9 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		// Push the method declaration onto the symbol table
 		MethodDeclaration declaration = new MethodDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()), argumentTypes );
-		Symbol previousDeclaration = symbolTable.scopeContains(node.getBeginName().getText());
+		MethodDeclaration previousDeclaration = currentClassDeclaration.getMethod(node.getBeginName().getText());
 		if (previousDeclaration != null) {
-			reportError(node.getBeginName(), "Method '" + node.getBeginName().getText() + "' previously defined at " + previousDeclaration.getDeclaration().getLocation() + ".");
+			reportError(node.getBeginName(), "Method '" + node.getBeginName().getText() + "' previously defined at " + previousDeclaration.getLocation() + ".");
 		}
 		symbolTable.push(node.getBeginName().getText(), declaration);
 		currentMethodDeclaration = declaration;
@@ -188,8 +185,27 @@ public class SemanticChecker extends DepthFirstAdapter {
 		currentClassName = node.getBeginName().getText();
 		classTable.put(node.getBeginName().getText(), currentClassDeclaration);
 		
+		symbolTable.push(currentClassName, currentClassDeclaration);
+		
+		// Special externally linked methods
+		if (currentClassName.equals("Reader")) {
+			MethodDeclaration decl = new MethodDeclaration(Type.getType("int"), "SYSTEM_DECLARED", new ArrayList<Type>());
+			currentClassDeclaration.addMethod("io_read", decl);
+		} else if (currentClassName.equals("Writer")) {
+			ArrayList<Type> outTypes = new ArrayList<Type>();
+			outTypes.add(Type.getType("int"));
+			MethodDeclaration decl = new MethodDeclaration(Type.getType("void"), "SYSTEM_DECLARED", outTypes);
+			currentClassDeclaration.addMethod("io_write", decl);
+		}
+		
 		// Reset processing
 		currentMethodDeclaration = null;
+		symbolTable.beginScope();
+	}
+
+	@Override
+	public void outAClassDef(AClassDef node) {
+		symbolTable.endScope();
 	}
 
 	@Override
@@ -218,9 +234,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = (node.getOperator() instanceof APlusOperator ? ((APlusOperator)node.getOperator()).getOp() : ((AMinusOperator)node.getOperator()).getOp());
 
-		if (lt != rt) {
-			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
-		} else {
+		if (lt.compatibleWith(rt)) {
 			// Types match, now check to see that they are both integers
 			Type expectedType = Type.getType("int");
 			if (lt != expectedType) { // only need to check one side since we already know they are the same type
@@ -228,6 +242,8 @@ public class SemanticChecker extends DepthFirstAdapter {
 			} else {
 				result = lt;
 			}
+		} else {
+			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
 		}
 		
 		typeDecorations.put(node, result);
@@ -240,9 +256,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = node.getAnd();
 
-		if (lt != rt) {
-			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
-		} else {
+		if (lt.compatibleWith(rt)) {
 			// Types match, now check to see that they are both booleans
 			Type expectedType = Type.getType("boolean");
 			if (lt != expectedType) { // only need to check one side since we already know they are the same type
@@ -250,6 +264,8 @@ public class SemanticChecker extends DepthFirstAdapter {
 			} else {
 				result = lt;
 			}
+		} else {
+			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
 		}
 		
 		typeDecorations.put(node, result);
@@ -266,13 +282,17 @@ public class SemanticChecker extends DepthFirstAdapter {
 			reportError(node.getId(), "Attempted to assign a value to an undefined variable '" + node.getId().getText() + "'");
 		} else {
 			decl = id.getDeclaration();
-			if (decl instanceof VariableDeclaration || decl instanceof MethodDeclaration) {
-				Type expectedType = decl.getType();
-				Type exprType = typeDecorations.get(node.getValue());
-				if (exprType != expectedType) {
-					reportError(node.getId(), "Expected expression of type '" + expectedType.getName() + "' got '" + exprType.getName() + "' at assignment to variable '" + node.getId().getText() + "'");
+			if (decl instanceof VariableDeclaration || decl == currentMethodDeclaration) {
+				if (decl instanceof MethodDeclaration  && decl.getType().getName().equals("void")) {
+					reportError(node.getId(), "Attempted to set a return value in a void method.");
 				} else {
-					result = exprType;
+					Type expectedType = decl.getType();
+					Type exprType = typeDecorations.get(node.getValue());
+					if (expectedType.compatibleWith(exprType)) {
+						result = exprType;
+					} else {
+						reportError(node.getId(), "Expected expression of type '" + expectedType.getName() + "' got '" + exprType.getName() + "' at assignment to variable '" + node.getId().getText() + "'");
+					}
 				}
 			} else {
 				reportError(node.getId(), "Attempted to assign a value to a non-variable identifier '" + node.getId().getText() + "'");
@@ -296,17 +316,17 @@ public class SemanticChecker extends DepthFirstAdapter {
 			token = ((AEqualOperator)node.getOperator()).getOp();
 		}
 
-		if (lt != rt) {
-			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
-		} else {
+		if (lt.compatibleWith(rt)) {
 			// Types match, now check to see that they are both integers or strings
 			Type integer = Type.getType("int");
 			Type string = Type.getType("string");
-			if (!(lt == integer || lt == string)) { // only need to check one side since we already know they are the same type
+			if (!(lt == integer || lt == string || node.getOperator() instanceof AEqualOperator)) { // only need to check one side since we already know they are the same type
 				reportError(token, "Expected expressions of type 'integer' or 'string' in comparison got '" + lt.getName() + "' at operator " + token.getText());
 			} else {
 				result = Type.getType("boolean");
 			}
+		} else {
+			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
 		}
 		
 		typeDecorations.put(node, result);
@@ -319,9 +339,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = node.getConcatOp();
 
-		if (lt != rt) {
-			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
-		} else {
+		if (lt.compatibleWith(rt)) {
 			// Types match, now check to see that they are both strings
 			Type expectedType = Type.getType("string");
 			if (lt != expectedType) { // only need to check one side since we already know they are the same type
@@ -329,6 +347,8 @@ public class SemanticChecker extends DepthFirstAdapter {
 			} else {
 				result = lt;
 			}
+		} else {
+			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
 		}
 		
 		typeDecorations.put(node, result);
@@ -359,10 +379,10 @@ public class SemanticChecker extends DepthFirstAdapter {
 		Type expectedType = Type.getType("boolean");
 		Token token = node.getIf();
 		
-		if (actualType != expectedType) {
-			reportError(token, "Expected expression of type '" + expectedType.getName() + "' got '" + actualType.getName() + "' in if conditional expression");
-		} else {
+		if (expectedType.compatibleWith(actualType)) {
 			result = actualType;
+		} else {
+			reportError(token, "Expected expression of type '" + expectedType.getName() + "' got '" + actualType.getName() + "' in if conditional expression");
 		}
 		
 		typeDecorations.put(node, result);
@@ -380,10 +400,10 @@ public class SemanticChecker extends DepthFirstAdapter {
 		Type expectedType = Type.getType("boolean");
 		Token token = node.getLoop();
 		
-		if (actualType != expectedType) {
-			reportError(token, "Expected expression of type '" + expectedType.getName() + "' got '" + actualType.getName() + "' in loop conditional expression");
-		} else {
+		if (expectedType.compatibleWith(actualType)) {
 			result = actualType;
+		} else {
+			reportError(token, "Expected expression of type '" + expectedType.getName() + "' got '" + actualType.getName() + "' in loop conditional expression");
 		}
 		
 		typeDecorations.put(node, result);
@@ -396,9 +416,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = (node.getOperator() instanceof AMultOperator ? ((AMultOperator)node.getOperator()).getOp() : ((ADivOperator)node.getOperator()).getOp());
 
-		if (lt != rt) {
-			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
-		} else {
+		if (lt.compatibleWith(rt)) {
 			// Types match, now check to see that they are both integers
 			Type expectedType = Type.getType("int");
 			if (lt != expectedType) { // only need to check one side since we already know they are the same type
@@ -406,6 +424,8 @@ public class SemanticChecker extends DepthFirstAdapter {
 			} else {
 				result = lt;
 			}
+		} else {
+			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
 		}
 		
 		typeDecorations.put(node, result);
@@ -423,9 +443,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 		Type rt = typeDecorations.get(node.getExpr2());
 		Token token = node.getOr();
 
-		if (lt != rt) {
-			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
-		} else {
+		if (lt.compatibleWith(rt)) {
 			// Types match, now check to see that they are both booleans
 			Type expectedType = Type.getType("boolean");
 			if (lt != expectedType) { // only need to check one side since we already know they are the same type
@@ -433,6 +451,8 @@ public class SemanticChecker extends DepthFirstAdapter {
 			} else {
 				result = lt;
 			}
+		} else {
+			reportError(token, "Found expressions of mismatched types ('" + lt.getName() + "' and '" + rt.getName() + "') at operator " + token.getText());
 		}
 		
 		typeDecorations.put(node, result);
@@ -467,10 +487,10 @@ public class SemanticChecker extends DepthFirstAdapter {
 		}
 		
 		
-		if (actualType != expectedType) {
-			reportError(token, "Expected expression of type '" + expectedType.getName() + "' got '" + actualType.getName() + "' at operator " + token.getText());
-		} else {
+		if (expectedType.compatibleWith(actualType)) {
 			result = actualType;
+		} else {
+			reportError(token, "Expected expression of type '" + expectedType.getName() + "' got '" + actualType.getName() + "' at operator " + token.getText());
 		}
 		
 		typeDecorations.put(node, result);
@@ -479,6 +499,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 	@Override
 	public void outAArrayExpression(AArrayExpression node) {
 		reportError(node.getId(), "Arrays are not yet supported");
+		typeDecorations.put(node, Type.getType("error"));
 	}
 
 	@Override
@@ -503,12 +524,12 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void inAStringExpression(AStringExpression node) {
-		reportError(node.getStrlit(), "Strings not yet supported");
+		typeDecorations.put(node, Type.getType("String"));
 	}
 
 	@Override
 	public void inAStringType(AStringType node) {
-		reportError(node.getString(), "Strings not yet supported");
+		//reportError(node.getString(), "Strings not yet supported");
 	}
 
 	public Integer getErrorCount() {

@@ -24,6 +24,7 @@ public class Oodle
             System.exit(1);
         }
         
+        Options.instance().addFile("stdlib.ood");
         Options.instance().parseArgumentArray(arguments);
 
         System.out.println();

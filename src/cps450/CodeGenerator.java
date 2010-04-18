@@ -19,6 +19,8 @@ public class CodeGenerator extends DepthFirstAdapter {
 	Stack<Integer> ifStatementCounts;
 	int loopStatementCount;
 	Stack<Integer> loopStatementCounts;
+	int stringCount = 0;
+	int callCount = 0;
 	Hashtable<String, ClassDeclaration> classTable;
 	Hashtable<Node, Type> typeDecorations;
 	MethodDeclaration currentMethodDeclaration = null;
@@ -41,6 +43,20 @@ public class CodeGenerator extends DepthFirstAdapter {
 	private void emitOodleStatement(Token token) {
 		emit("");
 		emit("# " + token.getLine() + ": " + SourceHolder.instance().getLine(token.getLine()-1));
+	}
+	
+	private void emitStringExpressionFor(String text) {
+		String label = "strlit" + stringCount;
+		
+		emit(".data");
+		emit(label + ": .string " + text);
+		
+		emit(".text");
+		emit("pushl $" + label);
+		emit("call string_fromlit");
+		emit("movl %eax, (%esp) # Cleanup parameter and push return value all at once");
+		
+		stringCount++;
 	}
 	
 	public String getMethodLabel(String className, String methodName) {
@@ -71,6 +87,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit(".data");
 		emit(".comm _out, 4, 4");
 		emit(".comm _in, 4, 4");
+		emit(".comm errorLine, 4, 4");
 	}
 
 	@Override
@@ -79,6 +96,12 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit(".text");
 		emit(".global main");
 		emit("main:");
+		
+		// Instantiate globals
+		emitClassInstantiationExpressionFor(classTable.get("Reader"));
+		emit("popl _in");
+		emitClassInstantiationExpressionFor(classTable.get("Writer"));
+		emit("popl _out");
 		
 		// Instantiate the main class
 		emitClassInstantiationExpressionFor(currentClassDeclaration);
@@ -89,6 +112,21 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		// End the program
 		emit("push $0");
+		emit("call exit");
+		
+		emit("");
+		emit("# Global helpers");
+		emit(".text");
+		emit("__npe__:");
+		emit("pushl _out");
+		emitStringExpressionFor("\"The little gremlin running your program is scratching his head wondering how he is supposed to look up a method on a null object at line:\"");
+		emit("call Writer_writeln");
+		//emit("addl $8, %esp");
+		emit("pushl _out");
+		emit("pushl errorLine");
+		emit("call Writer_writeint");
+		//emit("addl $8, %esp");
+		emit("pushl $1");
 		emit("call exit");
 	}
 
@@ -153,7 +191,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		VariableDeclaration local = currentMethodDeclaration.getVariable(name);
 		if (local != null) {
-			emit("movl %eax, " + local.getStackOffset() + "(%ebp) # Get local variable '" + name + "'");
+			emit("movl %eax, " + local.getStackOffset() + "(%ebp) # Move value to local variable '" + name + "'");
 		} else {
 			VariableDeclaration instance = currentClassDeclaration.getVariable(name);
 			if (instance != null) {
@@ -190,9 +228,21 @@ public class CodeGenerator extends DepthFirstAdapter {
 		String klass = (node.getObject() == null) ? currentClassName : typeDecorations.get(node.getObject()).getName();
 		String methodName = node.getMethod().getText();
 		String methodLabel = getMethodLabel(klass, methodName);
+		Integer argCount = node.getArguments().size() + 1; // Offset for the "self" argument
+		
+		// Dynamic null pointer checking
+		emit("cmpl $0, " + (argCount - 1)*4 + "(%esp)");
+		emit("jne call" + callCount);
+		emit("movl $" + SourceHolder.instance().getLineNumberFor(node.getMethod()) + ", errorLine");
+		emit("jmp __npe__");
+		
+		// Call method
+		emit("call" + callCount + ":");
 		emit("call " + methodLabel);
-		emit("addl $" + ((node.getArguments().size() + 1) * 4) + ", %esp # Clean up the argument values");
+		emit("addl $" + ((argCount) * 4) + ", %esp # Clean up the argument values");
 		emit("pushl %eax # Assume that we got a return value");
+		
+		callCount++;
 	}
 	
 	@Override
@@ -475,6 +525,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax # Store AndExpression result");
 	}
 	
+	@Override
+	public void outAStringExpression(AStringExpression node) {
+		emitStringExpressionFor(node.getStrlit().getText());
+	}
+	
 	/*
 	 * Generate code to evaluate the value of the true expression.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#outATrueExpression(cps450.oodle.node.ATrueExpression)
@@ -499,7 +554,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax # End UnaryExpression");
 		
 	}
-	
+
 	/*
 	 * Generate assembly code to define a variable's storage space.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAVarDeclaration(cps450.oodle.node.AVarDeclaration)

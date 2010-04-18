@@ -5,6 +5,7 @@ import java.util.Hashtable;
 public class Type {
 	
 	private String id;
+	private Boolean primitive;
 	
 	private static Hashtable<String, Type> types;
 	
@@ -14,8 +15,9 @@ public class Type {
 		}
 	}
 	
-	private Type(String _id) {
+	private Type(String _id, Boolean _primitive) {
 		id = _id;
+		primitive = _primitive;
 	}
 	
 	public static Type getType(String id) {
@@ -26,7 +28,7 @@ public class Type {
 		if (types.containsKey(id)) {
 			return types.get(id);
 		} else {
-			Type type = new Type(id);
+			Type type = new Type(id, id.equals("int") || id.equals("boolean"));
 			types.put(id, type);
 			return type;
 		}
@@ -34,6 +36,18 @@ public class Type {
 	
 	public String getName() {
 		return id;
+	}
+	
+	public Boolean isPrimitive() {
+		return primitive;
+	}
+	
+	public Boolean compatibleWith(Type type) {
+		if (this.isPrimitive()) {
+			return this == type;
+		} else {
+			return this == type || type.id.equals("null");
+		}
 	}
 	
 }

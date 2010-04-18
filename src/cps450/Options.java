@@ -32,9 +32,13 @@ public class Options {
 			if (arg.charAt(0) == '-') {
 				processArgument(arg);
 			} else {
-				files.add(arg);
+				addFile(arg);
 			}
 		}
+	}
+	
+	public void addFile(String name) {
+		files.add(name);
 	}
 	
 	// Processes a flag argument and sets the correct flag

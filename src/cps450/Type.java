@@ -8,11 +8,13 @@ public class Type {
 	private Boolean primitive;
 	
 	private static Hashtable<String, Type> types;
+	private static Hashtable<String, ClassDeclaration> classTable;
 	
-	public static void intialize() {
+	public static void intialize(Hashtable<String, ClassDeclaration> _classTable) {
 		if (types == null) {
 			types = new Hashtable<String, Type>();
 		}
+		classTable = _classTable;
 	}
 	
 	private Type(String _id, Boolean _primitive) {
@@ -45,8 +47,16 @@ public class Type {
 	public Boolean compatibleWith(Type type) {
 		if (this.isPrimitive()) {
 			return this == type;
+		} else if (type.isPrimitive()) {
+			return false;
 		} else {
-			return this == type || type.id.equals("null");
+			ClassDeclaration selfKlass = classTable.get(id);
+			ClassDeclaration rhsKlass = classTable.get(type.id);
+			if (selfKlass == null || rhsKlass == null) {
+				return this == type || type == Type.getType("null");
+			} else {
+				return classTable.get(id).compatibleWith(classTable.get(type.id));
+			}
 		}
 	}
 	

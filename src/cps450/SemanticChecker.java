@@ -30,7 +30,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 		symbolTable = new SymbolTable();
 		typeDecorations = _typeDecorations;
 		errorCount = 0;
-		Type.intialize();
+		Type.intialize(classTable);
 		
 		symbolTable.push("out", new VariableDeclaration(Type.getType("Writer"), "SYSTEM DECLARED"));
 		symbolTable.push("in", new VariableDeclaration(Type.getType("Reader"), "SYSTEM DECLARED"));
@@ -210,14 +210,29 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void inAClassDef(AClassDef node) {
+		currentClassName = node.getBeginName().getText();
+		currentClassDeclaration = new ClassDeclaration(Type.getType(currentClassName), locationFor(node.getBeginName()), currentClassName);
+		classTable.put(currentClassName, currentClassDeclaration);
+		
 		// Verify that the naming on both ends is the same
-		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
-			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the class definition, but instead found " + node.getEndName().getText());
+		if (!currentClassName.equals(node.getEndName().getText())) {
+			reportError(node.getEndName(), "Expected " + currentClassName + " ending the class definition, but instead found " + node.getEndName().getText());
 		}
 		
-		currentClassDeclaration = new ClassDeclaration(Type.getType(node.getBeginName().getText()), locationFor(node.getBeginName()));
-		currentClassName = node.getBeginName().getText();
-		classTable.put(node.getBeginName().getText(), currentClassDeclaration);
+		// Inheritance
+		String parentClassName = node.getExtends() != null ? node.getExtends().getText() : "";
+		if (parentClassName.equals("") && !currentClassName.equals("ood")) {
+			parentClassName = "ood";
+		}
+		ClassDeclaration parent = classTable.get(parentClassName);
+		
+		// Verify that the inheritance is from a previously defined class
+		if (parent == null && !currentClassName.equals("ood")) {
+			reportError(node.getExtends(), "Class '" + currentClassName + "' cannot extend as as yet undefined class '" + parentClassName + "'");
+			parent = classTable.get("ood");
+		}
+		
+		currentClassDeclaration.inheritFrom(parent);
 		
 		symbolTable.push(currentClassName, currentClassDeclaration);
 		

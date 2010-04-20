@@ -1,5 +1,6 @@
 package cps450;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class ClassDeclaration extends Declaration {
@@ -77,6 +78,29 @@ public class ClassDeclaration extends Declaration {
 	
 	public Integer getInstanceVariableCount() {
 		return variables.size();
+	}
+	
+	public ArrayList<MethodDeclaration> getMethodList() {
+		ArrayList<MethodDeclaration> methodList = new ArrayList<MethodDeclaration>(methods.size());
+		
+		// Setup initial list size
+		for (int i = 0; i < methods.size(); ++i) {
+			methodList.add(null);
+		}
+		
+		// Create a list of method declarations ordered by their offset
+		for (MethodDeclaration method : methods.values()) {
+			methodList.set(method.getOffset(), method);
+		}
+		return methodList;
+	}
+	
+	public String getVirtualFunctionTableLabel() {
+		return "__" + name + "__" + "VFT__";
+	}
+
+	public ClassDeclaration getParent() {
+		return parent;
 	}
 	
 }

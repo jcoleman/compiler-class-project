@@ -128,8 +128,20 @@ public class CodeGenerator extends DepthFirstAdapter {
 	 */
 	@Override
 	public void inAClassDef(AClassDef node) {
+		// Setup for processing
 		currentClassName = node.getBeginName().getText();
 		currentClassDeclaration = classTable.get(node.getBeginName().getText());
+		
+		// Output the virtual function table
+		String vftLabel = currentClassDeclaration.getVirtualFunctionTableLabel();
+		emit("");
+		emit(".data");
+		emit(vftLabel + ":");
+		emit("  .long " + (currentClassDeclaration.getParent() == null ? "0" : currentClassDeclaration.getParent().getVirtualFunctionTableLabel() + " # Pointer to parent VFT"));
+		for (MethodDeclaration method : currentClassDeclaration.getMethodList()) {
+			emit ("  .long " + method.getMethodLabel());
+		}
+		emit("");
 	}
 	
 	/*

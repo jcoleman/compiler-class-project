@@ -59,14 +59,6 @@ public class CodeGenerator extends DepthFirstAdapter {
 		stringCount++;
 	}
 	
-	public String getMethodLabel(String className, String methodName) {
-		if (!(className.equals("in") || className.equals("out"))) {
-			return className + "_" + methodName;
-		} else {
-			return methodName;
-		}
-	}
-	
 	public void emitClassInstantiationExpressionFor(ClassDeclaration klass) {
 		// Allocate space for the object
 		// - 2 * 4 bytes reserved + 4 * instance variable count
@@ -107,7 +99,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emitClassInstantiationExpressionFor(currentClassDeclaration);
 		
 		// Self argument is left on the stack from the instantiation expression
-		emit("call " + getMethodLabel(currentClassName, "start"));
+		emit("call " + currentClassDeclaration.getMethod("start").getMethodLabel());
 		emit("addl $4, %esp # Cleanup method argument");
 		
 		// End the program
@@ -218,9 +210,9 @@ public class CodeGenerator extends DepthFirstAdapter {
 		} // Else: explicit object callee; self value pushed by the expression evaluation
 		
 		
-		String klass = (node.getObject() == null) ? currentClassName : typeDecorations.get(node.getObject()).getName();
+		String klassName = (node.getObject() == null) ? currentClassName : typeDecorations.get(node.getObject()).getName();
 		String methodName = node.getMethod().getText();
-		String methodLabel = getMethodLabel(klass, methodName);
+		String methodLabel = classTable.get(klassName).getMethod(methodName).getMethodLabel();
 		Integer argCount = node.getArguments().size() + 1; // Offset for the "self" argument
 		
 		// Dynamic null pointer checking
@@ -443,7 +435,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		String name = node.getBeginName().getText();
 		emit("\n# Method: " + currentClassName + "#" + name);
 		
-		emit(getMethodLabel(currentClassName, name) + ":");
+		emit(currentMethodDeclaration.getMethodLabel() + ":");
 		
 		// Activation record
 		emit("pushl %ebp");

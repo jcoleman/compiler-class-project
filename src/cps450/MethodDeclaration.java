@@ -8,11 +8,15 @@ public class MethodDeclaration extends Declaration {
 	ArrayList<Type> argumentTypes;
 	Hashtable<String, VariableDeclaration> variables;
 	Integer localVariableCount = 0;
+	ClassDeclaration klass;
+	String name;
 	
-	public MethodDeclaration(Type _type, String _location, ArrayList<Type> _argumentTypes) {
+	public MethodDeclaration(Type _type, String _location, ArrayList<Type> _argumentTypes, ClassDeclaration _klass, String _name) {
 		super(_type, _location);
 		argumentTypes = _argumentTypes;
 		variables = new Hashtable<String, VariableDeclaration>();
+		klass = _klass;
+		name = _name;
 	}
 	
 	public Integer getArgumentCount() {
@@ -37,6 +41,14 @@ public class MethodDeclaration extends Declaration {
 	
 	public Integer getLocalCount() {
 		return localVariableCount;
+	}
+	
+	public String getMethodLabel() {
+		return klass.name + "_" + name;
+	}
+
+	public ClassDeclaration getKlass() {
+		return klass;
 	}
 	
 }

@@ -238,12 +238,12 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		// Special externally linked methods
 		if (currentClassName.equals("Reader")) {
-			MethodDeclaration decl = new MethodDeclaration(Type.getType("int"), "SYSTEM_DECLARED", new ArrayList<Type>());
+			MethodDeclaration decl = new MethodDeclaration(Type.getType("int"), "SYSTEM_DECLARED", new ArrayList<Type>(), currentClassDeclaration, "io_read");
 			currentClassDeclaration.addMethod("io_read", decl);
 		} else if (currentClassName.equals("Writer")) {
 			ArrayList<Type> outTypes = new ArrayList<Type>();
 			outTypes.add(Type.getType("int"));
-			MethodDeclaration decl = new MethodDeclaration(Type.getType("void"), "SYSTEM_DECLARED", outTypes);
+			MethodDeclaration decl = new MethodDeclaration(Type.getType("void"), "SYSTEM_DECLARED", outTypes, currentClassDeclaration, "io_write");
 			currentClassDeclaration.addMethod("io_write", decl);
 		}
 		
@@ -366,6 +366,8 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void inAMethodDeclaration(AMethodDeclaration node) {
+		String name = node.getBeginName().getText();
+		
 		// Get the parameter types
 		ArrayList<Type> argumentTypes = new ArrayList<Type>();
 		for (Iterator<PArgumentDeclaration> i = node.getArgumentDeclaration().iterator(); i.hasNext();) {
@@ -376,19 +378,19 @@ public class SemanticChecker extends DepthFirstAdapter {
 		curArgCount = 0;
 		
 		// Verify that the naming on both ends is the same
-		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
-			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the method declaration, but instead found " + node.getEndName().getText());
+		if (!name.equals(node.getEndName().getText())) {
+			reportError(node.getEndName(), "Expected " + name + " ending the method declaration, but instead found " + node.getEndName().getText());
 		}
 		
 		// Push the method declaration onto the symbol table
-		MethodDeclaration declaration = new MethodDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()), argumentTypes );
-		MethodDeclaration previousDeclaration = currentClassDeclaration.getMethod(node.getBeginName().getText());
-		if (previousDeclaration != null) {
+		MethodDeclaration declaration = new MethodDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()), argumentTypes, currentClassDeclaration, name );
+		MethodDeclaration previousDeclaration = currentClassDeclaration.getMethod(name);
+		if (previousDeclaration != null && previousDeclaration.getKlass() == currentClassDeclaration) {
 			reportError(node.getBeginName(), "Method '" + node.getBeginName().getText() + "' previously defined at " + previousDeclaration.getLocation() + ".");
 		}
 		symbolTable.push(node.getBeginName().getText(), declaration);
 		currentMethodDeclaration = declaration;
-		currentClassDeclaration.addMethod(node.getBeginName().getText(), declaration);
+		currentClassDeclaration.addMethod(name, declaration);
 		
 		// Increment the scope
 		symbolTable.beginScope();
@@ -397,7 +399,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 		VariableDeclaration returnDecl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()) );
 		currentMethodDeclaration.incrementLocalCount();
 		returnDecl.setLocalPosition(currentMethodDeclaration.getLocalCount());
-		currentMethodDeclaration.addVariable(node.getBeginName().getText(), returnDecl);
+		currentMethodDeclaration.addVariable(name, returnDecl);
 		
 
 		// Add the self argument to the method's variables (as argument)

@@ -40,7 +40,7 @@ public class VariableDeclaration extends Declaration {
 	
 	public Integer getStackOffset() {
 		if (argumentPosition != null) {
-			return argumentPosition * 4 + 8; 
+			return argumentPosition * 4 + 8; // Offset for saved copy of EBP and return address 
 		} else if (localPosition != null) {
 			// Local variable
 			return localPosition * -4;

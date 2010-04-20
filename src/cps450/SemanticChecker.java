@@ -127,7 +127,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 			argumentTypes.add( typeFor(arg.getType()) );
 		}
 		
-		curArgCount = argumentTypes.size(); // Total argument count including self
+		curArgCount = 0;
 		
 		// Verify that the naming on both ends is the same
 		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
@@ -152,12 +152,6 @@ public class SemanticChecker extends DepthFirstAdapter {
 		currentMethodDeclaration.incrementLocalCount();
 		returnDecl.setLocalPosition(currentMethodDeclaration.getLocalCount());
 		currentMethodDeclaration.addVariable(node.getBeginName().getText(), returnDecl);
-		
-		// Add the self argument to the method's variables (as argument)
-		VariableDeclaration self = new VariableDeclaration( currentClassDeclaration.getType(), locationFor(node.getBeginName()) );
-		self.setArgumentPosition(curArgCount);
-		currentMethodDeclaration.addVariable("me", self);
-		curArgCount -= 1;
 	}
 
 	@Override
@@ -219,11 +213,17 @@ public class SemanticChecker extends DepthFirstAdapter {
 		decl.setArgumentPosition(curArgCount);
 		currentMethodDeclaration.addVariable(node.getName().getText(), (VariableDeclaration)decl);
 		
-		curArgCount--;
+		curArgCount += 1;
 	}
 
 	@Override
 	public void outAMethodDeclaration(AMethodDeclaration node) {
+		// Add the self argument to the method's variables (as argument)
+		VariableDeclaration self = new VariableDeclaration( currentClassDeclaration.getType(), locationFor(node.getBeginName()) );
+		self.setArgumentPosition(curArgCount);
+		currentMethodDeclaration.addVariable("me", self);
+		curArgCount += 1;
+		
 		symbolTable.endScope();
 	}
 

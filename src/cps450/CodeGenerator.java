@@ -204,15 +204,6 @@ public class CodeGenerator extends DepthFirstAdapter {
 			}
 		}
 	}
-	
-	/*
-	 * Generate assembly to push the self argument before a method call
-	 * @see cps450.oodle.analysis.DepthFirstAdapter#inACallExpression(cps450.oodle.node.ACallExpression)
-	 */
-	@Override
-	public void inACallExpression(ACallExpression node) {
-		
-	}
 
 	/*
 	 * Generate assembly for the actual calling of the method

@@ -65,101 +65,6 @@ public class SemanticChecker extends DepthFirstAdapter {
 		}
 		return null; // TODO: throw exception
 	}
-	
-	@Override
-	public void outAVarDeclaration(AVarDeclaration node) {
-		VariableDeclaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
-		Symbol previousDeclaration = symbolTable.scopeContains(node.getName().getText());
-		if (previousDeclaration != null) {
-			reportError(node.getName(), "Variable '" + node.getName().getText() + "' previously defined at "  + previousDeclaration.getDeclaration().getLocation());
-		}
-		symbolTable.push(node.getName().getText(), decl);
-		
-		if (currentMethodDeclaration != null) {
-			currentMethodDeclaration.incrementLocalCount();   
-			decl.setLocalPosition(currentMethodDeclaration.getLocalCount());
-			currentMethodDeclaration.addVariable(node.getName().getText(), decl);
-		} else {
-			decl.setInstancePosition(currentClassDeclaration.getInstanceVariableCount());
-			currentClassDeclaration.addVariable(node.getName().getText(), decl);
-		}
-	}
-
-	@Override
-	public void outACallExpression(ACallExpression node) {
-		Type returnType = Type.getType("error");
-		
-		ClassDeclaration klass = node.getObject() == null ?
-				currentClassDeclaration : classTable.get(typeDecorations.get(node.getObject()).getName());
-		MethodDeclaration decl = klass.getMethod(node.getMethod().getText());
-		if (decl == null) {
-			reportError(node.getMethod(), "Used undefined method '" + node.getMethod().getText() + "'");
-		} else {
-			// Check count of arguments
-			Integer actualArgCount = node.getArguments().size();
-			if (decl.getArgumentCount() != actualArgCount) {
-				reportError(node.getMethod(), "Wrong number of arguments given to method call: expected " + decl.getArgumentCount() + " got " + actualArgCount);
-			} else {
-				// Size is correct, check types
-				int i = 0;
-				for (Iterator<PExpression> args = node.getArguments().iterator(); args.hasNext();) {
-					PExpression arg = args.next();
-					Type argType = typeDecorations.get(arg);
-					Type correctArgType = decl.getArgumentTypes().get(i);
-					if (!correctArgType.compatibleWith(argType)) {
-						reportError(node.getMethod(), "Wrong type encountered in method call at argument " + (i+1) + ": expected '" + correctArgType.getName() + "' found '" + argType.getName() + "'");
-					}
-					i++;
-				}
-			}
-			returnType = decl.getType();
-		}
-		
-		typeDecorations.put(node, returnType);
-	}
-
-	@Override
-	public void inAMethodDeclaration(AMethodDeclaration node) {
-		// Get the parameter types
-		ArrayList<Type> argumentTypes = new ArrayList<Type>();
-		for (Iterator<PArgumentDeclaration> i = node.getArgumentDeclaration().iterator(); i.hasNext();) {
-			AArgumentDeclaration arg = (AArgumentDeclaration)i.next();
-			argumentTypes.add( typeFor(arg.getType()) );
-		}
-		
-		curArgCount = 0;
-		
-		// Verify that the naming on both ends is the same
-		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
-			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the method declaration, but instead found " + node.getEndName().getText());
-		}
-		
-		// Push the method declaration onto the symbol table
-		MethodDeclaration declaration = new MethodDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()), argumentTypes );
-		MethodDeclaration previousDeclaration = currentClassDeclaration.getMethod(node.getBeginName().getText());
-		if (previousDeclaration != null) {
-			reportError(node.getBeginName(), "Method '" + node.getBeginName().getText() + "' previously defined at " + previousDeclaration.getLocation() + ".");
-		}
-		symbolTable.push(node.getBeginName().getText(), declaration);
-		currentMethodDeclaration = declaration;
-		currentClassDeclaration.addMethod(node.getBeginName().getText(), declaration);
-		
-		// Increment the scope
-		symbolTable.beginScope();
-		
-		// Add the method name as a variable (for assigning the return value)
-		VariableDeclaration returnDecl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()) );
-		currentMethodDeclaration.incrementLocalCount();
-		returnDecl.setLocalPosition(currentMethodDeclaration.getLocalCount());
-		currentMethodDeclaration.addVariable(node.getBeginName().getText(), returnDecl);
-		
-
-		// Add the self argument to the method's variables (as argument)
-		VariableDeclaration self = new VariableDeclaration( currentClassDeclaration.getType(), locationFor(node.getBeginName()) );
-		self.setArgumentPosition(curArgCount);
-		currentMethodDeclaration.addVariable("me", self);
-		curArgCount += 1;
-	}
 
 	@Override
 	public void inAStart(AStart node) {
@@ -174,60 +79,7 @@ public class SemanticChecker extends DepthFirstAdapter {
 			reportError(null, "You must define the method 'start' in the primary class '" + currentClassName + "'");
 		}
 	}
-
-	@Override
-	public void inAClassDef(AClassDef node) {
-		// Verify that the naming on both ends is the same
-		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
-			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the class definition, but instead found " + node.getEndName().getText());
-		}
-		
-		currentClassDeclaration = new ClassDeclaration(Type.getType(node.getBeginName().getText()), locationFor(node.getBeginName()));
-		currentClassName = node.getBeginName().getText();
-		classTable.put(node.getBeginName().getText(), currentClassDeclaration);
-		
-		symbolTable.push(currentClassName, currentClassDeclaration);
-		
-		// Special externally linked methods
-		if (currentClassName.equals("Reader")) {
-			MethodDeclaration decl = new MethodDeclaration(Type.getType("int"), "SYSTEM_DECLARED", new ArrayList<Type>());
-			currentClassDeclaration.addMethod("io_read", decl);
-		} else if (currentClassName.equals("Writer")) {
-			ArrayList<Type> outTypes = new ArrayList<Type>();
-			outTypes.add(Type.getType("int"));
-			MethodDeclaration decl = new MethodDeclaration(Type.getType("void"), "SYSTEM_DECLARED", outTypes);
-			currentClassDeclaration.addMethod("io_write", decl);
-		}
-		
-		// Reset processing
-		currentMethodDeclaration = null;
-		symbolTable.beginScope();
-	}
-
-	@Override
-	public void outAClassDef(AClassDef node) {
-		symbolTable.endScope();
-	}
-
-	@Override
-	public void outAArgumentDeclaration(AArgumentDeclaration node) {
-		VariableDeclaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
-		if (symbolTable.scopeContains(node.getName().getText()) != null) {
-			reportError(node.getName(), "Argument '" + node.getName().getText() + "' previously defined.");
-		}
-		symbolTable.push(node.getName().getText(), decl);
-		
-		decl.setArgumentPosition(curArgCount);
-		currentMethodDeclaration.addVariable(node.getName().getText(), (VariableDeclaration)decl);
-		
-		curArgCount += 1;
-	}
-
-	@Override
-	public void outAMethodDeclaration(AMethodDeclaration node) {
-		symbolTable.endScope();
-	}
-
+	
 	@Override
 	public void outAAddExpression(AAddExpression node) {
 		Type result = Type.getType("error");
@@ -301,6 +153,93 @@ public class SemanticChecker extends DepthFirstAdapter {
 		}
 		
 		typeDecorations.put(node, result);
+	}
+
+	@Override
+	public void outAArrayExpression(AArrayExpression node) {
+		reportError(node.getId(), "Arrays are not yet supported");
+		typeDecorations.put(node, Type.getType("error"));
+	}
+
+	@Override
+	public void outAArgumentDeclaration(AArgumentDeclaration node) {
+		VariableDeclaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
+		if (symbolTable.scopeContains(node.getName().getText()) != null) {
+			reportError(node.getName(), "Argument '" + node.getName().getText() + "' previously defined.");
+		}
+		symbolTable.push(node.getName().getText(), decl);
+		
+		decl.setArgumentPosition(curArgCount);
+		currentMethodDeclaration.addVariable(node.getName().getText(), (VariableDeclaration)decl);
+		
+		curArgCount += 1;
+	}
+
+	@Override
+	public void outACallExpression(ACallExpression node) {
+		Type returnType = Type.getType("error");
+		
+		ClassDeclaration klass = node.getObject() == null ?
+				currentClassDeclaration : classTable.get(typeDecorations.get(node.getObject()).getName());
+		MethodDeclaration decl = klass.getMethod(node.getMethod().getText());
+		if (decl == null) {
+			reportError(node.getMethod(), "Used undefined method '" + node.getMethod().getText() + "'");
+		} else {
+			// Check count of arguments
+			Integer actualArgCount = node.getArguments().size();
+			if (decl.getArgumentCount() != actualArgCount) {
+				reportError(node.getMethod(), "Wrong number of arguments given to method call: expected " + decl.getArgumentCount() + " got " + actualArgCount);
+			} else {
+				// Size is correct, check types
+				int i = 0;
+				for (Iterator<PExpression> args = node.getArguments().iterator(); args.hasNext();) {
+					PExpression arg = args.next();
+					Type argType = typeDecorations.get(arg);
+					Type correctArgType = decl.getArgumentTypes().get(i);
+					if (!correctArgType.compatibleWith(argType)) {
+						reportError(node.getMethod(), "Wrong type encountered in method call at argument " + (i+1) + ": expected '" + correctArgType.getName() + "' found '" + argType.getName() + "'");
+					}
+					i++;
+				}
+			}
+			returnType = decl.getType();
+		}
+		
+		typeDecorations.put(node, returnType);
+	}
+
+	@Override
+	public void inAClassDef(AClassDef node) {
+		// Verify that the naming on both ends is the same
+		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
+			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the class definition, but instead found " + node.getEndName().getText());
+		}
+		
+		currentClassDeclaration = new ClassDeclaration(Type.getType(node.getBeginName().getText()), locationFor(node.getBeginName()));
+		currentClassName = node.getBeginName().getText();
+		classTable.put(node.getBeginName().getText(), currentClassDeclaration);
+		
+		symbolTable.push(currentClassName, currentClassDeclaration);
+		
+		// Special externally linked methods
+		if (currentClassName.equals("Reader")) {
+			MethodDeclaration decl = new MethodDeclaration(Type.getType("int"), "SYSTEM_DECLARED", new ArrayList<Type>());
+			currentClassDeclaration.addMethod("io_read", decl);
+		} else if (currentClassName.equals("Writer")) {
+			ArrayList<Type> outTypes = new ArrayList<Type>();
+			outTypes.add(Type.getType("int"));
+			MethodDeclaration decl = new MethodDeclaration(Type.getType("void"), "SYSTEM_DECLARED", outTypes);
+			currentClassDeclaration.addMethod("io_write", decl);
+		}
+		
+		// Reset processing
+		currentMethodDeclaration = null;
+		symbolTable.beginScope();
+	}
+
+	@Override
+	public void outAClassDef(AClassDef node) {
+		symbolTable.endScope();
 	}
 
 	@Override
@@ -411,6 +350,54 @@ public class SemanticChecker extends DepthFirstAdapter {
 	}
 
 	@Override
+	public void inAMethodDeclaration(AMethodDeclaration node) {
+		// Get the parameter types
+		ArrayList<Type> argumentTypes = new ArrayList<Type>();
+		for (Iterator<PArgumentDeclaration> i = node.getArgumentDeclaration().iterator(); i.hasNext();) {
+			AArgumentDeclaration arg = (AArgumentDeclaration)i.next();
+			argumentTypes.add( typeFor(arg.getType()) );
+		}
+		
+		curArgCount = 0;
+		
+		// Verify that the naming on both ends is the same
+		if (!node.getBeginName().getText().equals(node.getEndName().getText())) {
+			reportError(node.getEndName(), "Expected " + node.getBeginName().getText() + " ending the method declaration, but instead found " + node.getEndName().getText());
+		}
+		
+		// Push the method declaration onto the symbol table
+		MethodDeclaration declaration = new MethodDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()), argumentTypes );
+		MethodDeclaration previousDeclaration = currentClassDeclaration.getMethod(node.getBeginName().getText());
+		if (previousDeclaration != null) {
+			reportError(node.getBeginName(), "Method '" + node.getBeginName().getText() + "' previously defined at " + previousDeclaration.getLocation() + ".");
+		}
+		symbolTable.push(node.getBeginName().getText(), declaration);
+		currentMethodDeclaration = declaration;
+		currentClassDeclaration.addMethod(node.getBeginName().getText(), declaration);
+		
+		// Increment the scope
+		symbolTable.beginScope();
+		
+		// Add the method name as a variable (for assigning the return value)
+		VariableDeclaration returnDecl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getBeginName()) );
+		currentMethodDeclaration.incrementLocalCount();
+		returnDecl.setLocalPosition(currentMethodDeclaration.getLocalCount());
+		currentMethodDeclaration.addVariable(node.getBeginName().getText(), returnDecl);
+		
+
+		// Add the self argument to the method's variables (as argument)
+		VariableDeclaration self = new VariableDeclaration( currentClassDeclaration.getType(), locationFor(node.getBeginName()) );
+		self.setArgumentPosition(curArgCount);
+		currentMethodDeclaration.addVariable("me", self);
+		curArgCount += 1;
+	}
+
+	@Override
+	public void outAMethodDeclaration(AMethodDeclaration node) {
+		symbolTable.endScope();
+	}
+
+	@Override
 	public void outAMultExpression(AMultExpression node) {
 		Type result = Type.getType("error");
 		Type lt = typeDecorations.get(node.getExpr1());
@@ -496,11 +483,24 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, result);
 	}
-
+	
 	@Override
-	public void outAArrayExpression(AArrayExpression node) {
-		reportError(node.getId(), "Arrays are not yet supported");
-		typeDecorations.put(node, Type.getType("error"));
+	public void outAVarDeclaration(AVarDeclaration node) {
+		VariableDeclaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
+		Symbol previousDeclaration = symbolTable.scopeContains(node.getName().getText());
+		if (previousDeclaration != null) {
+			reportError(node.getName(), "Variable '" + node.getName().getText() + "' previously defined at "  + previousDeclaration.getDeclaration().getLocation());
+		}
+		symbolTable.push(node.getName().getText(), decl);
+		
+		if (currentMethodDeclaration != null) {
+			currentMethodDeclaration.incrementLocalCount();   
+			decl.setLocalPosition(currentMethodDeclaration.getLocalCount());
+			currentMethodDeclaration.addVariable(node.getName().getText(), decl);
+		} else {
+			decl.setInstancePosition(currentClassDeclaration.getInstanceVariableCount());
+			currentClassDeclaration.addVariable(node.getName().getText(), decl);
+		}
 	}
 
 	@Override

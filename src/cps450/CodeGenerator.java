@@ -119,8 +119,8 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit(".text");
 		emit("__npe__:");
 		emit("pushl _out");
-		emitStringExpressionFor("\"The little gremlin running your program is scratching his head wondering how he is supposed to look up a method on a null object at line:\"");
-		emit("call Writer_writeln");
+		emitStringExpressionFor("\"The little gremlin running your program is scratching his head wondering how he is supposed to look up a method on a null object at line: \"");
+		emit("call Writer_write");
 		//emit("addl $8, %esp");
 		emit("pushl _out");
 		emit("pushl errorLine");

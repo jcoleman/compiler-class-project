@@ -62,11 +62,12 @@ public class CodeGenerator extends DepthFirstAdapter {
 	public void emitClassInstantiationExpressionFor(ClassDeclaration klass) {
 		// Allocate space for the object
 		// - 2 * 4 bytes reserved + 4 * instance variable count
-		emit("# Instantiate object");
+		emit("# Instantiate object of class '" + klass.name + "'");
 		emit("pushl $4"); // Size of each reserved element is 4 bytes
 		emit("pushl $" + (2 + klass.getInstanceVariableCount())); // Total allocated elements
 		emit("call calloc");
-		emit("addl $8, %esp");
+		emit("addl $8, %esp # Cleanup 'calloc' arguments");
+		emit("movl $" + klass.getVirtualFunctionTableLabel() + ", (%eax) # Set link to class VFT");
 		emit("pushl %eax");
 	}
 	

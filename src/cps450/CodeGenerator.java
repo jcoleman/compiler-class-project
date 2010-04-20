@@ -211,12 +211,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 	 */
 	@Override
 	public void inACallExpression(ACallExpression node) {
-		if (node.getObject() == null) {
-			// Method call has implicit callee; pass along the current lexical self
-			VariableDeclaration self = currentMethodDeclaration.getVariable("me");
-			emit("pushl " + self.getStackOffset() + "(%ebp) # Push reference to self as argument");
-		}
-		// Else: explicit object callee; self value pushed by the expression evaluation
+		
 	}
 
 	/*
@@ -225,13 +220,20 @@ public class CodeGenerator extends DepthFirstAdapter {
 	 */
 	@Override
 	public void outACallExpression(ACallExpression node) {
+		if (node.getObject() == null) {
+			// Method call has implicit callee; pass along the current lexical self
+			VariableDeclaration self = currentMethodDeclaration.getVariable("me");
+			emit("pushl " + self.getStackOffset() + "(%ebp) # Push reference to self as argument");
+		} // Else: explicit object callee; self value pushed by the expression evaluation
+		
+		
 		String klass = (node.getObject() == null) ? currentClassName : typeDecorations.get(node.getObject()).getName();
 		String methodName = node.getMethod().getText();
 		String methodLabel = getMethodLabel(klass, methodName);
 		Integer argCount = node.getArguments().size() + 1; // Offset for the "self" argument
 		
 		// Dynamic null pointer checking
-		emit("cmpl $0, " + (argCount - 1)*4 + "(%esp)");
+		emit("cmpl $0, (%esp)");
 		emit("jne call" + callCount);
 		emit("movl $" + SourceHolder.instance().getLineNumberFor(node.getMethod()) + ", errorLine");
 		emit("jmp __npe__");
@@ -248,21 +250,19 @@ public class CodeGenerator extends DepthFirstAdapter {
 	@Override
 	public void caseACallExpression(ACallExpression node) {
 		inACallExpression(node);
-        if(node.getObject() != null)
-        {
-            node.getObject().apply(this);
-        }
         if(node.getMethod() != null)
         {
             node.getMethod().apply(this);
         }
+        List<PExpression> copy = new ArrayList<PExpression>(node.getArguments());
+        java.util.Collections.reverse(copy);
+        for(PExpression e : copy)
         {
-            List<PExpression> copy = new ArrayList<PExpression>(node.getArguments());
-            java.util.Collections.reverse(copy);
-            for(PExpression e : copy)
-            {
-                e.apply(this);
-            }
+            e.apply(this);
+        }
+        if(node.getObject() != null)
+        {
+            node.getObject().apply(this);
         }
         outACallExpression(node);
 	}

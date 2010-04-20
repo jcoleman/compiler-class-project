@@ -152,6 +152,13 @@ public class SemanticChecker extends DepthFirstAdapter {
 		currentMethodDeclaration.incrementLocalCount();
 		returnDecl.setLocalPosition(currentMethodDeclaration.getLocalCount());
 		currentMethodDeclaration.addVariable(node.getBeginName().getText(), returnDecl);
+		
+
+		// Add the self argument to the method's variables (as argument)
+		VariableDeclaration self = new VariableDeclaration( currentClassDeclaration.getType(), locationFor(node.getBeginName()) );
+		self.setArgumentPosition(curArgCount);
+		currentMethodDeclaration.addVariable("me", self);
+		curArgCount += 1;
 	}
 
 	@Override
@@ -218,12 +225,6 @@ public class SemanticChecker extends DepthFirstAdapter {
 
 	@Override
 	public void outAMethodDeclaration(AMethodDeclaration node) {
-		// Add the self argument to the method's variables (as argument)
-		VariableDeclaration self = new VariableDeclaration( currentClassDeclaration.getType(), locationFor(node.getBeginName()) );
-		self.setArgumentPosition(curArgCount);
-		currentMethodDeclaration.addVariable("me", self);
-		curArgCount += 1;
-		
 		symbolTable.endScope();
 	}
 

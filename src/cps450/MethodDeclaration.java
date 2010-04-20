@@ -2,6 +2,9 @@ package cps450;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
+
+import cps450.oodle.node.PExpression;
 
 public class MethodDeclaration extends Declaration {
 	
@@ -10,6 +13,7 @@ public class MethodDeclaration extends Declaration {
 	Integer localVariableCount = 0;
 	ClassDeclaration klass;
 	String name;
+	Integer offset;
 	
 	public MethodDeclaration(Type _type, String _location, ArrayList<Type> _argumentTypes, ClassDeclaration _klass, String _name) {
 		super(_type, _location);
@@ -49,6 +53,28 @@ public class MethodDeclaration extends Declaration {
 
 	public ClassDeclaration getKlass() {
 		return klass;
+	}
+	
+	public Integer getOffset() {
+		return offset;
+	}
+	
+	public void setOffset(Integer methodOffset) {
+		offset = methodOffset;
+	}
+	
+	public Boolean hasIdenticalSignature(MethodDeclaration otherMethod) {
+		if (this.getArgumentCount() != otherMethod.getArgumentCount() || this.getType() != otherMethod.getType()) {
+			return false;
+		} else {
+			// Size is correct, check types
+			for (int i = 0; i < this.getArgumentCount(); ++i) {
+				if (this.argumentTypes.get(i) != otherMethod.argumentTypes.get(i)) {
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 	
 }

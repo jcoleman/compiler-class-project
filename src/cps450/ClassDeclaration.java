@@ -6,7 +6,7 @@ public class ClassDeclaration extends Declaration {
 	
 	Hashtable<String, VariableDeclaration> variables;
 	Hashtable<String, MethodDeclaration> methods;
-	Integer methodOffset = 0;
+	Integer currentMethodOffset = 0;
 	
 	String name;
 	
@@ -28,7 +28,7 @@ public class ClassDeclaration extends Declaration {
 			variables.putAll(parent.variables);
 			methods.putAll(parent.methods);
 			
-			methodOffset = parent.methodOffset;
+			currentMethodOffset = parent.currentMethodOffset;
 		}
 	}
 	
@@ -52,13 +52,15 @@ public class ClassDeclaration extends Declaration {
 	
 	public void addMethod(String name, MethodDeclaration decl) {
 		MethodDeclaration oldMethod = methods.get(name);
-		if (oldMethod != null) {
-			// If a method was already defined, then save a copy of the old one, but 
-			methods.put("ANCESTOR$" + name, oldMethod);
+		if (oldMethod != null && decl.hasIdenticalSignature(oldMethod)) {
+			// Methods have the same signature, override.
+			decl.setOffset(oldMethod.getOffset());
+		} else {
+			// Methods have different signatures, mask.
+			decl.setOffset(currentMethodOffset);
+			currentMethodOffset += 1;
 		}
 		methods.put(name, decl);
-		
-		methodOffset += 1;
 	}
 	
 	public MethodDeclaration getMethod(String name) {

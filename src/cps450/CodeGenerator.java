@@ -52,9 +52,12 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit(label + ": .string " + text);
 		
 		emit(".text");
-		emit("pushl $" + label);
+		emit("pushl $" + label + " # Pass pointer to string literal as argument");
+		emit("pushl $" + classTable.get("CharNode").getVirtualFunctionTableLabel() + "# Pass CharNode VFT as argument");
+		emit("pushl $" + classTable.get("String").getVirtualFunctionTableLabel() + "# Pass String VFT as argument");
 		emit("call string_fromlit");
-		emit("movl %eax, (%esp) # Cleanup parameter and push return value all at once");
+		emit("addl $12, %esp # Cleanup arguments on stack");
+		emit("pushl %eax # Push return value");
 		
 		stringCount++;
 	}
@@ -219,24 +222,27 @@ public class CodeGenerator extends DepthFirstAdapter {
 		if (node.getObject() == null) {
 			// Method call has implicit callee; pass along the current lexical self
 			VariableDeclaration self = currentMethodDeclaration.getVariable("me");
-			emit("pushl " + self.getStackOffset() + "(%ebp) # Push reference to self as argument");
+			emit("pushl " + self.getStackOffset() + "(%ebp) # Push implicit self as argument");
 		} // Else: explicit object callee; self value pushed by the expression evaluation
 		
+		emit("movl (%esp), %edx # Get copy of reference to self");
 		
 		String klassName = (node.getObject() == null) ? currentClassName : typeDecorations.get(node.getObject()).getName();
 		String methodName = node.getMethod().getText();
-		String methodLabel = classTable.get(klassName).getMethod(methodName).getMethodLabel();
+		MethodDeclaration method = classTable.get(klassName).getMethod(methodName);
 		Integer argCount = node.getArguments().size() + 1; // Offset for the "self" argument
 		
 		// Dynamic null pointer checking
-		emit("cmpl $0, (%esp)");
+		emit("cmpl $0, %edx # Check for null 'self' pointer");
 		emit("jne call" + callCount);
 		emit("movl $" + SourceHolder.instance().getLineNumberFor(node.getMethod()) + ", errorLine");
 		emit("jmp __npe__");
 		
 		// Call method
 		emit("call" + callCount + ":");
-		emit("call " + methodLabel);
+		emit("movl (%edx), %ebx # Get point to self's VFT");
+		emit("addl $" + (method.getOffset() + 1)*4 + ", %ebx");
+		emit("call *(%ebx) # Call " + klassName + "#" + methodName);
 		emit("addl $" + ((argCount) * 4) + ", %esp # Clean up the argument values");
 		emit("pushl %eax # Assume that we got a return value");
 		

@@ -17,6 +17,10 @@ public class Oodle
 	
 	public static int errorCount = 0;
 	
+	/*
+	 * Run the Oodle compile.
+	 * Process arguments, semantically check the code, generate assembly code, and assemble it.
+	 */
     public static void main(String[] arguments) throws IOException, ParserException, LexerException {
         if(!(arguments.length >= 1)) {
             System.out.println("usage:");

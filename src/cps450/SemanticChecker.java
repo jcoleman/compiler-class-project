@@ -38,10 +38,17 @@ public class SemanticChecker extends DepthFirstAdapter {
 		symbolTable.beginScope();
 	}
 	
+	/*
+	 * Helper to get a nicely formatted location string for the Token <t>.
+	 */
 	private String locationFor(Token t) {
 		return SourceHolder.instance().getFilenameFor(t) + ":" + SourceHolder.instance().getLineNumberFor(t) + "," + t.getPos();
 	}
 	
+	/*
+	 * Report an error at a specific token <t>. If <t> is null, no location will be printed in the output.
+	 * Also increments the total error count.
+	 */
 	private void reportError(Token t, String errorText) {
 		this.errorCount++;
 		String output = "";
@@ -51,6 +58,9 @@ public class SemanticChecker extends DepthFirstAdapter {
 		System.out.println(output + errorText);
 	}
 	
+	/*
+	 * Helper to determine the Type for a token type declaration.
+	 */
 	private Type typeFor(PType type) {
 		if (type == null) {
 			return Type.getType("void");
@@ -66,6 +76,10 @@ public class SemanticChecker extends DepthFirstAdapter {
 		return null; // TODO: throw exception
 	}
 
+	/*
+	 * Verify that the user define at least one class.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAStart(cps450.oodle.node.AStart)
+	 */
 	@Override
 	public void inAStart(AStart node) {
 		if (node.getClassDef().size() < 1) {
@@ -73,6 +87,10 @@ public class SemanticChecker extends DepthFirstAdapter {
 		}
 	}
 	
+	/*
+	 * Verify that the user define a correct oodle file and that 'start' is defined in the last defined class.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAStart(cps450.oodle.node.AStart)
+	 */
 	@Override
 	public void outAStart(AStart node) {
 		if (classTable.size() <= 5) {
@@ -82,6 +100,10 @@ public class SemanticChecker extends DepthFirstAdapter {
 		}
 	}
 	
+	/*
+	 * Verify that the the add expression has the correct types.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAAddExpression(cps450.oodle.node.AAddExpression)
+	 */
 	@Override
 	public void outAAddExpression(AAddExpression node) {
 		Type result = Type.getType("error");
@@ -103,7 +125,11 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, result);
 	}
-
+	
+	/*
+	 * Verify that the and expression has the correct types.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAAndExpression(cps450.oodle.node.AAndExpression)
+	 */
 	@Override
 	public void outAAndExpression(AAndExpression node) {
 		Type result = Type.getType("error");
@@ -125,7 +151,11 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, result);
 	}
-
+	
+	/*
+	 * Verify that the user is assigning semantically valid types to a variable.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAAssignmentStatement(cps450.oodle.node.AAssignmentStatement)
+	 */
 	@Override
 	public void outAAssignmentStatement(AAssignmentStatement node) {
 		// TODO: Need to implement checking on array accessing assignments
@@ -156,13 +186,22 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, result);
 	}
-
+	
+	/*
+	 * Don't yet support array expressions.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAArrayExpression(cps450.oodle.node.AArrayExpression)
+	 */
 	@Override
 	public void outAArrayExpression(AArrayExpression node) {
 		reportError(node.getId(), "Arrays are not yet supported");
 		typeDecorations.put(node, Type.getType("error"));
 	}
-
+	
+	/*
+	 * Verify that the argument by its name has not already been defined for the current method.
+	 * Also add a variable declaration for that argument to the current method declaration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAArgumentDeclaration(cps450.oodle.node.AArgumentDeclaration)
+	 */
 	@Override
 	public void outAArgumentDeclaration(AArgumentDeclaration node) {
 		VariableDeclaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
@@ -178,7 +217,12 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		curArgCount += 1;
 	}
-
+	
+	/*
+	 * Verify that the method attempting to be called exists and that the argumets being
+	 * passed are semantically compatible with the method's argument types.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outACallExpression(cps450.oodle.node.ACallExpression)
+	 */
 	@Override
 	public void outACallExpression(ACallExpression node) {
 		Type returnType = Type.getType("error");
@@ -211,7 +255,13 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, returnType);
 	}
-
+	
+	/*
+	 * Set up a new class declaration; handle inheritance; and verify that it is not already defined.
+	 * Also add special external methods to the Reader/Writer classes.
+	 * Begin a new scope.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAClassDef(cps450.oodle.node.AClassDef)
+	 */
 	@Override
 	public void inAClassDef(AClassDef node) {
 		currentClassName = node.getBeginName().getText();
@@ -255,12 +305,20 @@ public class SemanticChecker extends DepthFirstAdapter {
 		currentMethodDeclaration = null;
 		symbolTable.beginScope();
 	}
-
+	
+	/*
+	 * End the instance level scope for the current class declaration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAClassDef(cps450.oodle.node.AClassDef)
+	 */
 	@Override
 	public void outAClassDef(AClassDef node) {
 		symbolTable.endScope();
 	}
-
+	
+	/*
+	 * Verify that the comparison expression has valid types.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAComparisonExpression(cps450.oodle.node.AComparisonExpression)
+	 */
 	@Override
 	public void outAComparisonExpression(AComparisonExpression node) {
 		Type result = Type.getType("error");
@@ -290,7 +348,11 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, result);
 	}
-
+	
+	/*
+	 * Verify that the concat expression utilizes valid types.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAConcatenationExpression(cps450.oodle.node.AConcatenationExpression)
+	 */
 	@Override
 	public void outAConcatenationExpression(AConcatenationExpression node) {
 		Type result = Type.getType("error");
@@ -312,7 +374,11 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, result);
 	}
-
+	
+	/*
+	 * Verify that the new variable has not already been defined in the current scope.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAIdentifierExpression(cps450.oodle.node.AIdentifierExpression)
+	 */
 	@Override
 	public void outAIdentifierExpression(AIdentifierExpression node) {
 		Type result = Type.getType("error");
@@ -330,7 +396,11 @@ public class SemanticChecker extends DepthFirstAdapter {
 		}
 		typeDecorations.put(node, result);
 	}
-
+	
+	/*
+	 * Verify that the user is testing a boolean expression in the conditional of this if statement.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAIfStatement(cps450.oodle.node.AIfStatement)
+	 */
 	@Override
 	public void outAIfStatement(AIfStatement node) {
 		Type result = Type.getType("error");
@@ -346,12 +416,20 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, result);
 	}
-
+	
+	/*
+	 * Process the integer expression by passing the value up the tree as a node type decoration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAIntegerExpression(cps450.oodle.node.AIntegerExpression)
+	 */
 	@Override
 	public void outAIntegerExpression(AIntegerExpression node) {
 		typeDecorations.put(node, Type.getType("int"));
 	}
-
+	
+	/*
+	 * Verify that the loop statement test expression evaluates to a boolean.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outALoopStatement(cps450.oodle.node.ALoopStatement)
+	 */
 	@Override
 	public void outALoopStatement(ALoopStatement node) {
 		Type result = Type.getType("error");
@@ -367,7 +445,11 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, result);
 	}
-
+	
+	/*
+	 * Process a new method declaration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAMethodDeclaration(cps450.oodle.node.AMethodDeclaration)
+	 */
 	@Override
 	public void inAMethodDeclaration(AMethodDeclaration node) {
 		String name = node.getBeginName().getText();
@@ -412,12 +494,20 @@ public class SemanticChecker extends DepthFirstAdapter {
 		currentMethodDeclaration.addVariable("me", self);
 		curArgCount += 1;
 	}
-
+	
+	/*
+	 * End the current local method scope.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAMethodDeclaration(cps450.oodle.node.AMethodDeclaration)
+	 */
 	@Override
 	public void outAMethodDeclaration(AMethodDeclaration node) {
 		symbolTable.endScope();
 	}
-
+	
+	/*
+	 * Verify that the multiply expression contains valid sub-expressions.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAMultExpression(cps450.oodle.node.AMultExpression)
+	 */
 	@Override
 	public void outAMultExpression(AMultExpression node) {
 		Type result = Type.getType("error");
@@ -439,12 +529,20 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, result);
 	}
-
+	
+	/*
+	 * Pass the type up the tree as a type decoration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outANullExpression(cps450.oodle.node.ANullExpression)
+	 */
 	@Override
 	public void outANullExpression(ANullExpression node) {
 		typeDecorations.put(node, Type.getType("null"));
 	}
-
+	
+	/*
+	 * Verify that the or expression compares two boolean expressions.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAOrExpression(cps450.oodle.node.AOrExpression)
+	 */
 	@Override
 	public void outAOrExpression(AOrExpression node) {
 		Type result = Type.getType("error");
@@ -466,17 +564,29 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		typeDecorations.put(node, result);
 	}
-
+	
+	/*
+	 * Pass the type up the tree as a type decoration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAStringExpression(cps450.oodle.node.AStringExpression)
+	 */
 	@Override
 	public void outAStringExpression(AStringExpression node) {
 		typeDecorations.put(node, Type.getType("string"));
 	}
-
+	
+	/*
+	 * Pass the type up the tree as a type decoration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outATrueExpression(cps450.oodle.node.ATrueExpression)
+	 */
 	@Override
 	public void outATrueExpression(ATrueExpression node) {
 		typeDecorations.put(node, Type.getType("boolean"));
 	}
-
+	
+	/*
+	 * Verify that the correct expression types exist for the unary operation.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAUnaryExpression(cps450.oodle.node.AUnaryExpression)
+	 */
 	@Override
 	public void outAUnaryExpression(AUnaryExpression node) {
 		Type result = Type.getType("error");
@@ -505,6 +615,11 @@ public class SemanticChecker extends DepthFirstAdapter {
 		typeDecorations.put(node, result);
 	}
 	
+	/*
+	 * Verify that the variable is not being redefined in the current scope (but allow
+	 * instance variables to be masked.)
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAVarDeclaration(cps450.oodle.node.AVarDeclaration)
+	 */
 	@Override
 	public void outAVarDeclaration(AVarDeclaration node) {
 		VariableDeclaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
@@ -525,27 +640,46 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		decl.setDeclaringKlass(currentClassDeclaration);
 	}
-
+	
+	/*
+	 * Pass the type up the tree as a type decoration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAFalseExpression(cps450.oodle.node.AFalseExpression)
+	 */
 	@Override
 	public void outAFalseExpression(AFalseExpression node) {
 		typeDecorations.put(node, Type.getType("boolean"));
 	}
-
+	
+	/*
+	 * Pass the type up the tree as a type decoration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAMeExpression(cps450.oodle.node.AMeExpression)
+	 */
 	@Override
 	public void outAMeExpression(AMeExpression node) {
 		typeDecorations.put(node, Type.getType(currentClassName));
 	}
 
-	@Override
+	/*
+	 * Pass the type up the tree as a type decoration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outANewObjectExpression(cps450.oodle.node.ANewObjectExpression)
+	 */
 	public void outANewObjectExpression(ANewObjectExpression node) {
 		typeDecorations.put(node, typeFor(node.getType()));
 	}
-
+	
+	/*
+	 * Don't yet support concat expressions.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAConcatenationExpression(cps450.oodle.node.AConcatenationExpression)
+	 */
 	@Override
 	public void inAConcatenationExpression(AConcatenationExpression node) {
 		reportError(node.getConcatOp(), "String concatenation not yet supported");
 	}
-
+	
+	/*
+	 * Pass the type up the tree as a type decoration.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAStringExpression(cps450.oodle.node.AStringExpression)
+	 */
 	@Override
 	public void inAStringExpression(AStringExpression node) {
 		typeDecorations.put(node, Type.getType("String"));

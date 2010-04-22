@@ -20,6 +20,9 @@ public class ClassDeclaration extends Declaration {
 		name = _name;
 	}
 	
+	/*
+	 * Cause this class to inherit all of the variables and methods from class <_parent>.
+	 */
 	public void inheritFrom(ClassDeclaration _parent) {
 		if (_parent != null) {
 			// Link to the parent
@@ -33,6 +36,9 @@ public class ClassDeclaration extends Declaration {
 		}
 	}
 	
+	/*
+	 * Helper to determine this class is in the same hierarchy as <ancestor> and descends from it (or is the same class).
+	 */
 	private Boolean isDescendantOf(ClassDeclaration ancestor) {
 		if (ancestor == this) {
 			return true;
@@ -43,6 +49,10 @@ public class ClassDeclaration extends Declaration {
 		}
 	}
 	
+	/*
+	 * Semantic type checking helper to determine if this class and <klass> are compile time compatible
+	 * - that is, either <klass> is null or <klass> is in the same class hierarchy as this class.
+	 */
 	public Boolean compatibleWith(ClassDeclaration klass) {
 		if (klass == null) {
 			return true;
@@ -51,6 +61,10 @@ public class ClassDeclaration extends Declaration {
 		}
 	}
 	
+	/*
+	 * Add a method declaration to this class; overrides or masks a method
+	 * by the same name (if it exists) in the an ancestor class.
+	 */
 	public void addMethod(String name, MethodDeclaration decl) {
 		MethodDeclaration oldMethod = methods.get(name);
 		if (oldMethod != null && decl.hasIdenticalSignature(oldMethod)) {
@@ -64,22 +78,37 @@ public class ClassDeclaration extends Declaration {
 		methods.put(name, decl);
 	}
 	
+	/*
+	 * Get the method declaration by its name.
+	 */
 	public MethodDeclaration getMethod(String name) {
 		return methods.get(name);
 	}
 	
+	/*
+	 * Add a new instance variable to this class.
+	 */
 	public void addVariable(String name, VariableDeclaration decl) {
 		variables.put(name, decl);
 	}
 	
+	/*
+	 * Get an instance variable in this class by <name>.
+	 */
 	public VariableDeclaration getVariable(String name) {
 		return variables.get(name);
 	}
 	
+	/*
+	 * Return the current number of instance variable defined in this class declaration.
+	 */
 	public Integer getInstanceVariableCount() {
 		return variables.size();
 	}
 	
+	/*
+	 * Get a list of methods defined in this class - in ascending VFT offset order.
+	 */
 	public ArrayList<MethodDeclaration> getMethodList() {
 		ArrayList<MethodDeclaration> methodList = new ArrayList<MethodDeclaration>(methods.size());
 		
@@ -95,6 +124,9 @@ public class ClassDeclaration extends Declaration {
 		return methodList;
 	}
 	
+	/*
+	 * Helper to abstract away the virtual function table label.
+	 */
 	public String getVirtualFunctionTableLabel() {
 		return "__" + name + "__" + "VFT__";
 	}

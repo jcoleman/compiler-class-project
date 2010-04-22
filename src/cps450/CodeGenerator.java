@@ -137,7 +137,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emitClassInstantiationExpressionFor(currentClassDeclaration);
 		
 		// Self argument is left on the stack from the instantiation expression
-		emit("call " + currentClassDeclaration.getMethod("start").getMethodLabel());
+		emitCallExpressionFor(currentClassDeclaration, "start", 0);
 		emit("addl $4, %esp # Cleanup method argument");
 		
 		// End the program

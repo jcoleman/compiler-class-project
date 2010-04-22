@@ -102,5 +102,9 @@ public class ClassDeclaration extends Declaration {
 	public ClassDeclaration getParent() {
 		return parent;
 	}
+
+	public String getName() {
+		return name;
+	}
 	
 }

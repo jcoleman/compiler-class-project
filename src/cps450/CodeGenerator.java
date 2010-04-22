@@ -74,6 +74,41 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax");
 	}
 	
+	public void emitCallExpressionFor(ClassDeclaration expectedObjectType, String methodName, Integer lineNumber) {
+		emit("movl (%esp), %edx # Get copy of reference to self");
+		
+		MethodDeclaration method = expectedObjectType.getMethod(methodName);
+		Integer argCount = method.getArgumentCount() + 1;
+		
+		// Dynamic null pointer checking
+		emit("cmpl $0, %edx # Check for null 'self' pointer");
+		emit("jne call_typecheck" + callCount);
+		emit("pushl $" + lineNumber);
+		emit("jmp __npe__");
+		
+		// Dynamic callee type checking
+		emit("call_typecheck" + callCount + ":");
+		emit("pushl (%edx) # foundType argument");
+		emit("pushl $" + expectedObjectType.getVirtualFunctionTableLabel() + " # expectedType argument");
+		emit("call checkTypeCompatibility");
+		emit("addl $8, %esp");
+		emit("cmpl $0, %eax");
+		emit("jne call" + callCount);
+		emit("pushl $" + lineNumber);
+		emit("jmp __callee_type_error__");
+		
+		// Call method
+		emit("call" + callCount + ":");
+		emit("movl (%esp), %edx # Get copy of reference to self");
+		emit("movl (%edx), %ebx # Get pointer to self's VFT");
+		emit("addl $" + (method.getOffset() + 1)*4 + ", %ebx");
+		emit("call *(%ebx) # Call " + expectedObjectType.getName() + "#" + methodName);
+		emit("addl $" + ((argCount) * 4) + ", %esp # Clean up the argument values");
+		emit("pushl %eax # Assume that we got a return value");
+		
+		callCount++;
+	}
+	
 	/*
 	 * Start the generated with the predefined data directives. 
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAStart(cps450.oodle.node.AStart)
@@ -185,15 +220,6 @@ public class CodeGenerator extends DepthFirstAdapter {
 	}
 	
 	/*
-	 * Output a comment with the oodle source.
-	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAAssignmentStatement(cps450.oodle.node.AAssignmentStatement)
-	 */
-	@Override
-	public void inAAssignmentStatement(AAssignmentStatement node) {
-		emitOodleStatement(node.getId());
-	}
-	
-	/*
 	 * Generate assembly for assignment statements.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAAssignmentStatement(cps450.oodle.node.AAssignmentStatement)
 	 */
@@ -231,42 +257,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 			emit("pushl " + self.getStackOffset() + "(%ebp) # Push implicit self as argument");
 		} // Else: explicit object callee; self value pushed by the expression evaluation
 		
-		emit("movl (%esp), %edx # Get copy of reference to self");
-		
-		String klassName = (node.getObject() == null) ? currentClassName : typeDecorations.get(node.getObject()).getName();
 		String methodName = node.getMethod().getText();
-		MethodDeclaration method = classTable.get(klassName).getMethod(methodName);
-		Integer argCount = node.getArguments().size() + 1; // Offset for the "self" argument
-		
-		// Dynamic null pointer checking
-		emit("cmpl $0, %edx # Check for null 'self' pointer");
-		emit("jne call_typecheck" + callCount);
-		emit("pushl $" + SourceHolder.instance().getLineNumberFor(node.getMethod()));
-		emit("jmp __npe__");
-		
-		// Dynamic callee type checking
-		emit("call_typecheck" + callCount + ":");
-		emit("pushl (%edx) # foundType argument");
 		ClassDeclaration expectedObjectType = node.getObject() == null ?
 				currentClassDeclaration : classTable.get(typeDecorations.get(node.getObject()).getName());
-		emit("pushl $" + expectedObjectType.getVirtualFunctionTableLabel() + " # expectedType argument");
-		emit("call checkTypeCompatibility");
-		emit("addl $8, %esp");
-		emit("cmpl $0, %eax");
-		emit("jne call" + callCount);
-		emit("pushl $" + SourceHolder.instance().getLineNumberFor(node.getMethod()));
-		emit("jmp __callee_type_error__");
 		
-		// Call method
-		emit("call" + callCount + ":");
-		emit("movl (%esp), %edx # Get copy of reference to self");
-		emit("movl (%edx), %ebx # Get pointer to self's VFT");
-		emit("addl $" + (method.getOffset() + 1)*4 + ", %ebx");
-		emit("call *(%ebx) # Call " + klassName + "#" + methodName);
-		emit("addl $" + ((argCount) * 4) + ", %esp # Clean up the argument values");
-		emit("pushl %eax # Assume that we got a return value");
-		
-		callCount++;
+		emitCallExpressionFor(expectedObjectType, methodName, SourceHolder.instance().getLineNumberFor(node.getMethod()));
 	}
 	
 	@Override

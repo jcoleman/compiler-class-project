@@ -86,16 +86,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl $" + lineNumber);
 		emit("jmp __npe__");
 		
-		// Dynamic callee type checking
-		emit("call_typecheck" + callCount + ":");
-		emit("pushl (%edx) # foundType argument");
-		emit("pushl $" + expectedObjectType.getVirtualFunctionTableLabel() + " # expectedType argument");
-		emit("call checkTypeCompatibility");
-		emit("addl $8, %esp");
-		emit("cmpl $0, %eax");
-		emit("jne call" + callCount);
-		emit("pushl $" + lineNumber);
-		emit("jmp __callee_type_error__");
+		emitTypeCheckFor(expectedObjectType, "(%edx)", "call" + callCount, lineNumber);
 		
 		// Call method
 		emit("call" + callCount + ":");
@@ -107,6 +98,19 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax # Assume that we got a return value");
 		
 		callCount++;
+	}
+	
+	public void emitTypeCheckFor(ClassDeclaration expectedObjectType, String foundTypeVFTLocation, String successLabel, Integer lineNumber) {
+		// Dynamic callee type checking
+		emit("call_typecheck" + callCount + ":");
+		emit("pushl " + foundTypeVFTLocation + " # foundType argument");
+		emit("pushl $" + expectedObjectType.getVirtualFunctionTableLabel() + " # expectedType argument");
+		emit("call checkTypeCompatibility");
+		emit("addl $8, %esp");
+		emit("cmpl $0, %eax");
+		emit("jne " + successLabel);
+		emit("pushl $" + lineNumber);
+		emit("jmp __callee_type_error__");
 	}
 	
 	/*

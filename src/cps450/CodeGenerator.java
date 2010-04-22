@@ -83,7 +83,6 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit(".data");
 		emit(".comm _out, 4, 4");
 		emit(".comm _in, 4, 4");
-		emit(".comm errorLine, 4, 4");
 	}
 
 	@Override
@@ -114,16 +113,23 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("# Global helpers");
 		emit(".text");
 		emit("__npe__:");
-		emit("pushl _out");
-		emitStringExpressionFor("\"The little gremlin running your program is scratching his head wondering how he is supposed to look up a method on a null object at line: \"");
-		emit("call Writer_write");
-		//emit("addl $8, %esp");
-		emit("pushl _out");
-		emit("pushl errorLine");
-		emit("call Writer_writeint");
-		//emit("addl $8, %esp");
+		emitEndProgramForError(": The little gremlin running your program is scratching his head wondering how he is supposed to look up a method on a null object.\\n");
+		
+		emit("__callee_type_error__:");
+		emitEndProgramForError(": The little gremlin running your program can't find the method you requested on the object you used.\\n");
+	}
+	
+	private void emitEndProgramForError(String message) {
+		String label = "strlit" + stringCount;
+		emit(".data");
+		emit(label + ": .string " + "\"" + message + "\"");
+		emit(".text");
+		emit("pushl $" + message.length());
+		emit("pushl $" + label);
+		emit("call printError");
 		emit("pushl $1");
 		emit("call exit");
+		stringCount++;
 	}
 
 	/*
@@ -234,13 +240,27 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		// Dynamic null pointer checking
 		emit("cmpl $0, %edx # Check for null 'self' pointer");
-		emit("jne call" + callCount);
-		emit("movl $" + SourceHolder.instance().getLineNumberFor(node.getMethod()) + ", errorLine");
+		emit("jne call_typecheck" + callCount);
+		emit("pushl $" + SourceHolder.instance().getLineNumberFor(node.getMethod()));
 		emit("jmp __npe__");
+		
+		// Dynamic callee type checking
+		emit("call_typecheck" + callCount + ":");
+		emit("pushl (%edx) # foundType argument");
+		ClassDeclaration expectedObjectType = node.getObject() == null ?
+				currentClassDeclaration : classTable.get(typeDecorations.get(node.getObject()).getName());
+		emit("pushl $" + expectedObjectType.getVirtualFunctionTableLabel() + " # expectedType argument");
+		emit("call checkTypeCompatibility");
+		emit("addl $8, %esp");
+		emit("cmpl $0, %eax");
+		emit("jne call" + callCount);
+		emit("pushl $" + SourceHolder.instance().getLineNumberFor(node.getMethod()));
+		emit("jmp __callee_type_error__");
 		
 		// Call method
 		emit("call" + callCount + ":");
-		emit("movl (%edx), %ebx # Get point to self's VFT");
+		emit("movl (%esp), %edx # Get copy of reference to self");
+		emit("movl (%edx), %ebx # Get pointer to self's VFT");
 		emit("addl $" + (method.getOffset() + 1)*4 + ", %ebx");
 		emit("call *(%ebx) # Call " + klassName + "#" + methodName);
 		emit("addl $" + ((argCount) * 4) + ", %esp # Clean up the argument values");

@@ -505,13 +505,13 @@ public class SemanticChecker extends DepthFirstAdapter {
 	public void outAVarDeclaration(AVarDeclaration node) {
 		VariableDeclaration decl = new VariableDeclaration( typeFor(node.getType()), locationFor(node.getName()) );
 		Symbol previousDeclaration = symbolTable.scopeContains(node.getName().getText());
-		if (previousDeclaration != null) {
+		if (previousDeclaration != null && !(previousDeclaration.getDeclaration() instanceof VariableDeclaration && ((VariableDeclaration)previousDeclaration.getDeclaration()).getKlass() != null && ((VariableDeclaration)previousDeclaration.getDeclaration()).getKlass() != currentClassDeclaration)) {
 			reportError(node.getName(), "Variable '" + node.getName().getText() + "' previously defined at "  + previousDeclaration.getDeclaration().getLocation());
 		}
 		symbolTable.push(node.getName().getText(), decl);
 		
 		if (currentMethodDeclaration != null) {
-			currentMethodDeclaration.incrementLocalCount();   
+			currentMethodDeclaration.incrementLocalCount();
 			decl.setLocalPosition(currentMethodDeclaration.getLocalCount());
 			currentMethodDeclaration.addVariable(node.getName().getText(), decl);
 		} else {

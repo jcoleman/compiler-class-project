@@ -36,15 +36,25 @@ public class CodeGenerator extends DepthFirstAdapter {
 		typeDecorations = _typeDecorations;
 	}
 	
+	/*
+	 * Helper to print out the generated <sourceLine> into the file.
+	 */
 	private void emit(String sourceLine) {
 		writer.println(sourceLine);
 	}
 	
+	/*
+	 * Helper to emit the oodle source line that contained Token <token>.
+	 */
 	private void emitOodleStatement(Token token) {
 		emit("");
 		emit("# " + token.getLine() + ": " + SourceHolder.instance().getLine(token.getLine()-1));
 	}
 	
+	/*
+	 * Generate the assembly code required to make a String object from
+	 * a string literal. Evaluates to an oodle expression value.
+	 */
 	private void emitStringExpressionFor(String text) {
 		String label = "strlit" + stringCount;
 		
@@ -62,6 +72,10 @@ public class CodeGenerator extends DepthFirstAdapter {
 		stringCount++;
 	}
 	
+	/*
+	 * Helper to emit the assembly code required to instantiate an object
+	 * of class <klass>. Evaluates to an oodle expression value.
+	 */
 	public void emitClassInstantiationExpressionFor(ClassDeclaration klass) {
 		// Allocate space for the object
 		// - 2 * 4 bytes reserved + 4 * instance variable count
@@ -74,6 +88,11 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax");
 	}
 	
+	/*
+	 * Helper to emit the assembly required to call a method on an object. Also automatically
+	 * provides the null pointer checking and dynamic type checking. Evaluates to an
+	 * oodle expression value.
+	 */
 	public void emitCallExpressionFor(ClassDeclaration expectedObjectType, String methodName, Integer lineNumber) {
 		emit("movl (%esp), %edx # Get copy of reference to self");
 		
@@ -102,6 +121,14 @@ public class CodeGenerator extends DepthFirstAdapter {
 		callCount++;
 	}
 	
+	/*
+	 * Helper to emit a dynamic type checking call to see if class the found type is
+	 * compatible with the expected type. <foundTypeVFTLocation> should be an
+	 * assembly fragment that can be 'pushl'-ed as a pointer to the VFT of the
+	 * object under consideration. <successLabel> will be jumped to if the types are
+	 * valid. Otherwise the code will push <lineNumber> and jump to the label
+	 * <onError>.
+	 */
 	public void emitTypeCheckFor(ClassDeclaration expectedObjectType, String foundTypeVFTLocation, String successLabel, Integer lineNumber, String onError) {
 		emit("pushl " + foundTypeVFTLocation + " # foundType argument");
 		emit("pushl $" + expectedObjectType.getVirtualFunctionTableLabel() + " # expectedType argument");
@@ -114,7 +141,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 	}
 	
 	/*
-	 * Start the generated with the predefined data directives. 
+	 * Start the generated with the predefined data directives (including the two globals).
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAStart(cps450.oodle.node.AStart)
 	 */
 	@Override
@@ -123,7 +150,13 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit(".comm _out, 4, 4");
 		emit(".comm _in, 4, 4");
 	}
-
+	
+	/*
+	 * Emit assembly code to instantiate global Reader/Writer objects; instantiate a copy
+	 * of the main class; call its start method; and end the progrma successfully.
+	 * Also emits error message helpers.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#outStart(cps450.oodle.node.Start)
+	 */
 	@Override
 	public void outStart(Start node) {
 		emit("");
@@ -161,6 +194,10 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emitEndProgramForError(": The little gremlin running your program can't assign that value's type to a differently typed variable.\\n");
 	}
 	
+	/*
+	 * Helper method to emit the code necessary to print an error message and
+	 * end the program with an error code return value.
+	 */
 	private void emitEndProgramForError(String message) {
 		String label = "strlit" + stringCount;
 		emit(".data");
@@ -175,7 +212,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 	}
 
 	/*
-	 * Start the generated with the predefined data directives. 
+	 * Output the virtual function tables for all defined classes.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAClassDef(cps450.oodle.node.AClassDef)
 	 */
 	@Override
@@ -226,13 +263,18 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax # Store AndExpression result");
 	}
 	
+	/*
+	 * Emit a comment containing the original oodle source line currently being processed.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#inAAssignmentStatement(cps450.oodle.node.AAssignmentStatement)
+	 */
 	@Override
 	public void inAAssignmentStatement(AAssignmentStatement node) {
 		emitOodleStatement(node.getId());
 	}
 
 	/*
-	 * Generate assembly for assignment statements.
+	 * Generate assembly for assignment statements. If necessary, emit dynamic type checking code.
+	 * Handles global, local, and instance variables.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAAssignmentStatement(cps450.oodle.node.AAssignmentStatement)
 	 */
 	@Override
@@ -270,7 +312,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 	}
 
 	/*
-	 * Generate assembly for the actual calling of the method
+	 * Generate assembly for the actual calling of the method.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#outACallExpression(cps450.oodle.node.ACallExpression)
 	 */
 	@Override
@@ -288,6 +330,12 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emitCallExpressionFor(expectedObjectType, methodName, SourceHolder.instance().getLineNumberFor(node.getMethod()));
 	}
 	
+	/*
+	 * Override the regular order of processing sub-nodes in a call expression
+	 * so that the calling object gets evaluated before the arguments.
+	 * Also, the arguments are processed in reverse order.
+	 * @see cps450.oodle.analysis.DepthFirstAdapter#caseACallExpression(cps450.oodle.node.ACallExpression)
+	 */
 	@Override
 	public void caseACallExpression(ACallExpression node) {
 		inACallExpression(node);
@@ -597,7 +645,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 	}
 
 	/*
-	 * Generate assembly code to define a variable's storage space.
+	 * If the node represents a local variable, we need to initialize it to zero.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAVarDeclaration(cps450.oodle.node.AVarDeclaration)
 	 */
 	@Override

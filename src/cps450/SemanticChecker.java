@@ -75,7 +75,9 @@ public class SemanticChecker extends DepthFirstAdapter {
 	
 	@Override
 	public void outAStart(AStart node) {
-		if (currentClassDeclaration != null && currentClassDeclaration.getMethod("start") == null) {
+		if (classTable.size() <= 5) {
+			reportError(null, "You must supply at least one valid .ood file.");
+		} else if (currentClassDeclaration != null && currentClassDeclaration.getMethod("start") == null) {
 			reportError(null, "You must define the method 'start' in the primary class '" + currentClassName + "'");
 		}
 	}

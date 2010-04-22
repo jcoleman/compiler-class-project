@@ -5,18 +5,18 @@ public class VariableDeclaration extends Declaration {
 	Integer instancePosition;
 	Integer argumentPosition;
 	Integer localPosition;
-	ClassDeclaration klass;
+	ClassDeclaration declaringKlass;
 	
 	public VariableDeclaration(Type _type, String _location) {
 		super(_type, _location);
 	}
 	
-	public void setKlass(ClassDeclaration _klass) {
-		klass = _klass;
+	public void setDeclaringKlass(ClassDeclaration _klass) {
+		declaringKlass = _klass;
 	}
 	
-	public ClassDeclaration getKlass() {
-		return klass;
+	public ClassDeclaration getDeclaringKlass() {
+		return declaringKlass;
 	}
 	
 	public void setArgumentPosition(Integer argPos) {

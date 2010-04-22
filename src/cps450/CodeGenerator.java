@@ -86,6 +86,8 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl $" + lineNumber);
 		emit("jmp __npe__");
 		
+		// Dynamic callee type checking
+		emit("call_typecheck" + callCount + ":");
 		emitTypeCheckFor(expectedObjectType, "(%edx)", "call" + callCount, lineNumber);
 		
 		// Call method
@@ -101,8 +103,6 @@ public class CodeGenerator extends DepthFirstAdapter {
 	}
 	
 	public void emitTypeCheckFor(ClassDeclaration expectedObjectType, String foundTypeVFTLocation, String successLabel, Integer lineNumber) {
-		// Dynamic callee type checking
-		emit("call_typecheck" + callCount + ":");
 		emit("pushl " + foundTypeVFTLocation + " # foundType argument");
 		emit("pushl $" + expectedObjectType.getVirtualFunctionTableLabel() + " # expectedType argument");
 		emit("call checkTypeCompatibility");
@@ -223,29 +223,46 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("pushl %eax # Store AndExpression result");
 	}
 	
+	@Override
+	public void inAAssignmentStatement(AAssignmentStatement node) {
+		emitOodleStatement(node.getId());
+	}
+
 	/*
 	 * Generate assembly for assignment statements.
 	 * @see cps450.oodle.analysis.DepthFirstAdapter#outAAssignmentStatement(cps450.oodle.node.AAssignmentStatement)
 	 */
 	@Override
 	public void outAAssignmentStatement(AAssignmentStatement node) {
-		emit("popl %eax # AssignmentStatement");
-		
 		String name = node.getId().getText();
 		
 		VariableDeclaration local = currentMethodDeclaration.getVariable(name);
+		VariableDeclaration instance = currentClassDeclaration.getVariable(name);
+		
+		String label = "assign_line_" + node.getId().getLine();
+		if (!typeDecorations.get(node).isPrimitive() && (local != null || instance != null)) { // Not primitive and not global (globals aren't typed)
+			emit("movl (%esp), %edx # Borrow the value being assigned");
+			
+			// Always allow assignment value of null
+			emit("cmpl $0, %edx # Check for null 'self' pointer");
+			emit("je " + label);
+			
+			// If not null then also check the actual type against the expected type
+			ClassDeclaration expectedObjectType = classTable.get( (local != null ? local.getType() : instance.getType()).getName() );
+			emitTypeCheckFor(expectedObjectType, "(%edx)", label, SourceHolder.instance().getLineNumberFor(node.getId()));
+			emit(label + ":");
+		}
+		
+		emit("popl %eax # Get value for assignment statement");
 		if (local != null) {
 			emit("movl %eax, " + local.getStackOffset() + "(%ebp) # Move value to local variable '" + name + "'");
+		} else if (instance != null) {
+			VariableDeclaration self = currentMethodDeclaration.getVariable("me");
+			emit("movl " + self.getStackOffset() + "(%ebp), %ebx # Get reference to self");
+			emit("movl %eax, " + instance.getInstanceOffset() +"(%ebx) # Move value to Klass#" + name);
 		} else {
-			VariableDeclaration instance = currentClassDeclaration.getVariable(name);
-			if (instance != null) {
-				VariableDeclaration self = currentMethodDeclaration.getVariable("me");
-				emit("movl " + self.getStackOffset() + "(%ebp), %ebx # Get reference to self");
-				emit("movl %eax, " + instance.getInstanceOffset() +"(%ebx) # Move value to Klass#" + name);
-			} else {
-				// Global variable
-				emit("movl %eax, _" + name);
-			}
+			// Global variable
+			emit("movl %eax, _" + name);
 		}
 	}
 

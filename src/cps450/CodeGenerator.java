@@ -602,9 +602,12 @@ public class CodeGenerator extends DepthFirstAdapter {
 	 */
 	@Override
 	public void outAVarDeclaration(AVarDeclaration node) {
-		//if (currentMethodDeclaration == null) {
-		//	emit(".comm _" + node.getName().getText() + ", 4, 4");
-		//}
+		String name = node.getName().getText();
+		
+		VariableDeclaration local = currentMethodDeclaration.getVariable(name);
+		if (local != null) {
+			emit("movl $0," + local.getStackOffset() + "(%ebp) # Initialize variable '" + name + "' to 0");
+		}
 	}
 	
 	

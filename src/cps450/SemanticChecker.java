@@ -229,28 +229,32 @@ public class SemanticChecker extends DepthFirstAdapter {
 		
 		ClassDeclaration klass = node.getObject() == null ?
 				currentClassDeclaration : classTable.get(typeDecorations.get(node.getObject()).getName());
-		MethodDeclaration decl = klass.getMethod(node.getMethod().getText());
-		if (decl == null) {
-			reportError(node.getMethod(), "Used undefined method '" + node.getMethod().getText() + "'");
-		} else {
-			// Check count of arguments
-			Integer actualArgCount = node.getArguments().size();
-			if (decl.getArgumentCount() != actualArgCount) {
-				reportError(node.getMethod(), "Wrong number of arguments given to method call: expected " + decl.getArgumentCount() + " got " + actualArgCount);
+		if (klass != null) {
+			MethodDeclaration decl = klass.getMethod(node.getMethod().getText());
+			if (decl == null) {
+				reportError(node.getMethod(), "Used undefined method '" + node.getMethod().getText() + "'");
 			} else {
-				// Size is correct, check types
-				int i = 0;
-				for (Iterator<PExpression> args = node.getArguments().iterator(); args.hasNext();) {
-					PExpression arg = args.next();
-					Type argType = typeDecorations.get(arg);
-					Type correctArgType = decl.getArgumentTypes().get(i);
-					if (!correctArgType.compatibleWith(argType)) {
-						reportError(node.getMethod(), "Wrong type encountered in method call at argument " + (i+1) + ": expected '" + correctArgType.getName() + "' found '" + argType.getName() + "'");
+				// Check count of arguments
+				Integer actualArgCount = node.getArguments().size();
+				if (decl.getArgumentCount() != actualArgCount) {
+					reportError(node.getMethod(), "Wrong number of arguments given to method call: expected " + decl.getArgumentCount() + " got " + actualArgCount);
+				} else {
+					// Size is correct, check types
+					int i = 0;
+					for (Iterator<PExpression> args = node.getArguments().iterator(); args.hasNext();) {
+						PExpression arg = args.next();
+						Type argType = typeDecorations.get(arg);
+						Type correctArgType = decl.getArgumentTypes().get(i);
+						if (!correctArgType.compatibleWith(argType)) {
+							reportError(node.getMethod(), "Wrong type encountered in method call at argument " + (i+1) + ": expected '" + correctArgType.getName() + "' found '" + argType.getName() + "'");
+						}
+						i++;
 					}
-					i++;
 				}
+				returnType = decl.getType();
 			}
-			returnType = decl.getType();
+		} else {
+			reportError(node.getMethod(), "Attempted to call method on undefined class or primitive value.");
 		}
 		
 		typeDecorations.put(node, returnType);

@@ -88,7 +88,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		// Dynamic callee type checking
 		emit("call_typecheck" + callCount + ":");
-		emitTypeCheckFor(expectedObjectType, "(%edx)", "call" + callCount, lineNumber);
+		emitTypeCheckFor(expectedObjectType, "(%edx)", "call" + callCount, lineNumber, "__callee_type_error__");
 		
 		// Call method
 		emit("call" + callCount + ":");
@@ -102,7 +102,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		callCount++;
 	}
 	
-	public void emitTypeCheckFor(ClassDeclaration expectedObjectType, String foundTypeVFTLocation, String successLabel, Integer lineNumber) {
+	public void emitTypeCheckFor(ClassDeclaration expectedObjectType, String foundTypeVFTLocation, String successLabel, Integer lineNumber, String onError) {
 		emit("pushl " + foundTypeVFTLocation + " # foundType argument");
 		emit("pushl $" + expectedObjectType.getVirtualFunctionTableLabel() + " # expectedType argument");
 		emit("call checkTypeCompatibility");
@@ -110,7 +110,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("cmpl $0, %eax");
 		emit("jne " + successLabel);
 		emit("pushl $" + lineNumber);
-		emit("jmp __callee_type_error__");
+		emit("jmp " + onError);
 	}
 	
 	/*
@@ -152,10 +152,13 @@ public class CodeGenerator extends DepthFirstAdapter {
 		emit("# Global helpers");
 		emit(".text");
 		emit("__npe__:");
-		emitEndProgramForError(": The little gremlin running your program is scratching his head wondering how he is supposed to look up a method on a null object.\\n");
+		emitEndProgramForError(": The little gremlin running your program is scratching his head wondering how to look up a method on a null object.\\n");
 		
 		emit("__callee_type_error__:");
 		emitEndProgramForError(": The little gremlin running your program can't find the method you requested on the object you used.\\n");
+		
+		emit("__assignment_type_error__:");
+		emitEndProgramForError(": The little gremlin running your program can't assign that value's type to a differently typed variable.\\n");
 	}
 	
 	private void emitEndProgramForError(String message) {
@@ -249,7 +252,7 @@ public class CodeGenerator extends DepthFirstAdapter {
 			
 			// If not null then also check the actual type against the expected type
 			ClassDeclaration expectedObjectType = classTable.get( (local != null ? local.getType() : instance.getType()).getName() );
-			emitTypeCheckFor(expectedObjectType, "(%edx)", label, SourceHolder.instance().getLineNumberFor(node.getId()));
+			emitTypeCheckFor(expectedObjectType, "(%edx)", label, SourceHolder.instance().getLineNumberFor(node.getId()), "__assignment_type_error__");
 			emit(label + ":");
 		}
 		

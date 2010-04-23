@@ -7,6 +7,7 @@ public class ClassDeclaration extends Declaration {
 	
 	Hashtable<String, VariableDeclaration> variables;
 	Hashtable<String, MethodDeclaration> methods;
+	ArrayList<MethodDeclaration> maskedInheritedMethods;
 	Integer currentMethodOffset = 0;
 	
 	String name;
@@ -17,6 +18,7 @@ public class ClassDeclaration extends Declaration {
 		super(_type, _location);
 		variables = new Hashtable<String, VariableDeclaration>();
 		methods = new Hashtable<String, MethodDeclaration>();
+		maskedInheritedMethods = new ArrayList<MethodDeclaration>();
 		name = _name;
 	}
 	
@@ -74,6 +76,13 @@ public class ClassDeclaration extends Declaration {
 			// Methods have different signatures, mask.
 			decl.setOffset(currentMethodOffset);
 			currentMethodOffset += 1;
+			
+			if (oldMethod != null) {
+				// Still need to retain the old method declaration so it can be used by
+				// code in the parent ancestor classes when operating on a object of the
+				// descendant's type.
+				maskedInheritedMethods.add(oldMethod);
+			}
 		}
 		methods.put(name, decl);
 	}
@@ -110,17 +119,27 @@ public class ClassDeclaration extends Declaration {
 	 * Get a list of methods defined in this class - in ascending VFT offset order.
 	 */
 	public ArrayList<MethodDeclaration> getMethodList() {
-		ArrayList<MethodDeclaration> methodList = new ArrayList<MethodDeclaration>(methods.size());
+		Integer size = methods.size() + maskedInheritedMethods.size();
+		
+		ArrayList<MethodDeclaration> methodList = new ArrayList<MethodDeclaration>(size);
 		
 		// Setup initial list size
-		for (int i = 0; i < methods.size(); ++i) {
+		for (int i = 0; i < size; ++i) {
 			methodList.add(null);
 		}
 		
+		// Add all of the methods from the parent class that have been masked
+		for (MethodDeclaration method : maskedInheritedMethods) {
+			methodList.set(method.getOffset(), method);
+		}
+		
 		// Create a list of method declarations ordered by their offset
+		// - all the methods defined directly in this class, inherited,
+		// - or inherited and overridden
 		for (MethodDeclaration method : methods.values()) {
 			methodList.set(method.getOffset(), method);
 		}
+		
 		return methodList;
 	}
 	

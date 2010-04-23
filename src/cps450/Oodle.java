@@ -54,29 +54,36 @@ public class Oodle
 			System.out.println(SourceHolder.instance().getFilenameFor(t) + ":" + SourceHolder.instance().getLineNumberFor(t) + "," + t.getPos() + ":" + errorText);
         }
         
+        Integer totalErrorCount = errorCount;
+        
         Hashtable<Node, Type> typeDecorations = new Hashtable<Node, Type>();
         Hashtable<String, ClassDeclaration> classTable = new Hashtable<String, ClassDeclaration>();
         
-        SemanticChecker semanticChecker = new SemanticChecker(classTable, typeDecorations);
-        startNode.apply(semanticChecker);
-        
-        Integer totalErrorCount = lexer.errorCount + errorCount + semanticChecker.getErrorCount();
-        System.out.println("" + totalErrorCount +  " errors found");
-        
-        if (totalErrorCount == 0) {
-        	String primaryFilename = SourceHolder.instance().getPrimaryFilename();
-            String outputName = primaryFilename.substring(0, primaryFilename.lastIndexOf(".ood"));
+        if (errorCount == 0) {
+            SemanticChecker semanticChecker = new SemanticChecker(classTable, typeDecorations);
+            startNode.apply(semanticChecker);
             
-            PrintWriter writer = new PrintWriter(new FileWriter(outputName + ".s"));
-            CodeGenerator codeGenerator = new CodeGenerator(writer, classTable, typeDecorations);
-            startNode.apply(codeGenerator);
-            writer.flush();
-            writer.close();
+            totalErrorCount = lexer.errorCount + errorCount + semanticChecker.getErrorCount();
             
-            if (!Options.instance().assembleOnly) {
-    			assemble(outputName);
-    		}
+            if (totalErrorCount == 0) {
+            	String primaryFilename = SourceHolder.instance().getPrimaryFilename();
+                String outputName = primaryFilename.substring(0, primaryFilename.lastIndexOf(".ood"));
+                
+                PrintWriter writer = new PrintWriter(new FileWriter(outputName + ".s"));
+                CodeGenerator codeGenerator = new CodeGenerator(writer, classTable, typeDecorations);
+                startNode.apply(codeGenerator);
+                writer.flush();
+                writer.close();
+                
+                if (!Options.instance().assembleOnly) {
+        			assemble(outputName);
+        		}
+            }
+        } else {
+        	System.out.println("Incorrect Oodle syntax encountered, unable to parse file.");
         }
+        
+        System.out.println("" + totalErrorCount +  " errors found");
         
     }
     

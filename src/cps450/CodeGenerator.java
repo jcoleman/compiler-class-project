@@ -101,13 +101,9 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		// Dynamic null pointer checking
 		emit("cmpl $0, %edx # Check for null 'self' pointer");
-		emit("jne call_typecheck" + callCount);
+		emit("jne call" + callCount);
 		emit("pushl $" + lineNumber);
 		emit("jmp __npe__");
-		
-		// Dynamic callee type checking
-		emit("call_typecheck" + callCount + ":");
-		emitTypeCheckFor(expectedObjectType, "(%edx)", "call" + callCount, lineNumber, "__callee_type_error__");
 		
 		// Call method
 		emit("call" + callCount + ":");
@@ -192,6 +188,9 @@ public class CodeGenerator extends DepthFirstAdapter {
 		
 		emit("__assignment_type_error__:");
 		emitEndProgramForError(": The little gremlin running your program can't assign that value's type to a differently typed variable.\\n");
+		
+		emit("__argument_type_error__:");
+		emitEndProgramForError(": The little gremlin running your program can't pass that value's type to a differently typed argument.\\n");
 	}
 	
 	/*
@@ -345,9 +344,34 @@ public class CodeGenerator extends DepthFirstAdapter {
         }
         List<PExpression> copy = new ArrayList<PExpression>(node.getArguments());
         java.util.Collections.reverse(copy);
+        int i = copy.size();
         for(PExpression e : copy)
         {
+        	// Evaluate the expression
             e.apply(this);
+            
+            // Determine if we need to add dynamic runtime type checking
+            String methodName = node.getMethod().getText();
+    		ClassDeclaration selfKlass = node.getObject() == null ?
+    				currentClassDeclaration : classTable.get(typeDecorations.get(node.getObject()).getName());
+        	MethodDeclaration method = selfKlass.getMethod(methodName);
+        	Type argumentType = method.getArgumentTypes().get(i - 1);
+            
+            if (!argumentType.isPrimitive() && argumentType != Type.getType("void") && argumentType != Type.getType("null")) {
+            	String label = "call_" + node.getMethod().getLine() + "_" + node.getMethod().getPos() + "_arg_" + i;
+            	Integer lineNumber = SourceHolder.instance().getLineNumberFor(node.getMethod());
+            	
+            	emit("movl (%esp), %edx");
+            	
+            	// Always allow argument value of null
+    			emit("cmpl $0, %edx # Check for null 'self' pointer");
+    			emit("je " + label);
+            	
+    			// Add dynamic runtime type checking
+        		emitTypeCheckFor(classTable.get(argumentType.getName()), "(%edx)", label, lineNumber, "__argument_type_error__");
+        		emit(label + ":");
+            }
+            i--;
         }
         if(node.getObject() != null)
         {
